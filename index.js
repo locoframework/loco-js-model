@@ -1,1 +1,1 @@
-console.log("loco-js-model");
+const Loco = {};

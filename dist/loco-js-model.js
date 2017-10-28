@@ -74,7 +74,9 @@ var Loco =
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var Models = {};
+var Models = {
+  Base: {}
+};
 
 exports.Models = Models;
 

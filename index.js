@@ -1,3 +1,5 @@
-const Models = {};
+const Models = {
+  Base: {}
+};
 
 export {Models};

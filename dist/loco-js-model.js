@@ -1,3 +1,4 @@
+var Loco =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -70,7 +71,12 @@
 "use strict";
 
 
-var Loco = {};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var Models = {};
+
+exports.Models = Models;
 
 /***/ })
 /******/ ]);

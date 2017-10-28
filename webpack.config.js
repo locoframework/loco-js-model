@@ -9,6 +9,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'loco-js-model.js'
+    filename: 'loco-js-model.js',
+    library: 'Loco'
   }
 };

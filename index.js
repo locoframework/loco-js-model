@@ -1,1 +1,3 @@
-const Loco = {};
+const Models = {};
+
+export {Models};

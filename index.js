@@ -1,5 +1,3 @@
-const Models = {
-  Base: {}
-};
+import {Base} from './src/base.coffee';
 
-export {Models};
+export {Base};

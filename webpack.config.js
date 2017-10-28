@@ -4,12 +4,25 @@ module.exports = {
   entry: './index.js',
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
+      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
+      {
+        test: /\.coffee$/,
+        use: [
+          {
+            loader: 'coffee-loader',
+            options: {
+              transpile: {
+                presets: ['env']
+              }
+            }
+          }
+        ]
+      }
     ]
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'loco-js-model.js',
-    library: 'Loco'
+    library: 'LocoModel'
   }
 };

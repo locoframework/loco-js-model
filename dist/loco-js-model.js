@@ -1,4 +1,4 @@
-var Loco =
+var LocoModel =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -74,11 +74,38 @@ var Loco =
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var Models = {
-  Base: {}
+exports.Base = undefined;
+
+var _base = __webpack_require__(1);
+
+exports.Base = _base.Base;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Base;
+
+exports.Base = Base = function Base() {
+  var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  _classCallCheck(this, Base);
+
+  this.id = null;
+  this.errors = null;
+  this.resource = data.resource;
 };
 
-exports.Models = Models;
+exports.Base = Base;
 
 /***/ })
 /******/ ]);

@@ -1,7 +1,9 @@
 const LocalEnv = {
   loco: {
-    getLocale: () => { return 'en' }
+    getLocale: () => { return 'en' },
+    protocolWithHost: () => { return null }
   },
+  scope: null
 };
 
 const Env = () => {

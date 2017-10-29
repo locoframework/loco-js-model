@@ -1,4 +1,5 @@
 import {Validators} from './validators';
+import {Env} from '../env';
 
 class Base
   # Ex.
@@ -75,12 +76,12 @@ class Base
       "/#{@getRemoteName().toLowerCase()}s"
     else if opts.resource
       @resources[opts.resource].url
-    else if App.Env.scope? and @resources[App.Env.scope]?
-      @resources[App.Env.scope].url
+    else if Env().scope? and @resources[Env().scope]?
+      @resources[Env().scope].url
     else
       @resources.url
-    if App.Env.loco.protocolWithHost?
-      resourcesUrl = "#{App.Env.loco.protocolWithHost}#{resourcesUrl}"
+    if Env().loco.protocolWithHost?
+      resourcesUrl = "#{Env().loco.protocolWithHost}#{resourcesUrl}"
     match = /:(\w+)\/?/.exec resourcesUrl
     return resourcesUrl if not match?
     if opts[match[1]]?
@@ -145,16 +146,16 @@ class Base
 
   @__getPaginationParam: ->
     defaultParam = 'page'
-    if App.Env.scope? and @resources? and @resources[App.Env.scope]?
-      param = @resources[App.Env.scope]?.paginate?.param
+    if Env().scope? and @resources? and @resources[Env().scope]?
+      param = @resources[Env().scope]?.paginate?.param
       return param ? defaultParam
     if @resources?.paginate?.param?
       return @resources.paginate.param
     defaultParam
 
   @__getPaginationPer: ->
-    if App.Env.scope? and @resources? and @resources[App.Env.scope]?
-      return @resources[App.Env.scope]?.paginate?.per
+    if Env().scope? and @resources? and @resources[Env().scope]?
+      return @resources[Env().scope]?.paginate?.per
     if @resources?.paginate?.per?
       return @resources.paginate.per
     null

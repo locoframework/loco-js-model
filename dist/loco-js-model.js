@@ -61,7 +61,7 @@ var LocoModel =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -174,7 +174,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.I18n = undefined;
 
-var _en = __webpack_require__(8);
+var _en = __webpack_require__(9);
 
 var I18n = {
   en: _en.en
@@ -194,23 +194,23 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Validators = undefined;
 
-var _absence = __webpack_require__(7);
+var _absence = __webpack_require__(8);
 
-var _confirmation = __webpack_require__(9);
+var _confirmation = __webpack_require__(10);
 
-var _exclusion = __webpack_require__(10);
+var _exclusion = __webpack_require__(11);
 
-var _format = __webpack_require__(11);
+var _format = __webpack_require__(12);
 
-var _inclusion = __webpack_require__(12);
+var _inclusion = __webpack_require__(13);
 
 var _length = __webpack_require__(4);
 
-var _numericality = __webpack_require__(13);
+var _numericality = __webpack_require__(14);
 
-var _presence = __webpack_require__(14);
+var _presence = __webpack_require__(15);
 
-var _size = __webpack_require__(15);
+var _size = __webpack_require__(16);
 
 var Validators = {
   Absence: _absence.Absence,
@@ -346,14 +346,150 @@ exports.Length = Length;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Base = undefined;
 
-var _base = __webpack_require__(6);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-exports.Base = _base.Base;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var IdentityMap;
+
+exports.IdentityMap = IdentityMap = function () {
+  var IdentityMap = function () {
+    function IdentityMap() {
+      _classCallCheck(this, IdentityMap);
+    }
+
+    _createClass(IdentityMap, null, [{
+      key: "clear",
+      value: function clear() {
+        return this.imap = {};
+      }
+    }, {
+      key: "add",
+      value: function add(obj) {
+        var identity;
+        identity = obj.getIdentity();
+        if (this.imap[identity] == null) {
+          this.imap[identity] = {};
+        }
+        if (this.imap[identity][obj.id] == null) {
+          this.imap[identity][obj.id] = [];
+        }
+        return this.imap[identity][obj.id][0] = obj;
+      }
+    }, {
+      key: "connect",
+      value: function connect(obj) {
+        var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+        var model;
+        model = opts.with;
+        this.add(model);
+        return this.imap[model.getIdentity()][model.id].push(obj);
+      }
+    }, {
+      key: "addCollection",
+      value: function addCollection(identity) {
+        var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+        if (this.imap[identity] == null) {
+          this.imap[identity] = {};
+        }
+        if (this.imap[identity]["collection"] == null) {
+          this.imap[identity]["collection"] = [];
+        }
+        if (this.imap[identity]["collection"].indexOf(opts.to) !== -1) {
+          return;
+        }
+        return this.imap[identity]["collection"].push(opts.to);
+      }
+    }, {
+      key: "all",
+      value: function all(identity) {
+        var arr, id, objs, ref;
+        if (this.imap[identity] == null) {
+          return null;
+        }
+        arr = [];
+        ref = this.imap[identity];
+        for (id in ref) {
+          objs = ref[id];
+          if (id === "collection") {
+            continue;
+          }
+          arr.push(objs[0]);
+        }
+        return arr;
+      }
+    }, {
+      key: "find",
+      value: function find(klass, id) {
+        if (this.imap[klass] && this.imap[klass][id]) {
+          return this.imap[klass][id][0];
+        } else {
+          return null;
+        }
+      }
+    }, {
+      key: "findConnected",
+      value: function findConnected(klass, id) {
+        var arr;
+        if (this.imap[klass] && this.imap[klass][id] && this.imap[klass][id].length > 1) {
+          arr = this.imap[klass][id];
+          return arr.slice(1, +(arr.length - 1) + 1 || 9e9);
+        } else {
+          return [];
+        }
+      }
+    }]);
+
+    return IdentityMap;
+  }();
+
+  ;
+
+  // Ex.
+  // @imap = {
+  //   Post: {
+  //     1: [
+  //       #<Post id:1>
+  //     ],
+  //     10: [
+  //       #<Post id:10>
+  //     ],
+  //     collection: [
+  //       #<Posts>
+  //     ]
+  //   }
+  // }
+  IdentityMap.imap = {};
+
+  return IdentityMap;
+}();
+
+exports.IdentityMap = IdentityMap;
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.IdentityMap = exports.Base = undefined;
+
+var _base = __webpack_require__(7);
+
+var _identity_map = __webpack_require__(5);
+
+exports.Base = _base.Base;
+exports.IdentityMap = _identity_map.IdentityMap;
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -371,6 +507,12 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _validators = __webpack_require__(3);
 
 var _env = __webpack_require__(1);
+
+var _utils = __webpack_require__(17);
+
+var _identity_map = __webpack_require__(5);
+
+var _models = __webpack_require__(19);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -695,7 +837,7 @@ exports.Base = Base = function () {
     value: function changes() {
       var currentObj, name, ref, result, val;
       result = {};
-      currentObj = App.IdentityMap.find(this.getIdentity(), this.id);
+      currentObj = _identity_map.IdentityMap.find(this.getIdentity(), this.id);
       ref = this.attributes();
       for (name in ref) {
         val = ref[name];
@@ -901,7 +1043,7 @@ exports.Base = Base = function () {
           var obj, record;
           record = JSON.parse(e.target.response);
           obj = _this3.__initSubclass(record);
-          App.IdentityMap.add(obj);
+          _identity_map.IdentityMap.add(obj);
           return resolve(obj);
         };
       });
@@ -1009,9 +1151,9 @@ exports.Base = Base = function () {
       var parts;
       parts = this.getIdentity().split(".");
       if (parts.length === 1) {
-        return new App.Models[parts[0]](params);
+        return new _models.Models()[parts[0]](params);
       }
-      return new App.Models[parts[0]][parts[1]](params);
+      return new _models.Models()[parts[0]][parts[1]](params);
     }
   }, {
     key: '__page',
@@ -1042,7 +1184,7 @@ exports.Base = Base = function () {
       }
       data[this.__getPaginationParam()] = i;
       if (httpMethod === 'GET') {
-        url = url + '?' + App.Utils.Object.toURIParams(data);
+        url = url + '?' + _utils.Utils.Obj.toURIParams(data);
       }
       req = new XMLHttpRequest();
       req.open(httpMethod, url);
@@ -1071,7 +1213,7 @@ exports.Base = Base = function () {
             if (opts.resource != null) {
               obj.resource = opts.resource;
             }
-            App.IdentityMap.add(obj);
+            _identity_map.IdentityMap.add(obj);
             resp.resources.push(obj);
           }
           return resolve(resp);
@@ -1162,7 +1304,7 @@ exports.Base = Base = function () {
 exports.Base = Base;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1241,7 +1383,7 @@ exports.Absence = Absence = function () {
 exports.Absence = Absence;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1316,7 +1458,7 @@ exports.en = en = {
 exports.en = en;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1396,7 +1538,7 @@ exports.Confirmation = Confirmation = function () {
 exports.Confirmation = Confirmation;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1467,7 +1609,7 @@ exports.Exclusion = Exclusion = function () {
 exports.Exclusion = Exclusion;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1538,7 +1680,7 @@ exports.Format = Format = function () {
 exports.Format = Format;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1609,7 +1751,7 @@ exports.Inclusion = Inclusion = function () {
 exports.Inclusion = Inclusion;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1782,7 +1924,7 @@ exports.Numericality = Numericality = function () {
 exports.Numericality = Numericality;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1861,7 +2003,7 @@ exports.Presence = Presence = function () {
 exports.Presence = Presence;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1914,6 +2056,88 @@ exports.Size = Size = function () {
 }();
 
 exports.Size = Size;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Utils = undefined;
+
+var _obj = __webpack_require__(18);
+
+var Utils = {
+  Obj: _obj.Obj
+};
+
+exports.Utils = Utils;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Obj;
+
+exports.Obj = Obj = function () {
+  function Obj() {
+    _classCallCheck(this, Obj);
+  }
+
+  _createClass(Obj, null, [{
+    key: "toURIParams",
+    value: function toURIParams(obj) {
+      var key, str, val;
+      str = "";
+      for (key in obj) {
+        val = obj[key];
+        if (str !== "") {
+          str += "&";
+        }
+        str += key + "=" + encodeURIComponent(val);
+      }
+      return str;
+    }
+  }]);
+
+  return Obj;
+}();
+
+exports.Obj = Obj;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var Models = function Models() {
+  if (typeof window === 'undefined') {
+    return {};
+  }
+  return window.App === undefined ? {} : window.App.Models;
+};
+
+exports.Models = Models;
 
 /***/ })
 /******/ ]);

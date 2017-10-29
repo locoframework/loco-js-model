@@ -1,5 +1,8 @@
 import {Validators} from './validators';
 import {Env} from './env';
+import {Utils} from './utils';
+import {IdentityMap} from './identity_map.coffee';
+import {Models} from './models';
 
 class Base
   # Ex.
@@ -44,7 +47,7 @@ class Base
       req.onload = (e) =>
         record = JSON.parse e.target.response
         obj = @__initSubclass record
-        App.IdentityMap.add obj
+        IdentityMap.add obj
         resolve obj
 
   @get: (action, opts = {}) -> @__send "GET", action, opts
@@ -93,8 +96,8 @@ class Base
 
   @__initSubclass: (params = {}) ->
     parts = @getIdentity().split "."
-    return new App.Models[parts[0]] params if parts.length is 1
-    new App.Models[parts[0]][parts[1]] params
+    return new Models()[parts[0]] params if parts.length is 1
+    new Models()[parts[0]][parts[1]] params
 
   @__page: (i, opts = {}, reqOpts = {}, resp = {resources: [], count: 0}) ->
     httpMethod = reqOpts.method || "GET"
@@ -106,7 +109,7 @@ class Base
         data[key] = val
     data[@__getPaginationParam()] = i
     if httpMethod is 'GET'
-      url = url + '?' + App.Utils.Object.toURIParams(data)
+      url = url + '?' + Utils.Obj.toURIParams(data)
     req = new XMLHttpRequest()
     req.open httpMethod, url
     req.setRequestHeader "Accept", "application/json"
@@ -123,7 +126,7 @@ class Base
         for record in data.resources
           obj = @__initSubclass record
           obj.resource = opts.resource if opts.resource?
-          App.IdentityMap.add obj
+          IdentityMap.add obj
           resp.resources.push obj
         resolve resp
 
@@ -306,7 +309,7 @@ class Base
 
   changes: ->
     result = {}
-    currentObj = App.IdentityMap.find this.getIdentity(), this.id
+    currentObj = IdentityMap.find this.getIdentity(), this.id
     for name, val of this.attributes()
       if val isnt currentObj[name]
         continue if val? and val.constructor is Date and currentObj[name] - val is 0

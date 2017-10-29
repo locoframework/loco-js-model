@@ -1,5 +1,5 @@
 import {Validators} from './validators';
-import {Env} from '../env';
+import {Env} from './env';
 
 class Base
   # Ex.

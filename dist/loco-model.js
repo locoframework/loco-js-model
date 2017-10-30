@@ -479,14 +479,21 @@ exports.IdentityMap = IdentityMap;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.IdentityMap = exports.Base = undefined;
+exports.Validators = exports.IdentityMap = exports.Base = undefined;
 
 var _base = __webpack_require__(7);
 
 var _identity_map = __webpack_require__(5);
 
+var _base2 = __webpack_require__(0);
+
+var _validators = __webpack_require__(3);
+
+_validators.Validators.Base = _base2.Base;
+
 exports.Base = _base.Base;
 exports.IdentityMap = _identity_map.IdentityMap;
+exports.Validators = _validators.Validators;
 
 /***/ }),
 /* 7 */

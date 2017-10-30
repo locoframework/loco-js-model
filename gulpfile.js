@@ -46,6 +46,7 @@ gulp.task('jasmine', ['concat_dummy_app'], function() {
   const filesForTest = [
     'spec/helpers/**/*.js',
     'spec/loco/**/*.js',
+    'spec/loco.js', // TODO
     'dist/loco-model.js',
     'spec/dummy/application.js'
   ];

@@ -2,11 +2,11 @@
   "name": "loco-js-model",
   "version": "0.0.1",
   "description": "Model part of loco-js",
-  "main": "dist/loco-js-model.js",
+  "main": "dist/loco-model.js",
   "module": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node_modules/.bin/gulp jasmine",
     "build": "webpack --config webpack.config.js"
   },
   "keywords": [
@@ -22,7 +22,14 @@
     "babel-preset-env": "^1.6.1",
     "coffee-loader": "^0.9.0",
     "coffeescript": "^2.0.2",
+    "del": "^3.0.0",
     "express": "^4.16.2",
+    "gulp": "^3.9.1",
+    "gulp-coffee": "^2.3.4",
+    "gulp-concat": "^2.6.1",
+    "gulp-jasmine-browser": "^1.9.1",
+    "gulp-util": "^3.0.8",
+    "gulp-watch": "^4.3.11",
     "webpack": "^3.8.1",
     "webpack-dev-middleware": "^1.12.0"
   }

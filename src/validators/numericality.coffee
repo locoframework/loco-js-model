@@ -33,49 +33,49 @@ class Numericality extends Base
     message = if @opts.message?
       @opts.message
     else
-      I18n[Env().loco.getLocale()].errors.messages.not_a_number
+      I18n()[Env().loco.getLocale()].errors.messages.not_a_number
     @obj.addErrorMessage message, for: @attr
 
   _addIntErrorMessage: ->
-    message = I18n[Env().loco.getLocale()].errors.messages.not_an_integer
+    message = I18n()[Env().loco.getLocale()].errors.messages.not_an_integer
     @obj.addErrorMessage message, for: @attr
 
   _addGreatherThanErrorMessage: ->
-    message = I18n[Env().loco.getLocale()].errors.messages.greater_than
+    message = I18n()[Env().loco.getLocale()].errors.messages.greater_than
     message = message.replace '%{count}', @opts.greater_than
     @obj.addErrorMessage message, for: @attr
 
   _addGreatherThanOrEqualToErrorMessage: ->
-    message = I18n[Env().loco.getLocale()].errors.messages.greater_than_or_equal_to
+    message = I18n()[Env().loco.getLocale()].errors.messages.greater_than_or_equal_to
     message = message.replace '%{count}', @opts.greater_than_or_equal_to
     @obj.addErrorMessage message, for: @attr
 
   _addEqualToErrorMessage: ->
-    message = I18n[Env().loco.getLocale()].errors.messages.equal_to
+    message = I18n()[Env().loco.getLocale()].errors.messages.equal_to
     message = message.replace '%{count}', @opts.equal_to
     @obj.addErrorMessage message, for: @attr
 
   _addLessThanErrorMessage: ->
-    message = I18n[Env().loco.getLocale()].errors.messages.less_than
+    message = I18n()[Env().loco.getLocale()].errors.messages.less_than
     message = message.replace '%{count}', @opts.less_than
     @obj.addErrorMessage message, for: @attr
 
   _addLessThanOrEqualToErrorMessage: ->
-    message = I18n[Env().loco.getLocale()].errors.messages.less_than_or_equal_to
+    message = I18n()[Env().loco.getLocale()].errors.messages.less_than_or_equal_to
     message = message.replace '%{count}', @opts.less_than_or_equal_to
     @obj.addErrorMessage message, for: @attr
 
   _addOtherThanErrorMessage: ->
-    message = I18n[Env().loco.getLocale()].errors.messages.other_than
+    message = I18n()[Env().loco.getLocale()].errors.messages.other_than
     message = message.replace '%{count}', @opts.other_than
     @obj.addErrorMessage message, for: @attr
 
   _addOddErrorMessage: ->
-    message = I18n[Env().loco.getLocale()].errors.messages.odd
+    message = I18n()[Env().loco.getLocale()].errors.messages.odd
     @obj.addErrorMessage message, for: @attr
 
   _addEvenErrorMessage: ->
-    message = I18n[Env().loco.getLocale()].errors.messages.even
+    message = I18n()[Env().loco.getLocale()].errors.messages.even
     @obj.addErrorMessage message, for: @attr
 
 export {Numericality};

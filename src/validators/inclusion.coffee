@@ -16,7 +16,7 @@ class Inclusion extends Base
     message = if @opts.message?
       @opts.message
     else
-      I18n[Env().loco.getLocale()].errors.messages.inclusion
+      I18n()[Env().loco.getLocale()].errors.messages.inclusion
     @obj.addErrorMessage message, for: @attr
 
 export {Inclusion};

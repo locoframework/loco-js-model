@@ -19,7 +19,7 @@ class Presence extends Base
     message = if @opts.message?
       @opts.message
     else
-      I18n[Env().loco.getLocale()].errors.messages.blank
+      I18n()[Env().loco.getLocale()].errors.messages.blank
     @obj.addErrorMessage message, for: @attr
 
 export {Presence};

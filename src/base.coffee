@@ -96,8 +96,11 @@ class Base
 
   @__initSubclass: (params = {}) ->
     parts = @getIdentity().split "."
-    return new Models()[parts[0]] params if parts.length is 1
-    new Models()[parts[0]][parts[1]] params
+    if parts.length is 1
+      model = Models()[parts[0]]
+      return new model params
+    model = Models()[parts[0]][parts[1]]
+    new model params
 
   @__page: (i, opts = {}, reqOpts = {}, resp = {resources: [], count: 0}) ->
     httpMethod = reqOpts.method || "GET"

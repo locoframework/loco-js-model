@@ -1,8 +1,8 @@
 const Models = () => {
-  if(typeof window === 'undefined') {
+  if(typeof App === 'undefined') {
     return {}
   }
-  return window.App === undefined ? {} : window.App.Models
+  return App.Models
 }
 
 export {Models};

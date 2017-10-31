@@ -7,10 +7,10 @@ const LocalEnv = {
 };
 
 const Env = () => {
-  if(typeof window === 'undefined') {
+  if(typeof App === 'undefined') {
     return LocalEnv
   }
-  return window.App === undefined ? LocalEnv : window.App.Env
+  return App.Env
 }
 
 export {Env};

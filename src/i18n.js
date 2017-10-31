@@ -1,8 +1,8 @@
 import {en} from './locales/en.coffee';
 
 const I18n = () => {
-  if(typeof window !== 'undefined' && window.App !== undefined) {
-    return {en, ...window.App.I18n}
+  if(typeof App !== 'undefined') {
+    return {en, ...App.I18n}
   }
   return {en}
 }

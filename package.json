@@ -8,6 +8,10 @@
     "start": "node server.js",
     "build": "webpack --config webpack.config.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/locoframework/loco-js-model.git"
+  },
   "keywords": [
     "model",
     "loco",
@@ -15,6 +19,8 @@
   ],
   "author": "Zbigniew Humeniuk <hello@artofcode.co>",
   "license": "MIT",
+  "homepage": "http://locoframework.org",
+  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",

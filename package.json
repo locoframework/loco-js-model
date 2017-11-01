@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "Model part of loco-js",
   "main": "dist/loco-model.js",
-  "module": "index.js",
   "scripts": {
     "start": "node server.js",
     "build": "webpack --config webpack.config.js"

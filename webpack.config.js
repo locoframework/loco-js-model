@@ -23,6 +23,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'loco-model.js',
-    library: 'LocoModel'
+    library: 'LocoModel',
+    libraryTarget: 'umd'
   }
 };

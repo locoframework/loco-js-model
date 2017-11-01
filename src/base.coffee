@@ -98,6 +98,8 @@ class Base
     parts = @getIdentity().split "."
     if parts.length is 1
       model = Models()[parts[0]]
+      if not model?
+        return new this params
       return new model params
     model = Models()[parts[0]][parts[1]]
     new model params

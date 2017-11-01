@@ -4,7 +4,7 @@
   "description": "Model part of loco-js",
   "main": "dist/loco-model.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node dev/server.js",
     "build": "webpack --config webpack.config.js"
   },
   "repository": {

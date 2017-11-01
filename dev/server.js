@@ -3,8 +3,10 @@ const express = require('express');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 
+const rootPath = '..';
+
 const app = express();
-const config = require('./webpack.config.js');
+const config = require(`${rootPath}/webpack.config.js`);
 const compiler = webpack(config);
 
 app.use(webpackDevMiddleware(compiler, {
@@ -12,7 +14,7 @@ app.use(webpackDevMiddleware(compiler, {
 }));
 
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, './public/'));
+  res.sendFile(path.join(__dirname, `${rootPath}/dev/`));
 });
 
 app.listen(3000, function () {

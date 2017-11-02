@@ -13,4 +13,4 @@ const Env = () => {
   return App.Env
 }
 
-export {Env};
+export default Env;

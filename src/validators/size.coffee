@@ -1,5 +1,5 @@
-import {Base} from './base.coffee';
-import {Length} from './length.coffee';
+import Base from './base.coffee'
+import Length from './length.coffee'
 
 class Size extends Base
   @identity = "Size"
@@ -8,4 +8,4 @@ class Size extends Base
 
   validate: -> Length.instance(@obj, @attr, @opts).validate()
 
-export {Size};
+export default Size

@@ -1,6 +1,6 @@
-import {Base} from './base.coffee';
-import {I18n} from '../i18n';
-import {Env} from '../env';
+import Base from './base.coffee'
+import I18n from '../i18n'
+import Env from '../env'
 
 class Numericality extends Base
   @identity = "Numericality"
@@ -78,4 +78,4 @@ class Numericality extends Base
     message = I18n()[Env().loco.getLocale()].errors.messages.even
     @obj.addErrorMessage message, for: @attr
 
-export {Numericality};
+export default Numericality

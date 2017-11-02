@@ -56,4 +56,4 @@ class IdentityMap
     else
       []
 
-export {IdentityMap};
+export default IdentityMap

@@ -7,4 +7,4 @@ class Obj
       str += (key + "=" + encodeURIComponent(val))
     str
 
-export {Obj};
+export default Obj

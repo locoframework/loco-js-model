@@ -1,6 +1,6 @@
-import {Base} from './base.coffee';
-import {I18n} from '../i18n';
-import {Env} from '../env';
+import Base from './base.coffee'
+import I18n from '../i18n'
+import Env from '../env'
 
 class Length extends Base
   @identity = "Length"
@@ -45,4 +45,4 @@ class Length extends Base
     return if not I18n()[Env().loco.getLocale()].variants[variant]?
     I18n()[Env().loco.getLocale()].variants[variant] val
 
-export {Length};
+export default Length

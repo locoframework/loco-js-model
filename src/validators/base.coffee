@@ -1,4 +1,4 @@
-import {Validators} from '../validators';
+import Validators from '../validators'
 
 class Base
   @sharedInstances = {}
@@ -23,4 +23,4 @@ class Base
     @val = @obj[@attr]
     @opts = opts
 
-export {Base}
+export default Base

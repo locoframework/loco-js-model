@@ -32,4 +32,4 @@ en =
         other: "is the wrong length (should be %{count} characters)"
       other_than: "must be other than %{count}"
 
-export {en};
+export default en

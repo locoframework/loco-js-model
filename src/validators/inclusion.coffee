@@ -1,6 +1,6 @@
-import {Base} from './base.coffee';
-import {I18n} from '../i18n';
-import {Env} from '../env';
+import Base from './base.coffee'
+import I18n from '../i18n'
+import Env from '../env'
 
 class Inclusion extends Base
   @identity = "Inclusion"
@@ -19,4 +19,4 @@ class Inclusion extends Base
       I18n()[Env().loco.getLocale()].errors.messages.inclusion
     @obj.addErrorMessage message, for: @attr
 
-export {Inclusion};
+export default Inclusion

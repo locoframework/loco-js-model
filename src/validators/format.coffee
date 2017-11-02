@@ -1,6 +1,6 @@
-import {Base} from './base.coffee';
-import {I18n} from '../i18n';
-import {Env} from '../env';
+import Base from './base.coffee'
+import I18n from '../i18n'
+import Env from '../env'
 
 class Format extends Base
   @identity = "Format"
@@ -19,4 +19,4 @@ class Format extends Base
       I18n()[Env().loco.getLocale()].errors.messages.invalid
     @obj.addErrorMessage message, for: @attr
 
-export {Format};
+export default Format

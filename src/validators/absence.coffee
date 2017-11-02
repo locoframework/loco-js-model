@@ -1,6 +1,6 @@
-import {Base} from './base.coffee';
-import {I18n} from '../i18n';
-import {Env} from '../env';
+import Base from './base.coffee'
+import I18n from '../i18n'
+import Env from '../env'
 
 class Absence extends Base
   @identity = "Absence"
@@ -22,4 +22,4 @@ class Absence extends Base
       I18n()[Env().loco.getLocale()].errors.messages.present
     @obj.addErrorMessage message, for: @attr
 
-export {Absence};
+export default Absence

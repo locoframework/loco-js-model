@@ -1,6 +1,6 @@
-import {Base} from './base.coffee';
-import {I18n} from '../i18n';
-import {Env} from '../env';
+import Base from './base.coffee'
+import I18n from '../i18n'
+import Env from '../env'
 
 class Confirmation extends Base
   @identity = "Confirmation"
@@ -25,4 +25,4 @@ class Confirmation extends Base
 
   _properAttr: -> "#{@attr}Confirmation"
 
-export {Confirmation};
+export default Confirmation

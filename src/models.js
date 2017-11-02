@@ -5,4 +5,4 @@ const Models = () => {
   return App.Models
 }
 
-export {Models};
+export default Models;

@@ -1,7 +1,7 @@
-import {Obj} from './utils/obj.coffee';
+import Obj from './utils/obj.coffee';
 
 const Utils = {
   Obj
 };
 
-export {Utils};
+export default Utils;

@@ -1,4 +1,4 @@
-import {en} from './locales/en.coffee';
+import en from './locales/en.coffee';
 
 const I18n = () => {
   if(typeof App !== 'undefined') {
@@ -7,4 +7,4 @@ const I18n = () => {
   return {en}
 }
 
-export {I18n};
+export default I18n;

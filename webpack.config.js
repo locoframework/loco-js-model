@@ -8,8 +8,7 @@ module.exports = {
       {
         test: /\.coffee$/,
         use: [
-          {
-            loader: 'coffee-loader',
+          { loader: 'coffee-loader',
             options: {
               transpile: {
                 presets: ['env']

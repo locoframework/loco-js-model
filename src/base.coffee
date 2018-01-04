@@ -6,7 +6,7 @@ import Models from './models'
 
 class Base
   # Ex.
-  # class App.Models.Post extends App.Models.Base
+  # class Post extends Base
   #   @identity = "Post"  # required
   #
   #   @resources =

@@ -1,16 +1,10 @@
+import Config from './config';
+
 const LocalEnv = {
-  loco: {
-    getLocale: () => { return 'en' },
-    protocolWithHost: null
-  },
+  loco: Config,
   scope: null
 };
 
-const Env = () => {
-  if(typeof App === 'undefined') {
-    return LocalEnv
-  }
-  return App.Env
-}
+const Env = () => (typeof App === 'undefined') ? LocalEnv : App.Env;
 
 export default Env;

@@ -1,10 +1,10 @@
 import Config from './config';
 
-const LocalEnv = {
+export const EnvObj = {
   loco: Config,
   scope: null
 };
 
-const Env = () => (typeof App === 'undefined') ? LocalEnv : App.Env;
+const Env = () => (typeof App === 'undefined') ? EnvObj : App.Env;
 
 export default Env;

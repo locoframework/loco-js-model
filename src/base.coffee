@@ -1,8 +1,8 @@
-import Validators from './validators';
-import Env from './env';
-import Utils from './utils';
-import IdentityMap from './identity_map.coffee';
-import Models from './models';
+import Validators from './validators'
+import Env from './env'
+import Utils from './utils'
+import IdentityMap from './identity_map.coffee'
+import Models from './models'
 
 class Base
   # Ex.

@@ -1,5 +1,4 @@
 import Validators from './validators'
-import Env from './env'
 import Config from './config'
 import Utils from './utils'
 import IdentityMap from './identity_map.coffee'
@@ -84,8 +83,8 @@ class Base
       @resources[Config.scope].url
     else
       @resources.url
-    if Env.loco.protocolWithHost?
-      resourcesUrl = "#{Env.loco.protocolWithHost}#{resourcesUrl}"
+    if Config.protocolWithHost?
+      resourcesUrl = "#{Config.protocolWithHost}#{resourcesUrl}"
     match = /:(\w+)\/?/.exec resourcesUrl
     return resourcesUrl if not match?
     if opts[match[1]]?

@@ -2,7 +2,11 @@ let locale = 'en';
 let protocolWithHost = null;
 let scope = null;
 
-class ConfigClass {
+class Configurator {
+  get locale() {
+    return locale;
+  }
+
   getLocale() {
     return locale;
   }
@@ -36,6 +40,6 @@ class ConfigClass {
   }
 }
 
-const Config = new ConfigClass;
+const Config = new Configurator;
 
 export default Config;

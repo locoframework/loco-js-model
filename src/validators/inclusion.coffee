@@ -1,6 +1,6 @@
 import Base from './base.coffee'
 import I18n from '../i18n'
-import Env from '../env'
+import Config from '../config'
 
 class Inclusion extends Base
   @identity = "Inclusion"
@@ -16,7 +16,7 @@ class Inclusion extends Base
     message = if @opts.message?
       @opts.message
     else
-      I18n[Env.loco.getLocale()].errors.messages.inclusion
+      I18n[Config.locale].errors.messages.inclusion
     @obj.addErrorMessage message, for: @attr
 
 export default Inclusion

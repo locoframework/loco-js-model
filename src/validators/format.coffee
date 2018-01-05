@@ -16,7 +16,7 @@ class Format extends Base
     message = if @opts.message?
       @opts.message
     else
-      I18n()[Env().loco.getLocale()].errors.messages.invalid
+      I18n()[Env.loco.getLocale()].errors.messages.invalid
     @obj.addErrorMessage message, for: @attr
 
 export default Format

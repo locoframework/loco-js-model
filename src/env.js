@@ -1,4 +1,3 @@
-// TODO: refactor
 import Config from './config';
 
 let loco = Config;
@@ -21,8 +20,6 @@ class EnvClass {
   }
 }
 
-export const EnvObj = new EnvClass;
-
-const Env = () => EnvObj;
+const Env = new EnvClass;
 
 export default Env;

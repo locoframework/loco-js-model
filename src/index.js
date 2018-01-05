@@ -4,7 +4,7 @@ import BaseValidator from './validators/base.coffee';
 import Validators from './validators.js';
 import Config from './config';
 
-import {EnvObj as Env} from './env';
+import Env from './env';
 import {I18nObj as I18n} from './i18n';
 import {ModelsObj as Models} from './models';
 

@@ -27,11 +27,11 @@ class ConfigClass {
     return protocolWithHost = val;
   }
 
-  getScope() {
+  get scope() {
     return scope;
   }
 
-  setScope(val) {
+  set scope(val) {
     return scope = val;
   }
 }

@@ -1,5 +1,5 @@
 import Validators from './validators'
-import Env from './env'
+import Config from './config'
 import Utils from './utils'
 import IdentityMap from './identity_map.coffee'
 import Models from './models'
@@ -79,12 +79,12 @@ class Base
       "/#{@getRemoteName().toLowerCase()}s"
     else if opts.resource
       @resources[opts.resource].url
-    else if Env().scope? and @resources[Env().scope]?
-      @resources[Env().scope].url
+    else if Config.scope? and @resources[Config.scope]?
+      @resources[Config.scope].url
     else
       @resources.url
-    if Env().loco.protocolWithHost?
-      resourcesUrl = "#{Env().loco.protocolWithHost}#{resourcesUrl}"
+    if Config.protocolWithHost?
+      resourcesUrl = "#{Config.protocolWithHost}#{resourcesUrl}"
     match = /:(\w+)\/?/.exec resourcesUrl
     return resourcesUrl if not match?
     if opts[match[1]]?
@@ -97,11 +97,11 @@ class Base
   @__initSubclass: (params = {}) ->
     parts = @getIdentity().split "."
     if parts.length is 1
-      model = Models()[parts[0]]
+      model = Models[parts[0]]
       if not model?
         return new this params
       return new model params
-    model = Models()[parts[0]][parts[1]]
+    model = Models[parts[0]][parts[1]]
     new model params
 
   @__page: (i, opts = {}, reqOpts = {}, resp = {resources: [], count: 0}) ->
@@ -154,16 +154,16 @@ class Base
 
   @__getPaginationParam: ->
     defaultParam = 'page'
-    if Env().scope? and @resources? and @resources[Env().scope]?
-      param = @resources[Env().scope]?.paginate?.param
+    if Config.scope? and @resources? and @resources[Config.scope]?
+      param = @resources[Config.scope]?.paginate?.param
       return param ? defaultParam
     if @resources?.paginate?.param?
       return @resources.paginate.param
     defaultParam
 
   @__getPaginationPer: ->
-    if Env().scope? and @resources? and @resources[Env().scope]?
-      return @resources[Env().scope]?.paginate?.per
+    if Config.scope? and @resources? and @resources[Config.scope]?
+      return @resources[Config.scope]?.paginate?.per
     if @resources?.paginate?.per?
       return @resources.paginate.per
     null

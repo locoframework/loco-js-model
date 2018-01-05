@@ -1,3 +1,3 @@
-const Models = () => (typeof App === 'undefined') ? {} : App.Models;
+const Models = {};
 
 export default Models;

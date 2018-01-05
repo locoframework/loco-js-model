@@ -1,6 +1,6 @@
 import Base from './base.coffee'
 import I18n from '../i18n'
-import Env from '../env'
+import Config from '../config'
 
 class Absence extends Base
   @identity = "Absence"
@@ -19,7 +19,7 @@ class Absence extends Base
     message = if @opts.message?
       @opts.message
     else
-      I18n()[Env().loco.getLocale()].errors.messages.present
+      I18n[Config.locale].errors.messages.present
     @obj.addErrorMessage message, for: @attr
 
 export default Absence

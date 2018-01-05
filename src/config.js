@@ -1,12 +1,41 @@
 let locale = 'en';
 let protocolWithHost = null;
+let scope = null;
 
-const Config = {
-  getLocale: () => locale,
-  setLocale: val => locale = val,
-  getProtocolWithHost: () => protocolWithHost,
-  setProtocolWithHost: (val) => protocolWithHost = val,
-  protocolWithHost: null
-};
+class ConfigClass {
+  getLocale() {
+    return locale;
+  }
+
+  setLocale(val) {
+    return locale = val;
+  }
+
+  get protocolWithHost() {
+    return protocolWithHost;
+  }
+
+  getProtocolWithHost() {
+    return protocolWithHost;
+  }
+
+  setProtocolWithHost(val) {
+    if(!val)
+      return protocolWithHost = null;
+    if(val[val.length - 1] === '/')
+      return protocolWithHost = val.slice(0, val.length - 1);
+    return protocolWithHost = val;
+  }
+
+  getScope() {
+    return scope;
+  }
+
+  setScope(val) {
+    return scope = val;
+  }
+}
+
+const Config = new ConfigClass;
 
 export default Config;

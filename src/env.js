@@ -1,10 +1,28 @@
+// TODO: refactor
 import Config from './config';
 
-export const EnvObj = {
-  loco: Config,
-  scope: null
-};
+let loco = Config;
 
-const Env = () => (typeof App === 'undefined') ? EnvObj : App.Env;
+class EnvClass {
+  get loco() {
+    return loco;
+  }
+
+  set loco(val) {
+    return loco = val;
+  }
+
+  get scope() {
+    return loco.getScope();
+  }
+
+  set scope(val) {
+    return loco.setScope(val);
+  }
+}
+
+export const EnvObj = new EnvClass;
+
+const Env = () => EnvObj;
 
 export default Env;

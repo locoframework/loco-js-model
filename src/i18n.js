@@ -4,6 +4,6 @@ export const I18nObj = {
   en
 };
 
-const I18n = () => (typeof App === 'undefined') ? I18nObj : {en, ...App.I18n};
+const I18n = () => I18nObj;
 
 export default I18n;

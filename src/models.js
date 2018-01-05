@@ -1,5 +1,5 @@
 export const ModelsObj = {};
 
-const Models = () => (typeof App === 'undefined') ? ModelsObj : App.Models;
+const Models = () => ModelsObj;
 
 export default Models;

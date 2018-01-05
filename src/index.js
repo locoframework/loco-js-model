@@ -5,7 +5,7 @@ import Validators from './validators.js';
 import Config from './config';
 
 import Env from './env';
-import {I18nObj as I18n} from './i18n';
+import I18n from './i18n';
 import {ModelsObj as Models} from './models';
 
 Validators.Base = BaseValidator;

@@ -27,14 +27,14 @@ class Length extends Base
 
   _selectErrorMessage: (msg, val) ->
     if val is 1
-      return I18n()[Env.loco.getLocale()].errors.messages[msg].one
+      return I18n[Env.loco.getLocale()].errors.messages[msg].one
     message = null
     for variant in ['few', 'many']
       if this._checkVariant variant, val
-        message = I18n()[Env.loco.getLocale()].errors.messages[msg][variant]
+        message = I18n[Env.loco.getLocale()].errors.messages[msg][variant]
         break
     if not message?
-      message = I18n()[Env.loco.getLocale()].errors.messages[msg].other
+      message = I18n[Env.loco.getLocale()].errors.messages[msg].other
     if @opts.message?
       message = @opts.message
     if /%{count}/.exec message
@@ -42,7 +42,7 @@ class Length extends Base
     message
 
   _checkVariant: (variant, val) ->
-    return if not I18n()[Env.loco.getLocale()].variants[variant]?
-    I18n()[Env.loco.getLocale()].variants[variant] val
+    return if not I18n[Env.loco.getLocale()].variants[variant]?
+    I18n[Env.loco.getLocale()].variants[variant] val
 
 export default Length

@@ -16,7 +16,7 @@ class Exclusion extends Base
     message = if @opts.message?
       @opts.message
     else
-      I18n()[Env.loco.getLocale()].errors.messages.exclusion
+      I18n[Env.loco.getLocale()].errors.messages.exclusion
     @obj.addErrorMessage message, for: @attr
 
 export default Exclusion

@@ -7,11 +7,7 @@ class Configurator {
     return locale;
   }
 
-  getLocale() {
-    return locale;
-  }
-
-  setLocale(val) {
+  set locale(val) {
     return locale = val;
   }
 
@@ -19,11 +15,7 @@ class Configurator {
     return protocolWithHost;
   }
 
-  getProtocolWithHost() {
-    return protocolWithHost;
-  }
-
-  setProtocolWithHost(val) {
+  set protocolWithHost(val) {
     if(!val)
       return protocolWithHost = null;
     if(val[val.length - 1] === '/')

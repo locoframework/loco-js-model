@@ -6,7 +6,7 @@ import Config from './config';
 
 import Env from './env';
 import I18n from './i18n';
-import {ModelsObj as Models} from './models';
+import Models from './models';
 
 Validators.Base = BaseValidator;
 

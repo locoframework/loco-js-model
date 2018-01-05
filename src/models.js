@@ -1,5 +1,3 @@
-export const ModelsObj = {};
-
-const Models = () => ModelsObj;
+const Models = {};
 
 export default Models;

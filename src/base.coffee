@@ -288,8 +288,8 @@ class Base
     hash
 
   reload: ->
-    findParams = {id: this.id}
-    for param in this.constructor.getResourcesUrlParams() # TODO: work for scopes?
+    findParams = {id: this.id, resource: this.resource}
+    for param in this.constructor.getResourcesUrlParams(resource: this.resource)
       findParams[param] = this[param]
     this.constructor.find findParams
 

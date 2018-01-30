@@ -17,7 +17,6 @@ class Base
   @patch: (action, opts = {}) -> @__send "PATCH", action, opts
   @delete: (action, opts = {}) -> @__send "DELETE", action, opts
 
-  # TODO test scopes
   @find: (idOrObj) ->
     urlParams = {}
     if typeof idOrObj is "object"
@@ -39,8 +38,8 @@ class Base
     return attrib if not this.attributes[attrib].remoteName?
     this.attributes[attrib].remoteName
 
-  @getResourcesUrlParams: ->
-    url = @__getResourcesUrl()
+  @getResourcesUrlParams: (opts) ->
+    url = @__getResourcesUrl(resource: opts.resource)
     regexp = /:(\w+)\/?/
     params = []
     while match = regexp.exec url
@@ -48,7 +47,7 @@ class Base
       url = url.replace match[0], match[1]
     params
 
-  @__getResourcesUrl: (opts = {}) ->
+  @__getResourcesUrl: (opts) ->
     resourcesUrl = if not @resources?
       "/#{@getRemoteName().toLowerCase()}s"
     else if opts.resource

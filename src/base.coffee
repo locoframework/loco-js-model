@@ -3,30 +3,9 @@ import Config from './config'
 import Utils from './utils'
 import IdentityMap from './identity_map.coffee'
 import Models from './models'
+import { filterParams, sendReq } from './helpers/connectivity';
 
 class Base
-  # Ex.
-  # class Post extends Base
-  #   @identity = "Post"  # required
-  #
-  #   @resources =
-  #     url: "/posts"  # optional
-  #     paginate: {per: 100, param: "page"}  # param is optional
-  #
-  #   @attributes =
-  #     validatedAt:
-  #       type: "Date"
-  #       remoteName: "updated_at"
-  #       validations:
-  #         presence: true
-
-  constructor: (data = {}) ->
-    @id = null
-    @errors = null
-    @resource = data.resource
-    this.__initAttributes() if this.constructor.attributes?
-    this.__assignAttributes(data) if data?
-
   @all: (opts = {}) -> @get "all", opts
 
   @find: (idOrObj) ->
@@ -37,11 +16,7 @@ class Base
       delete urlParams.id
     else
       id = idOrObj
-    req = new XMLHttpRequest()
-    req.open 'GET', "#{@__getResourcesUrl(urlParams)}/#{id}"
-    req.setRequestHeader "Accept", "application/json"
-    req.setRequestHeader "Content-Type", "application/json"
-    req.send JSON.stringify(urlParams)
+    req = sendReq 'GET', "#{@__getResourcesUrl(urlParams)}/#{id}", urlParams
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject e
       req.onload = (e) =>
@@ -53,6 +28,7 @@ class Base
   @get: (action, opts = {}) -> @__send "GET", action, opts
   @post: (action, opts = {}) -> @__send "POST", action, opts
   @put: (action, opts = {}) -> @__send "PUT", action, opts
+  @patch: (action, opts = {}) -> @__send "PATCH", action, opts
   @delete: (action, opts = {}) -> @__send "DELETE", action, opts
 
   @getIdentity: -> if @identity? then @identity else throw("Specify Model's @identity!")
@@ -104,23 +80,14 @@ class Base
     model = Models[parts[0]][parts[1]]
     new model params
 
-  @__page: (i, opts = {}, reqOpts = {}, resp = {resources: [], count: 0}) ->
-    httpMethod = reqOpts.method || "GET"
-    url = reqOpts.url || @__getResourcesUrl(opts)
-    data = {}
-    if reqOpts.data?
-      for key, val of reqOpts.data
-        continue if key is "resource"
-        data[key] = val
-    data[@__getPaginationParam()] = i
+  @__page: (i, opts = {}, resp = {resources: [], count: 0}) ->
+    httpMethod = opts.method
+    url = opts.url
+    params = opts.params
+    params[@__getPaginationParam()] = i
     if httpMethod is 'GET'
-      url = url + '?' + Utils.Obj.toURIParams(data)
-    req = new XMLHttpRequest()
-    req.open httpMethod, url
-    req.setRequestHeader "Accept", "application/json"
-    req.setRequestHeader "Content-Type", "application/json"
-    req.setRequestHeader "X-CSRF-Token", document.querySelector("meta[name='csrf-token']")?.content
-    req.send JSON.stringify(data)
+      url = url + '?' + Utils.Obj.toURIParams(params)
+    req = sendReq httpMethod, url, params
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject e
       req.onload = (e) =>
@@ -130,16 +97,16 @@ class Base
           resp[key] = val if ['resources', 'count'].indexOf(key) is -1
         for record in data.resources
           obj = @__initSubclass record
-          obj.resource = opts.resource if opts.resource?
+          obj.resource = opts.data.resource if opts.data.resource?
           IdentityMap.add obj
           resp.resources.push obj
         resolve resp
 
-  @__paginate: (opts, reqOpts) ->
+  @__paginate: (opts) ->
     perPage = @__getPaginationPer()
-    pageNum = opts.page ? 1
-    @__page(pageNum, opts, reqOpts).then (data) =>
-      return Promise.resolve(data) if opts.page?
+    pageNum = opts.data.page ? 1
+    @__page(pageNum, opts).then (data) =>
+      return Promise.resolve(data) if opts.data.page?
       return Promise.resolve(data) if data.count <= perPage
       max = parseInt data.count / perPage
       max += 1 if max isnt data.count / perPage
@@ -148,7 +115,7 @@ class Base
       for i in [2..max]
         func = (i) =>
           promise = promise.then (arr) =>
-            return @__page i, opts, reqOpts, data
+            return @__page i, opts, data
         func i
       return promise
 
@@ -172,8 +139,25 @@ class Base
     url = @__getResourcesUrl opts
     if action isnt "all"
       url = "#{url}/#{action}"
-    reqOpts = {method: method, url: url, data: opts}
-    @__paginate opts, reqOpts
+    params = {}
+    if opts?
+      for key, val of opts
+        continue if key is "resource"
+        params[key] = val
+    reqOpts = {
+      method: method,
+      url: url,
+      params: params,
+      data: opts
+    }
+    @__paginate reqOpts
+
+  constructor: (data = {}) ->
+    @id = null
+    @errors = null
+    @resource = data.resource
+    this.__initAttributes() if this.constructor.attributes?
+    this.__assignAttributes(data) if data?
 
   setResource: (name) -> @resource = name
 
@@ -239,7 +223,7 @@ class Base
         Validators[validator].instance(this, name, pvs).validate()
     if this.constructor.validate?
       this[meth]() for meth in this.constructor.validate
-    if this.errors? then false else true
+    !this.errors?
 
   isInvalid: -> !this.isValid()
 
@@ -255,12 +239,7 @@ class Base
 
   save: ->
     httpMeth = if @id? then "PUT" else "POST"
-    req = new XMLHttpRequest()
-    req.open httpMeth, this.__getResourceUrl()
-    req.setRequestHeader "Accept", "application/json"
-    req.setRequestHeader "Content-Type", "application/json"
-    req.setRequestHeader "X-CSRF-Token", document.querySelector("meta[name='csrf-token']")?.content
-    req.send JSON.stringify(this.serialize())
+    req = sendReq httpMeth, this.__getResourceUrl(), this.serialize()
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject e
       req.onload = (e) =>
@@ -272,12 +251,7 @@ class Base
         resolve data
 
   updateAttribute: (attr) ->
-    req = new XMLHttpRequest()
-    req.open 'PUT', this.__getResourceUrl()
-    req.setRequestHeader "Accept", "application/json"
-    req.setRequestHeader "Content-Type", "application/json"
-    req.setRequestHeader "X-CSRF-Token", document.querySelector("meta[name='csrf-token']")?.content
-    req.send JSON.stringify(this.serialize(attr))
+    req = sendReq 'PUT', this.__getResourceUrl(), this.serialize(attr)
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject e
       req.onload = (e) =>
@@ -308,7 +282,7 @@ class Base
 
   reload: ->
     findParams = {id: this.id}
-    for param in this.constructor.getResourcesUrlParams()
+    for param in this.constructor.getResourcesUrlParams() # TODO: work for scopes?
       findParams[param] = this[param]
     this.constructor.find findParams
 
@@ -335,12 +309,7 @@ class Base
     url = this.__getResourceUrl()
     if action?
       url = "#{url}/#{action}"
-    req = new XMLHttpRequest()
-    req.open method, url
-    req.setRequestHeader "Accept", "application/json"
-    req.setRequestHeader "Content-Type", "application/json"
-    req.setRequestHeader "X-CSRF-Token", document.querySelector("meta[name='csrf-token']")?.content
-    req.send JSON.stringify(data)
+    req = sendReq method, url, data
     return new Promise (resolve, reject) ->
       req.onerror = (e) -> reject e
       req.onload = (e) ->

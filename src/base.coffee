@@ -97,24 +97,22 @@ class Base
           resp[key] = val if ['resources', 'count'].indexOf(key) is -1
         for record in data.resources
           obj = @__initSubclass record
-          obj.resource = opts.data.resource if opts.data.resource?
+          obj.resource = opts.data?.resource
           IdentityMap.add obj
           resp.resources.push obj
         resolve resp
 
   @__paginate: (opts) ->
-    perPage = @__getPaginationPer()
-    pageNum = opts.data.page ? 1
-    @__page(pageNum, opts).then (data) =>
-      return Promise.resolve(data) if opts.data.page?
-      return Promise.resolve(data) if data.count <= perPage
-      max = parseInt data.count / perPage
-      max += 1 if max isnt data.count / perPage
-      promise = Promise.resolve(data)
+    @__page(opts.pageNum || 1, opts).then (data) =>
+      promise = Promise.resolve data
+      return promise if opts.pageNum?
+      return promise if data.count <= opts.perPage
+      max = parseInt data.count / opts.perPage
+      max += 1 if max isnt data.count / opts.perPage
       return promise if max is 1
       for i in [2..max]
         func = (i) =>
-          promise = promise.then (arr) =>
+          promise = promise.then (_) =>
             return @__page i, opts, data
         func i
       return promise
@@ -143,7 +141,9 @@ class Base
       method: method,
       url: url,
       params: filterParams(opts),
-      data: opts
+      perPage: @__getPaginationPer(), # TODO opts
+      pageNum: opts.page,
+      data: opts # TODO needed?
     }
     @__paginate reqOpts
 

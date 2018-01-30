@@ -81,10 +81,11 @@ class Base
     new model params
 
   @__page: (i, pageData, resp = {resources: [], count: 0}) ->
+    url = pageData.url
     pageData.params[pageData.pageParam] = i
     if pageData.method is 'GET'
-      pageData.url = pageData.url + '?' + Utils.Obj.toURIParams(pageData.params)
-    req = sendReq pageData.method, pageData.url, pageData.params
+      url = url + '?' + Utils.Obj.toURIParams(pageData.params)
+    req = sendReq pageData.method, url, pageData.params
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject e
       req.onload = (e) =>

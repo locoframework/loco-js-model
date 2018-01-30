@@ -139,15 +139,10 @@ class Base
     url = @__getResourcesUrl opts
     if action isnt "all"
       url = "#{url}/#{action}"
-    params = {}
-    if opts?
-      for key, val of opts
-        continue if key is "resource"
-        params[key] = val
     reqOpts = {
       method: method,
       url: url,
-      params: params,
+      params: filterParams(opts),
       data: opts
     }
     @__paginate reqOpts

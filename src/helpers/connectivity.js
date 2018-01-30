@@ -1,5 +1,5 @@
 export const filterParams = (data) => {
-  params = {}
+  const params = {};
   if(!data) return params;
   for(const prop in data) {
     if(prop === "resource") continue;

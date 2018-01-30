@@ -6,8 +6,18 @@ import Models from './models'
 import { filterParams, sendReq } from './helpers/connectivity';
 
 class Base
-  @all: (opts = {}) -> @get "all", opts
+  @getIdentity: -> if @identity? then @identity else throw("Specify Model's @identity!")
 
+  @getRemoteName: -> if @remoteName? then @remoteName else @getIdentity()
+
+  @all: (opts = {}) -> @get "all", opts
+  @get: (action, opts = {}) -> @__send "GET", action, opts
+  @post: (action, opts = {}) -> @__send "POST", action, opts
+  @put: (action, opts = {}) -> @__send "PUT", action, opts
+  @patch: (action, opts = {}) -> @__send "PATCH", action, opts
+  @delete: (action, opts = {}) -> @__send "DELETE", action, opts
+
+  # TODO test scopes
   @find: (idOrObj) ->
     urlParams = {}
     if typeof idOrObj is "object"
@@ -21,19 +31,7 @@ class Base
       req.onerror = (e) -> reject e
       req.onload = (e) =>
         record = JSON.parse e.target.response
-        obj = @__initSubclass record
-        IdentityMap.add obj
-        resolve obj
-
-  @get: (action, opts = {}) -> @__send "GET", action, opts
-  @post: (action, opts = {}) -> @__send "POST", action, opts
-  @put: (action, opts = {}) -> @__send "PUT", action, opts
-  @patch: (action, opts = {}) -> @__send "PATCH", action, opts
-  @delete: (action, opts = {}) -> @__send "DELETE", action, opts
-
-  @getIdentity: -> if @identity? then @identity else throw("Specify Model's @identity!")
-
-  @getRemoteName: -> if @remoteName? then @remoteName else @getIdentity()
+        resolve @__initFromJSON(record, idOrObj.resource)
 
   @getAttribRemoteName: (attrib) ->
     return null if not this.attributes?
@@ -94,9 +92,7 @@ class Base
         for key, val of data
           resp[key] = val if ['resources', 'count'].indexOf(key) is -1
         for record in data.resources
-          obj = @__initSubclass record
-          obj.resource = pageData.resource
-          IdentityMap.add obj
+          obj = @__initFromJSON record, pageData.resource
           resp.resources.push obj
         resolve resp
 
@@ -156,6 +152,12 @@ class Base
       pageParam: @__getPaginationParam(opts.resource)
     }
     @__paginate data
+
+  @__initFromJSON: (record, resource) ->
+    obj = @__initSubclass record
+    obj.resource = resource
+    IdentityMap.add obj
+    obj
 
   constructor: (data = {}) ->
     @id = null
@@ -340,7 +342,7 @@ class Base
         this.addErrorMessage error, for: attr
 
   __getResourceUrl: ->
-    url = this.constructor.__getResourcesUrl resource: @resource, obj: this
+    url = this.constructor.__getResourcesUrl resource: this.resource, obj: this
     return url if not @id?
     "#{url}/#{@id}"
 

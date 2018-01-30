@@ -80,14 +80,11 @@ class Base
     model = Models[parts[0]][parts[1]]
     new model params
 
-  @__page: (i, opts = {}, resp = {resources: [], count: 0}) ->
-    httpMethod = opts.method
-    url = opts.url
-    params = opts.params
-    params[@__getPaginationParam()] = i
-    if httpMethod is 'GET'
-      url = url + '?' + Utils.Obj.toURIParams(params)
-    req = sendReq httpMethod, url, params
+  @__page: (i, pageData, resp = {resources: [], count: 0}) ->
+    pageData.params[pageData.pageParam] = i
+    if pageData.method is 'GET'
+      pageData.url = pageData.url + '?' + Utils.Obj.toURIParams(pageData.params)
+    req = sendReq pageData.method, pageData.url, pageData.params
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject e
       req.onload = (e) =>
@@ -97,13 +94,20 @@ class Base
           resp[key] = val if ['resources', 'count'].indexOf(key) is -1
         for record in data.resources
           obj = @__initSubclass record
-          obj.resource = opts.data?.resource
+          obj.resource = pageData.resource
           IdentityMap.add obj
           resp.resources.push obj
         resolve resp
 
   @__paginate: (opts) ->
-    @__page(opts.pageNum || 1, opts).then (data) =>
+    pageData = {
+      method: opts.method,
+      url: opts.url,
+      params: opts.params,
+      pageParam: opts.pageParam,
+      resource: opts.resource
+    }
+    @__page(opts.pageNum || 1, pageData).then (data) =>
       promise = Promise.resolve data
       return promise if opts.pageNum?
       return promise if data.count <= opts.perPage
@@ -113,7 +117,7 @@ class Base
       for i in [2..max]
         func = (i) =>
           promise = promise.then (_) =>
-            return @__page i, opts, data
+            return @__page i, pageData, data
         func i
       return promise
 
@@ -137,15 +141,16 @@ class Base
     url = @__getResourcesUrl opts
     if action isnt "all"
       url = "#{url}/#{action}"
-    reqOpts = {
+    data = {
       method: method,
       url: url,
       params: filterParams(opts),
+      resource: opts.resource,
       perPage: @__getPaginationPer(), # TODO opts
       pageNum: opts.page,
-      data: opts # TODO needed?
+      pageParam: @__getPaginationParam() # TODO opts
     }
-    @__paginate reqOpts
+    @__paginate data
 
   constructor: (data = {}) ->
     @id = null

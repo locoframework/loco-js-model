@@ -121,16 +121,20 @@ class Base
         func i
       return promise
 
-  @__getPaginationParam: ->
+  @__getPaginationParam: (resource) ->
     defaultParam = 'page'
+    if resource? and @resources? and @resources[resource]
+      return @resources[resource].paginate?.param || defaultParam
     if Config.scope? and @resources? and @resources[Config.scope]?
       param = @resources[Config.scope]?.paginate?.param
-      return param ? defaultParam
+      return param || defaultParam
     if @resources?.paginate?.param?
       return @resources.paginate.param
     defaultParam
 
-  @__getPaginationPer: ->
+  @__getPaginationPer: (resource) ->
+    if resource? and @resources? and @resources[resource]
+      return @resources[resource].paginate?.per
     if Config.scope? and @resources? and @resources[Config.scope]?
       return @resources[Config.scope]?.paginate?.per
     if @resources?.paginate?.per?
@@ -146,9 +150,9 @@ class Base
       url: url,
       params: filterParams(opts),
       resource: opts.resource,
-      perPage: @__getPaginationPer(), # TODO opts
+      perPage: @__getPaginationPer(opts.resource),
       pageNum: opts.page,
-      pageParam: @__getPaginationParam() # TODO opts
+      pageParam: @__getPaginationParam(opts.resource)
     }
     @__paginate data
 

@@ -92,6 +92,8 @@ class Base
             obj = @__initFromJSON record, pageData.resource
             resp.push obj
         else if data.resources?
+          if resp.constructor is Array
+            resp = {resources: [], count: 0}
           for record in data.resources
             obj = @__initFromJSON record, pageData.resource
             resp.resources.push obj
@@ -109,8 +111,7 @@ class Base
       pageParam: opts.pageParam,
       resource: opts.resource
     }
-    resp = {resources: [], count: 0}
-    @__page(opts.pageNum || 1, pageData, resp).then (data) =>
+    @__page(opts.pageNum || 1, pageData, []).then (data) =>
       total = data.count || opts.total
       promise = Promise.resolve data
       return promise if opts.pageNum?
@@ -232,7 +233,7 @@ class Base
         continue if validationSettings.if? and !validationSettings.if(this)
         validator = validationName.charAt(0).toUpperCase() + validationName.slice(1)
         if not Validators[validator]?
-          console.log "Warning! \"#{validator}\" validator is not implemented!"
+          console.warn "\"#{validator}\" validator is not implemented!"
           continue
         pvs = this.__processedValidationSettings validationSettings
         Validators[validator].instance(this, name, pvs).validate()

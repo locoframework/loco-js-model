@@ -77,7 +77,7 @@ class Base
     model = Models[parts[0]][parts[1]]
     new model params
 
-  @__page: (i, pageData, resp = {resources: [], count: 0}) ->
+  @__page: (i, pageData, resp) ->
     url = pageData.url
     pageData.params[pageData.pageParam] = i
     if pageData.method is 'GET'
@@ -103,12 +103,14 @@ class Base
       pageParam: opts.pageParam,
       resource: opts.resource
     }
-    @__page(opts.pageNum || 1, pageData).then (data) =>
+    resp = {resources: [], count: 0}
+    @__page(opts.pageNum || 1, pageData, resp).then (data) =>
+      total = data.count || opts.total
       promise = Promise.resolve data
       return promise if opts.pageNum?
-      return promise if data.count <= opts.perPage
-      max = parseInt data.count / opts.perPage
-      max += 1 if max isnt data.count / opts.perPage
+      return promise if total <= opts.perPage
+      max = parseInt total / opts.perPage
+      max += 1 if max isnt total / opts.perPage
       return promise if max is 1
       for i in [2..max]
         func = (i) =>
@@ -148,7 +150,8 @@ class Base
       resource: opts.resource,
       perPage: @__getPaginationPer(opts.resource),
       pageNum: opts.page,
-      pageParam: @__getPaginationParam(opts.resource)
+      pageParam: @__getPaginationParam(opts.resource),
+      total: opts.total || opts.count
     }
     @__paginate data
 

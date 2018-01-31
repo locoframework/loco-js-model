@@ -77,7 +77,7 @@ class Base
     model = Models[parts[0]][parts[1]]
     new model params
 
-  @__page: (i, pageData, resp = {resources: [], count: 0}) ->
+  @__page: (i, pageData, resp) ->
     url = pageData.url
     pageData.params[pageData.pageParam] = i
     if pageData.method is 'GET'
@@ -87,12 +87,20 @@ class Base
       req.onerror = (e) -> reject e
       req.onload = (e) =>
         data = JSON.parse e.target.response
-        resp.count = data.count
-        for key, val of data
-          resp[key] = val if ['resources', 'count'].indexOf(key) is -1
-        for record in data.resources
-          obj = @__initFromJSON record, pageData.resource
-          resp.resources.push obj
+        if data.constructor is Array
+          for record in data
+            obj = @__initFromJSON record, pageData.resource
+            resp.push obj
+        else if data.resources?
+          if resp.constructor is Array
+            resp = {resources: [], count: 0}
+          for record in data.resources
+            obj = @__initFromJSON record, pageData.resource
+            resp.resources.push obj
+          resp.count = data.count
+        else
+          for key, val of data
+            resp[key] = val
         resolve resp
 
   @__paginate: (opts) ->
@@ -103,12 +111,13 @@ class Base
       pageParam: opts.pageParam,
       resource: opts.resource
     }
-    @__page(opts.pageNum || 1, pageData).then (data) =>
+    @__page(opts.pageNum || 1, pageData, []).then (data) =>
+      total = data.count || opts.total
       promise = Promise.resolve data
       return promise if opts.pageNum?
-      return promise if data.count <= opts.perPage
-      max = parseInt data.count / opts.perPage
-      max += 1 if max isnt data.count / opts.perPage
+      return promise if total <= opts.perPage
+      max = parseInt total / opts.perPage
+      max += 1 if max isnt total / opts.perPage
       return promise if max is 1
       for i in [2..max]
         func = (i) =>
@@ -148,7 +157,8 @@ class Base
       resource: opts.resource,
       perPage: @__getPaginationPer(opts.resource),
       pageNum: opts.page,
-      pageParam: @__getPaginationParam(opts.resource)
+      pageParam: @__getPaginationParam(opts.resource),
+      total: opts.total || opts.count
     }
     @__paginate data
 
@@ -223,7 +233,7 @@ class Base
         continue if validationSettings.if? and !validationSettings.if(this)
         validator = validationName.charAt(0).toUpperCase() + validationName.slice(1)
         if not Validators[validator]?
-          console.log "Warning! \"#{validator}\" validator is not implemented!"
+          console.warn "\"#{validator}\" validator is not implemented!"
           continue
         pvs = this.__processedValidationSettings validationSettings
         Validators[validator].instance(this, name, pvs).validate()

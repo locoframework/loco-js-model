@@ -1,8 +1,9 @@
 export const filterParams = data => {
   const params = {};
   if (!data) return params;
+  const forbidden = ["resource", "total", "count"];
   Object.keys(data).forEach(prop => {
-    if (prop !== "resource") {
+    if (forbidden.indexOf(prop) === -1) {
       params[prop] = data[prop];
     }
   });

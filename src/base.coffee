@@ -87,12 +87,18 @@ class Base
       req.onerror = (e) -> reject e
       req.onload = (e) =>
         data = JSON.parse e.target.response
-        resp.count = data.count
-        for key, val of data
-          resp[key] = val if ['resources', 'count'].indexOf(key) is -1
-        for record in data.resources
-          obj = @__initFromJSON record, pageData.resource
-          resp.resources.push obj
+        if data.constructor is Array
+          for record in data
+            obj = @__initFromJSON record, pageData.resource
+            resp.push obj
+        else if data.resources?
+          for record in data.resources
+            obj = @__initFromJSON record, pageData.resource
+            resp.resources.push obj
+          resp.count = data.count
+        else
+          for key, val of data
+            resp[key] = val
         resolve resp
 
   @__paginate: (opts) ->

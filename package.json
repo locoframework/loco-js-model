@@ -1,6 +1,6 @@
 {
   "name": "loco-js-model",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Model part of loco-js",
   "main": "dist/loco-model.js",
   "scripts": {

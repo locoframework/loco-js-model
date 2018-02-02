@@ -419,6 +419,10 @@ Coupon.get("recent", {
 // GET "/admin/plans/6/coupons/recent?page=4&foo=10&current-page=4"
 ```
 
+## Fetching a single resource 💃
+
+...
+
 ## Validations ✅
 
 ...

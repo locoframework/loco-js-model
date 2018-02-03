@@ -421,7 +421,39 @@ Coupon.get("recent", {
 
 ## Fetching a single resource 💃
 
-...
+Loco-JS-Model provides `find` static method for fetching a single resource. The response from the server should be in a plain JSON format with remote names of attributes as keys.
+
+```javascript
+Coupon.find(25).then(coupon => {});
+// GET "/user/coupons/25"
+
+// or pass an object
+
+Coupon.find({id: 25}).then(coupon => {});
+// GET "/user/coupons/25"
+
+// You can also specify a resource and pass additional params 
+
+Coupon.find({id: 25, resource: "admin", planId: 8, foo: 12, bar: "baz"}).then(coupon => {});
+// GET "/admin/plans/8/coupons/25?foo=12&bar=baz"
+```
+
+## Sending requests 🏹
+
+Every model inherits from `Models.Base` static and instance methods for sending `get` `post` `put` `patch` `delete` requests to the server.
+
+```javascript
+Coupon.patch("used", {resource: "admin", planId: 9, ids: [1,2,3,4]}).then(resp => {});
+// PATCH "/admin/plans/9/coupons/used"
+// Parameters: {"ids"=>[1, 2, 3, 4], "current-page"=>1, "plan_id"=>"9"}
+
+Coupon.find({id: 25, resource: "admin", planId: 8}).then(coupon => {
+  coupon.planId = 8; // set planId explicity if API does not return it
+  coupon.patch("use", {foo: "bar", baz: 102}).then(resp => {});
+  // PATCH "/admin/plans/8/coupons/25/use"
+  // Parameters: {"foo"=>"bar", "baz"=>102, "plan_id"=>"8", "id"=>"25"}
+});
+```
 
 ## Validations ✅
 

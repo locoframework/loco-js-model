@@ -160,6 +160,8 @@ class Coupon extends Models.Base {
       remoteName: "percent_off",
       type: "Integer",
       validations: {
+        // you can run given validators conditionally
+        presence: { if: o => o.amountOff == null },
         numericality: {
           greater_than_or_equal_to: 0,
           less_than_or_equal_to: 100
@@ -180,6 +182,7 @@ class Coupon extends Models.Base {
     amountOff: {
       remoteName: "amount_off",
       validations: {
+        presence: { if: o => o.percentOff == null },
         numericality: {
           greater_than_or_equal_to: 0
         }
@@ -200,7 +203,6 @@ class Coupon extends Models.Base {
       validations: {
         numericality: {
           greater_than: 0,
-          // you can run given validators conditionally
           if: o => o.duration === "repeating"
         }
       }
@@ -503,17 +505,54 @@ coupon.save().then(resp => {
 });
 ```
 
-## Nested models 🏺
-
-...
-
-## 🔩 Merging 
-
-...
-
 # 🇵🇱 i18n
 
-...
+Loco-JS-Model supports internationalization. Following example shows how to display errors in a different language.
+
+First, create a translation of the [base English file](https://github.com/locoframework/loco-js-model/blob/master/src/locales/en.coffee).
+
+```javascript
+// locales/pl.js
+
+const pl = {
+  variants: {},
+  attributes: {},
+  errors: {
+    messages: {
+      blank: "nie może być puste",
+      inclusion: "nie jest na liście dopuszczalnych wartości",
+      invalid: "jest nieprawidłowe",
+      // ...
+    }
+  }
+};
+
+export default pl;
+```
+
+Loco-JS-Model must have all translations assigned to `I18n` object.
+
+```javascript
+import { Config, I18n } from "loco-js-model";
+
+import pl from "locales/pl";
+
+// remember to polyfill Object.assign or assign it in a different way
+Object.assign(I18n, {
+  pl
+});
+
+Config.locale = "pl";
+```
+
+```javascript
+const coupon = new Coupon({ percentOff: 50 });
+coupon.isValid(); // false
+coupon.errors; // { duration: ["nie może być puste", "nie jest na liście dopuszczalnych wartości"] 
+               //   stripeId: ["nie może być puste", "jest nieprawidłowe"]
+               // }
+
+```
 
 # 👩🏽‍🔬 Tests
 

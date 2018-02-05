@@ -74,7 +74,7 @@ So we can assume that validating the data before they reach destination will be 
 
 It will be more obvious, when we look at the examples. But first we have to set things up.
 
-# 📥 Instalation
+# 📥 Installation
 
 ```bash
 $ npm install --save loco-js-model
@@ -100,7 +100,7 @@ Config.locale = "pl";   // "en" by default
 // You use it to specify named scopes (base URLs),
 // where you can fetch objects of given type.
 // You can setup default scope for all models,
-// using this propertly.
+// using this property.
 Config.scope = "admin"; // null by default
 
 ```
@@ -317,7 +317,7 @@ export const nullIfNaN = val => (Number.isNaN(val) ? null : val);
 
 You can fetch resources from given scope in 3 ways:  
 
-* by specifing scope in method calls e.g. `Coupon.get("all", {resource: "admin"})`
+* by specifying scope in method calls e.g. `Coupon.get("all", {resource: "admin"})`
 * setting up default scope on configuration stage _(see Configuration)_
 * if you use **Loco-JS** you can set scope by calling `setScope "<scope name>"` controller's instance method. It's done in a namespace controller most often.
 
@@ -448,7 +448,7 @@ Coupon.patch("used", {resource: "admin", planId: 9, ids: [1,2,3,4]}).then(resp =
 // Parameters: {"ids"=>[1, 2, 3, 4], "current-page"=>1, "plan_id"=>"9"}
 
 Coupon.find({id: 25, resource: "admin", planId: 8}).then(coupon => {
-  coupon.planId = 8; // set planId explicity if API does not return it
+  coupon.planId = 8; // set planId explicitly if API does not return it
   coupon.patch("use", {foo: "bar", baz: 102}).then(resp => {});
   // PATCH "/admin/plans/8/coupons/25/use"
   // Parameters: {"foo"=>"bar", "baz"=>102, "plan_id"=>"8", "id"=>"25"}
@@ -457,13 +457,57 @@ Coupon.find({id: 25, resource: "admin", planId: 8}).then(coupon => {
 
 ## Validations ✅
 
-...
+If attributes' validations are specified, you can use the `isValid` / `isInvalid` methods to check whether the model instance is valid or not.
+
+```javascript
+const coupon = new Coupon;
+coupon.isValid();   // false 
+coupon.isInvalid(); // true
+coupon.errors; // {
+               //   stripeId: ["can't be blank", "is not included in the list"], 
+               //   duration: ["can't be blank", "is invalid"]
+               // }
+```
+
+Loco-JS-Model implements almost all built-in [Rails](http://guides.rubyonrails.org/active_record_validations.html) validators, except of _uniqueness_. And you can use them nearly identically.  
+You can also look at [source code](https://github.com/locoframework/loco-js-model/tree/master/src/validators) if you are looking for all available options. They are pretty straightforward to decipher.
+
+## Saving ✍️
+
+Loco-JS-Model provides `save` method that facilitates persisting resources on the server. This method requires responses in specific JSON format. I recommend to use the format below, but if you don't plan to use `UI.Form` from **Loco-JS** for handling forms, the only requirement is specified format of **errors** key to have errors assigned to the object.
+
+```javascript
+const coupon = new Coupon({
+  resource: "admin",
+  planId: 19,
+  percentOff: 50
+});
+coupon.save().then(resp => {
+// POST "/admin/plans/19/coupons"
+// Parameters: { "coupon" => { "stripe_id"=>nil, "percent_off"=>50, "amount_off"=>nil,
+//                             "duration"=>nil, "duration_in_months"=>nil,
+//                             "max_redemptions"=>nil, "redeem_by"=>nil
+//                           },
+//               "plan_id" => "19"
+//             }
+  resp; // { success: false, 
+        //   status: 400, 
+        //   errors: {
+        //     stripe_id: ["can't be blank", "is invalid"], 
+        //     duration: ["can't be blank", "is not included in the list"]
+        //   }
+        // }
+  coupon.errors; // { stripeId: ["can't be blank", "is not included in the list"], 
+                 //   duration: ["can't be blank", "is invalid"]
+                 // }
+});
+```
 
 ## Nested models 🏺
 
 ...
 
-# 🔩 Merging 
+## 🔩 Merging 
 
 ...
 

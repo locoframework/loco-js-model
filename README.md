@@ -505,6 +505,63 @@ coupon.save().then(resp => {
 });
 ```
 
+## Reloading ♻️
+
+Loco-JS-Model provides a convenient method for reloading an object. The following example is quite self-explanatory.
+
+```javascript
+Coupon.find({id: 25, resource: "admin", planId: 8}).then(coupon => {
+// GET "/admin/plans/8/coupons/25"
+  coupon.planId = 8; // set planId explicitly if API does not return it
+  coupon; // Coupon { ... id: 25, duration: "once", percentOff: 30 }
+
+  // change percent_off and duration on the server and after some time ...
+
+  setTimeout(() => {
+    coupon.reload().then(coupon => {
+    // GET "/admin/plans/8/coupons/25"
+      coupon; // Coupon { ... id: 25, duration: "forever", percentOff: 50 }
+    });
+  }, 5000);
+});
+```
+
+## 💥 Dirty object 🧙🏽‍♂️
+
+This feature looks like a pure magic when you look at how this works for the first time.
+
+_Dirty object_ is an ability of model instances to express how attribute values have been changed between 2 moments in time - when an object was initialized and their current value on the server.
+
+It is especially useful when you use `Connectivity` features from Loco-JS.
+
+Just look at the example below and bare in mind the order of things 💥
+
+```javascript
+// IN THE 1ST ORDER
+Coupon.find({id: 25, resource: "admin", planId: 8}).then(coupon => {
+  coupon; // Coupon { ... id: 25, duration: "once", percentOff: 30 }
+  
+  // IN THE 3RD ORDER
+  setTimeout(() => {
+    coupon.changes(); // { percentOff: { is: "forever", was: "once" }, 
+                      //   duration: { is: 50, was: 30 }
+                      // }
+    coupon.applyChanges();
+    coupon; // Coupon { ... id: 25, duration: "forever", percentOff: 50 }
+  }, 6000);
+});
+
+// change percent_off and duration on the server and after some time ...
+
+// IN THE 2ND ORDER
+setTimeout(() => {
+  Coupon.find({id: 25, resource: "admin", planId: 8}).then(coupon => {
+    coupon; // Coupon { ... id: 25, duration: "forever", percentOff: 50 }
+  });
+}, 3000);
+
+```
+
 # 🇵🇱 i18n
 
 Loco-JS-Model supports internationalization. Following example shows how to display errors in a different language.
@@ -551,13 +608,23 @@ coupon.isValid(); // false
 coupon.errors; // { duration: ["nie może być puste", "nie jest na liście dopuszczalnych wartości"] 
                //   stripeId: ["nie może być puste", "jest nieprawidłowe"]
                // }
-
 ```
 
 # 👩🏽‍🔬 Tests
 
-...
+Like it's been said at the beginning, Loco-JS-Model has been extracted from Loco-JS. And Loco-JS is a front-end part of the whole Loco framework along with Loco-Rails.  
+Both Loco-JS and Loco-Rails are pretty well tested. And because they work in cooperation with each other, they must be tested as one library (Loco-Rails has a suite of integration / _"end to end"_ tests). 
+
+So every change made to Loco-JS-Model must be tested with Loco-JS' unit tests and then together as Loco framework it must be tested against Loco-Rails' integration test suite.
+
+Future changes will also be tested with local unit tests, using [Jest](https://facebook.github.io/jest/) probably.
 
 # 📈 Changelog
 
-...
+## Major releases 🎙
+
+### 0.3.1
+
+* 🎉 officially announced version 🎉
+
+Informations about all releases are published on [Twitter](https://twitter.com/artofcode_co)

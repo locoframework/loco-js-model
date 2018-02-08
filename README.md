@@ -5,13 +5,13 @@
 # 🧐 What is Loco-JS-Model?
 
 It can be said that **Loco-JS-Model** is a model part of [**Loco-JS**](http://github.com/locoframework/loco-js), which __can be used separately__.  
-**Loco-JS** is in turn a front-end part of [**Loco-Rails**](http://github.com/locoframework/loco-rails). It can be used separately as well.  
+**Loco-JS** is in turn a front-end part of [**Loco-Rails**](http://github.com/locoframework/loco-rails). It can be used separately as well (with limited functionality).  
 And **Loco-Rails** is a back-end part of the whole [**Loco**](http://github.com/locoframework) framework and it requires **Loco-JS** to work.
 
-**Loco-Rails** is just a concept to simplify communication between front-end and back-end code. You can implement it in other languages or frameworks as well.  
+**Loco-Rails** is just a concept that simplifies communication between front-end and back-end code. It can be implemented in other languages or frameworks as well.  
 I am a Rails programmer that's why I created **Loco** for **Rails**.
 
-This is how we can visualize this:
+This is how it can be visualized:
 
 ```
 Loco Framework
@@ -25,6 +25,16 @@ Loco Framework
         |--- other parts of Loco-JS
 ```
 
+# ⛑ But how is Loco supposed to help?
+
+* by providing logical structure for JavaScript code. You exactly know where to start, when looking for JavaScript code that runs current page (**Loco-JS**)
+* you have models that protect from sending invalid data to API endpoints. They also facilitate fetching objects of given type from the server (**Loco-JS-Model**)
+* you can easily assign a model to the form what will enrich it with fields' validation (**Loco-JS**)
+* you can connect models with controllers and views, so they will be notified about every change made to a given model on the server side. This change is going to be emitted as a signal to the front-end code. And signal is just a fancy name for JS object (**Loco**)
+* allows you to send messages over WebSockets in both directions with just a one line of code on each side (**Loco**)
+* respects permissions (you can send messages only to specified, signed in on the server, models _e.g. given admin or user_) (**Loco**)
+* solves other common problems
+
 # 🦕 Origins
 
 **Loco** framework was created back in 2016. The main reason for it was to make my life easier as a full-stack developer.  
@@ -32,20 +42,10 @@ I was using [Coffeescript](http://coffeescript.org) back then on the front-end a
 
 I still use **Rails** but my front-end toolbox has changed to modern goodies such as **ES6**, [Webpack](https://webpack.js.org), [Babel](https://babeljs.io), [React](https://reactjs.org), [Redux](https://redux.js.org)... and **Loco-JS** obviously :)
 
-**Loco-Rails** enriches Ruby on Rails. It's an another layer that works on top of Rails to simplify communication between front-end na back-end code. It is a concept that utilizes good parts of Rails to make this communication straightforward.
+**Loco-Rails** enriches Ruby on Rails. It's a functionality layer that works on top of Rails to simplify communication between front-end na back-end code. It is a concept that utilizes good parts of Rails to make this communication straightforward.
 
 But you can use **Loco-JS** standalone to give your JavaScript a structure, for example.  
 You can also use **Loco-JS-Model** without Rails, along with other modern tools such as React and Redux, by following only a few rules of formatting JSON responses from the server.
-
-## But how is Loco supposed to help? ⛑
-
-* by providing logical structure for JavaScript code. You exactly know where to start, when looking for JavaScript code that runs current page (**Loco-JS**)
-* you have models that protect from sending invalid data to API endpoints. They also facilitate fetching objects of given type from server (**Loco-JS-Model**)
-* you can easily assign model to form what enrich it with fields' validation (**Loco-JS**)
-* you can connect models with controllers and views to be notified about every change made on given model and emitted to the front-end from the server (**Loco**)
-* allows you to send messages over WebSockets in both way with one line of code (**Loco**)
-* respect permissions (you can send messages only to specified, signed in on the server, models _e.g. given admin or user_) (**Loco**)
-* solves other common problems
 
 # 🔬 Tech stack of Loco-JS-Model
 
@@ -626,3 +626,10 @@ Future changes will also be tested with local unit tests, using [Jest](https://f
 * 🎉 officially announced version 🎉
 
 Informations about all releases are published on [Twitter](https://twitter.com/artofcode_co)
+
+# License 📜
+Loco-JS is released under the [MIT License](https://opensource.org/licenses/MIT).
+
+# Author 👨‍🏭
+
+Zbigniew Humeniuk from [Art of Code](http://artofcode.co)

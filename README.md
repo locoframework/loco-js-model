@@ -1,16 +1,14 @@
 ![logo](https://raw.githubusercontent.com/artofcodelabs/artofcodelabs.github.io/master/assets/ext/loco_logo_trans_sqr-300px.png)
 
-# 🚧 This documentation is under construction. Come back soon! 🚧
-
 > Missing model layer for modern JavaScript
 
 # 🧐 What is Loco-JS-Model?
 
 It can be said that **Loco-JS-Model** is a model part of [**Loco-JS**](http://github.com/locoframework/loco-js), which __can be used separately__.  
-**Loco-JS** is in turn a front-end part of [**Loco-Rails**](http://github.com/locoframework/loco-rails), which can be used separately as well.  
+**Loco-JS** is in turn a front-end part of [**Loco-Rails**](http://github.com/locoframework/loco-rails). It can be used separately as well.  
 And **Loco-Rails** is a back-end part of the whole [**Loco**](http://github.com/locoframework) framework and it requires **Loco-JS** to work.
 
-But **Loco-Rails** is just a concept to simplify communication between front-end and back-end code. You can implement it in other languages or frameworks as well.  
+**Loco-Rails** is just a concept to simplify communication between front-end and back-end code. You can implement it in other languages or frameworks as well.  
 I am a Rails programmer that's why I created **Loco** for **Rails**.
 
 This is how we can visualize this:
@@ -29,7 +27,7 @@ Loco Framework
 
 # 🦕 Origins
 
-**Loco** framework has been created back in 2016. The main reason for it was to make my life easier as a full-stack developer.  
+**Loco** framework was created back in 2016. The main reason for it was to make my life easier as a full-stack developer.  
 I was using [Coffeescript](http://coffeescript.org) back then on the front-end and [Ruby on Rails](http://rubyonrails.org) on the back-end.
 
 I still use **Rails** but my front-end toolbox has changed to modern goodies such as **ES6**, [Webpack](https://webpack.js.org), [Babel](https://babeljs.io), [React](https://reactjs.org), [Redux](https://redux.js.org)... and **Loco-JS** obviously :)

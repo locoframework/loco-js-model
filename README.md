@@ -37,21 +37,21 @@ Loco Framework
 
 # 🦕 Origins
 
-**Loco** framework was created back in 2016. The main reason for it was to make my life easier as a full-stack developer.  
-I was using [Coffeescript](http://coffeescript.org) back then on the front-end and [Ruby on Rails](http://rubyonrails.org) on the back-end.
+**Loco** framework was created back in 2016. The main reason for it was a need to make my life easier as a full-stack developer.
+I was using [Coffeescript](http://coffeescript.org) on the front-end back then and [Ruby on Rails](http://rubyonrails.org) on the back-end.
 
-I still use **Rails** but my front-end toolbox has changed to modern goodies such as **ES6**, [Webpack](https://webpack.js.org), [Babel](https://babeljs.io), [React](https://reactjs.org), [Redux](https://redux.js.org)... and **Loco-JS** obviously :)
+I still use **Rails** but my front-end toolbox has changed a bit. Now I work with modern goodies such as **ES6**, [Webpack](https://webpack.js.org), [Babel](https://babeljs.io), [React](https://reactjs.org), [Redux](https://redux.js.org)... and **Loco-JS** obviously :)
 
 **Loco-Rails** enriches Ruby on Rails. It's a functionality layer that works on top of Rails to simplify communication between front-end na back-end code. It is a concept that utilizes good parts of Rails to make this communication straightforward.
 
-But you can use **Loco-JS** standalone to give your JavaScript a structure, for example.  
-You can also use **Loco-JS-Model** without Rails, along with other modern tools such as React and Redux, by following only a few rules of formatting JSON responses from the server.
+But **Loco-JS** can be used standalone to give a structure to a JavaScript code, for example.  
+**Loco-JS-Model** can be used without Rails as well and in cooperation with other modern tools such as React and Redux. You have to follow only a few rules of formatting JSON responses from the server.
 
 # 🔬 Tech stack of Loco-JS-Model
 
 The Origins explain why the major part of **Loco-JS-Model** is still written in CoffeeScript.	 It is just an extraction from Loco-JS for everyone who don't need all the features that Loco-JS provides. BTW: Loco-JS has now more JavaScript than CoffeeScript inside. It shouldn't worry you though unless you want to contribute.
 
-What's more important is that all Loco-JS-Model's modules are bundled and transpiled using modern tools such as **Webpack** and **Babel** accordingly. Loco-JS-Model works well as a part of modern JavaScript ecosystem alongside libraries such as React and Redux.  
+What's more important is that all Loco-JS-Model's modules are transpiled and bundled using modern tools such as **Babel** and **Webpack** accordingly. Loco-JS-Model works well as a part of modern JavaScript ecosystem alongside libraries such as React and Redux.  
 In the future, while adding features, all modules will be rewritten to Javascript.
 
 This 🎁[**example**](https://github.com/artofcodelabs/front-end-boilerplate)🎁 presents how to combine Loco-JS-Model with React and Redux _(+ other neat tools)_.  
@@ -81,7 +81,7 @@ $ npm install --save loco-js-model
 # 🤝 Dependencies
 
 🎊 Loco-JS-Model has no dependencies. 🎉  
-Although, [class properties transform](https://babeljs.io/docs/plugins/transform-class-properties/) Babel plugin may be helpful to support static class properties, which are useful in how you define models.
+Although, [class properties transform](https://babeljs.io/docs/plugins/transform-class-properties/) Babel plugin may be helpful to support static class properties, which are useful in defining models.
 
 # ⚙️ Configuration
 

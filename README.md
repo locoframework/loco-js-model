@@ -1,6 +1,6 @@
 ![logo](https://raw.githubusercontent.com/artofcodelabs/artofcodelabs.github.io/master/assets/ext/loco_logo_trans_sqr-300px.png)
 
-> Missing model layer for modern JavaScript
+> A missing model layer for modern JavaScript
 
 # 🧐 What is Loco-JS-Model?
 
@@ -629,10 +629,10 @@ Future changes will also be tested with local unit tests, using [Jest](https://f
 
 Informations about all releases are published on [Twitter](https://twitter.com/artofcode_co)
 
-# License 📜
+# 📜 License
 
-Loco-JS is released under the [MIT License](https://opensource.org/licenses/MIT).
+Loco-JS-Model is released under the [MIT License](https://opensource.org/licenses/MIT).
 
-# Author 👨‍🏭
+# 👨‍🏭 Author
 
 Zbigniew Humeniuk from [Art of Code](http://artofcode.co)

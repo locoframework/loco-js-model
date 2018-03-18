@@ -30,8 +30,8 @@ Following sections contain more detailed description of its internals and API.
 # ⛑ But how is Loco supposed to help?
 
 * by providing logical structure for a JavaScript code (along with base classes for models, controllers and views). You exactly know where to start, when looking for a JavaScript code that runs current page ([**Loco-JS**](https://github.com/locoframework/loco-js))
-* you have models that protect from sending invalid data to the API endpoints. They also facilitate fetching objects of given type from the server (**Loco-JS-Model**)
-* you can easily assign a model to a form what will enrich it with fields' validation ([**Loco-JS**](https://github.com/locoframework/loco-js))
+* you have models that protect from sending invalid data to the API endpoints. They also facilitate fetching objects of a given type from the server (**Loco-JS-Model**)
+* you can easily assign a model to a form what will enrich this form with fields' validation ([**Loco-JS**](https://github.com/locoframework/loco-js))
 * you can connect models with controllers and views on the front-end. And they will be notified about every change made to a corresponding model on the server side. This change will be emitted as a signal to the front-end code. And signal is just a fancy name for a JS object (**Loco**)
 * it allows you to send messages over WebSockets in both directions with just a single line of code on each side (**Loco**)
 * respects permissions (you can send messages only to specified, signed in on the server models _e.g. given admin or user_) (**Loco**)
@@ -51,7 +51,7 @@ But **Loco-JS** can be used as a standalone library to structure a JavaScript co
 
 # 🔬 Tech stack of Loco-JS-Model
 
-The Origins explain why the major part of **Loco-JS-Model** is still written in CoffeeScript.	 It is just an extraction from Loco-JS for everyone who don't need all the features that Loco-JS provides. BTW: Loco-JS has now more JavaScript than CoffeeScript inside. It shouldn't worry you though unless you want to contribute.
+The Origins explain why the major part of **Loco-JS-Model** is still written in CoffeeScript.	 It is just an extraction from Loco-JS for everyone who don't need all the features that Loco-JS provides. It shouldn't worry you though unless you want to contribute.
 
 What's more important is that all Loco-JS-Model's modules are transpiled and bundled using modern tools such as **Babel** and **Webpack** accordingly. Loco-JS-Model works well as a part of modern JavaScript ecosystem alongside libraries such as React and Redux.  
 In the future, while adding features, all modules will be rewritten to Javascript.
@@ -82,8 +82,11 @@ $ npm install --save loco-js-model
 
 # 🤝 Dependencies
 
-🎊 Loco-JS-Model has no dependencies. 🎉  
+🎊 Loco-JS-Model has no dependencies. 🎉
+
 Although, [class properties transform](https://babeljs.io/docs/plugins/transform-class-properties/) Babel plugin may be helpful to support static class properties, which are useful in defining models.
+
+Loco-JS-Model uses Promises so remember to **polyfill** them❗️
 
 # ⚙️ Configuration
 

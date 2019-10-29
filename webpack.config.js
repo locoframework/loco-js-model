@@ -1,6 +1,9 @@
-var path = require("path");
+/* eslint-env node */
+
+const path = require("path");
 
 module.exports = {
+  mode: "production",
   entry: "./src/index.js",
   module: {
     rules: [
@@ -12,7 +15,7 @@ module.exports = {
             loader: "coffee-loader",
             options: {
               transpile: {
-                presets: ["env"]
+                presets: ["@babel/preset-env"]
               }
             }
           }

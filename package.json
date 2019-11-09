@@ -4,7 +4,8 @@
   "description": "Model part of loco-js",
   "main": "dist/loco-model.js",
   "scripts": {
-    "start": "node dev/server.js",
+    "server": "node dev/server.js",
+    "start": "webpack --watch --config webpack.config.js",
     "build": "webpack -p --config webpack.config.js",
     "lint-staged": "lint-staged"
   },

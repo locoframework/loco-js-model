@@ -4,11 +4,11 @@
 
 # 🧐 What is Loco-JS-Model?
 
-It can be said that **Loco-JS-Model** is a model part of [**Loco-JS**](http://github.com/locoframework/loco-js), which __can be used separately__.  
-**Loco-JS** is in turn a front-end part of [**Loco-Rails**](http://github.com/locoframework/loco-rails). It can be used separately as well (with limited functionality).  
+It can be said that **Loco-JS-Model** is a model part of [**Loco-JS**](http://github.com/locoframework/loco-js), which __can be used separately__.
+**Loco-JS** is in turn a front-end part of [**Loco-Rails**](http://github.com/locoframework/loco-rails). It can be used separately as well (with limited functionality).
 And **Loco-Rails** is a back-end part of the whole [**Loco**](http://github.com/locoframework) framework and it requires **Loco-JS** to work.
 
-**Loco-Rails** is just a concept that simplifies communication between front-end and back-end code. It can be implemented in other languages or frameworks as well.  
+**Loco-Rails** is just a concept that simplifies communication between front-end and back-end code. It can be implemented in other languages or frameworks as well.
 I am a Rails programmer that's why I created **Loco** for **Rails**.
 
 This is how it can be visualized:
@@ -46,17 +46,17 @@ I still use **Rails** but my front-end toolbox has changed a lot. Now, I work wi
 
 **Loco-Rails** enriches Ruby on Rails. It's a functionality layer that works on top of Rails to simplify communication between front-end na back-end code. It is a concept that utilizes good parts of Rails to make this communication straightforward.
 
-But **Loco-JS** can be used as a standalone library to structure a JavaScript code, for example.  
+But **Loco-JS** can be used as a standalone library to structure a JavaScript code, for example.
 [**Loco-JS-Model**](https://github.com/locoframework/loco-js-model/) can be used without Rails as well and in cooperation with other modern tools such as React and Redux. You have to follow only a few rules of formatting JSON responses from the server.
 
 # 🔬 Tech stack of Loco-JS-Model
 
 The Origins explain why the major part of **Loco-JS-Model** is still written in CoffeeScript.	 It is just an extraction from Loco-JS for everyone who don't need all the features that Loco-JS provides. It shouldn't worry you though unless you want to contribute.
 
-What's more important is that all Loco-JS-Model's modules are transpiled and bundled using modern tools such as **Babel** and **Webpack** accordingly. Loco-JS-Model works well as a part of modern JavaScript ecosystem alongside libraries such as React and Redux.  
+What's more important is that all Loco-JS-Model's modules are transpiled and bundled using modern tools such as **Babel** and **Webpack** accordingly. Loco-JS-Model works well as a part of modern JavaScript ecosystem alongside libraries such as React and Redux.
 In the future, while adding features, all modules will be rewritten to Javascript.
 
-This 🎁[**example**](https://github.com/artofcodelabs/front-end-boilerplate)🎁 presents how to combine Loco-JS-Model with React and Redux _(+ other neat tools)_.  
+This 🎁[**example**](https://github.com/artofcodelabs/front-end-boilerplate)🎁 presents how to combine Loco-JS-Model with React and Redux _(+ other neat tools)_.
 This repo is also a good starting point when you want to start hack on multi-static-page app powered by React, Redux, React, React-Router, Webpack, Babel etc. and you look for something pre-configured and more straightforward than [Create React App](https://github.com/facebook/create-react-app) at the same time.
 
 # 📡 Model Layer
@@ -93,7 +93,7 @@ Loco-JS-Model uses Promises so remember to **polyfill** them❗️
 ```javascript
 import { Config } from "loco-js-model";
 
-// If provided - Loco will be using absolute path 
+// If provided - Loco will be using absolute path
 // instead of site-root-relative path in all XHR requests
 Config.protocolWithHost = "http://localhost:3000";
 
@@ -125,7 +125,7 @@ class Coupon extends Models.Base {
   // This property should have the name of the class.
   // Setting this property is required when you use full Loco framework
   // and send notifications from the server.
-  // Because of minification, finding this class by name, 
+  // Because of minification, finding this class by name,
   // is improssible in production env.
   // Loco relies on naming, so it has to be persisted.
   static identity = "Coupon";
@@ -150,7 +150,7 @@ class Coupon extends Models.Base {
       // Loco-JS-Model may convert them to certain types.
       // Available: Date, Integer, Float, Boolean, Number, String
       type: "String",
-      // Available validators: Absence, Confirmation, Exclusion, 
+      // Available validators: Absence, Confirmation, Exclusion,
       // Format, Inclusion, Length, Numericality, Presence, Size
       validations: {
         presence: true,
@@ -172,7 +172,7 @@ class Coupon extends Models.Base {
       }
     },
     // This attribute should be of type decimal but it has no type.
-    // It is because of I use this model with React 
+    // It is because of I use this model with React
     // and I change the value of this attribute,
     // every time user fills number in the input field.
     // So it can have incorrect decimal value (like "12." for example),
@@ -228,7 +228,7 @@ class Coupon extends Models.Base {
 
   // Contains names of custom validation methods
   static validate = ["amountOrPercent", "futureRedeemBy"];
-  
+
   // This method is called when you use full Loco framework
   // and emit signals from the server to the whole class of objects
   static receivedSignal(signal, data) {}
@@ -240,12 +240,12 @@ class Coupon extends Models.Base {
   get amountOffNum() {
     return Number(this.amountOff);
   }
-  
+
   // This method is called when you use full Loco framework
   // and emit signals from the server to this specific instance of model
   receivedSignal(signal, data) {}
 
-  // Custom method that is called when user changes value of field 
+  // Custom method that is called when user changes value of field
   // in React component
   setAttribute(name, val) {
     // This Loco-JS-Model's method makes a convertion to given type,
@@ -320,7 +320,7 @@ export const nullIfNaN = val => (Number.isNaN(val) ? null : val);
 
 ### Specifying scope 🔎
 
-You can fetch resources from given scope in 3 ways:  
+You can fetch resources from given scope in 3 ways:
 
 * by specifying scope in method calls e.g. `Coupon.get("all", {resource: "admin"})`
 * setting up default scope on configuration stage _(see Configuration)_
@@ -399,7 +399,7 @@ Coupon.get("all", {resource: "admin", planId: 6}).then(res => {
 
 ### Fetching resources from other API endpoints
 
-Just pass the name of the endpoint instead of _"all"_.  
+Just pass the name of the endpoint instead of _"all"_.
 This example also contains how to pass **additional parameters** to the request.
 
 ```javascript
@@ -415,10 +415,10 @@ Just pass a `page` param.
 
 ```javascript
 Coupon.get("recent", {
-  resource: "admin", 
-  planId: 6, 
-  total: 414, 
-  page: 4, 
+  resource: "admin",
+  planId: 6,
+  total: 414,
+  page: 4,
   foo: 10
 }).then(coupons => {});
 // GET "/admin/plans/6/coupons/recent?page=4&foo=10&current-page=4"
@@ -437,7 +437,7 @@ Coupon.find(25).then(coupon => {});
 Coupon.find({id: 25}).then(coupon => {});
 // GET "/user/coupons/25"
 
-// You can also specify a resource and pass additional params 
+// You can also specify a resource and pass additional params
 
 Coupon.find({id: 25, resource: "admin", planId: 8, foo: 12, bar: "baz"}).then(coupon => {});
 // GET "/admin/plans/8/coupons/25?foo=12&bar=baz"
@@ -466,15 +466,15 @@ If attributes' validations are specified, you can use the `isValid` / `isInvalid
 
 ```javascript
 const coupon = new Coupon;
-coupon.isValid();   // false 
+coupon.isValid();   // false
 coupon.isInvalid(); // true
 coupon.errors; // {
-               //   stripeId: ["can't be blank", "is not included in the list"], 
+               //   stripeId: ["can't be blank", "is not included in the list"],
                //   duration: ["can't be blank", "is invalid"]
                // }
 ```
 
-Loco-JS-Model implements almost all built-in [Rails](http://guides.rubyonrails.org/active_record_validations.html) validators, except of _uniqueness_. And you can use them nearly identically.  
+Loco-JS-Model implements almost all built-in [Rails](http://guides.rubyonrails.org/active_record_validations.html) validators, except of _uniqueness_. And you can use them nearly identically.
 You can also look at [source code](https://github.com/locoframework/loco-js-model/tree/master/src/validators) if you are looking for all available options. They are pretty straightforward to decipher.
 
 ## Saving ✍️
@@ -495,14 +495,14 @@ coupon.save().then(resp => {
 //                           },
 //               "plan_id" => "19"
 //             }
-  resp; // { success: false, 
-        //   status: 400, 
+  resp; // { success: false,
+        //   status: 400,
         //   errors: {
-        //     stripe_id: ["can't be blank", "is invalid"], 
+        //     stripe_id: ["can't be blank", "is invalid"],
         //     duration: ["can't be blank", "is not included in the list"]
         //   }
         // }
-  coupon.errors; // { stripeId: ["can't be blank", "is not included in the list"], 
+  coupon.errors; // { stripeId: ["can't be blank", "is not included in the list"],
                  //   duration: ["can't be blank", "is invalid"]
                  // }
 });
@@ -543,10 +543,10 @@ Just look at the example below and bare in mind the order of things 💥
 // IN THE 1ST ORDER
 Coupon.find({id: 25, resource: "admin", planId: 8}).then(coupon => {
   coupon; // Coupon { ... id: 25, duration: "once", percentOff: 30 }
-  
+
   // IN THE 3RD ORDER
   setTimeout(() => {
-    coupon.changes(); // { percentOff: { is: "forever", was: "once" }, 
+    coupon.changes(); // { percentOff: { is: "forever", was: "once" },
                       //   duration: { is: 50, was: 30 }
                       // }
     coupon.applyChanges();
@@ -608,19 +608,21 @@ Config.locale = "pl";
 ```javascript
 const coupon = new Coupon({ percentOff: 50 });
 coupon.isValid(); // false
-coupon.errors; // { duration: ["nie może być puste", "nie jest na liście dopuszczalnych wartości"] 
+coupon.errors; // { duration: ["nie może być puste", "nie jest na liście dopuszczalnych wartości"]
                //   stripeId: ["nie może być puste", "jest nieprawidłowe"]
                // }
 ```
 
 # 👩🏽‍🔬 Tests
 
-Like it's been said at the beginning, Loco-JS-Model has been extracted from Loco-JS. And Loco-JS is a front-end part of the whole Loco framework along with Loco-Rails.  
-Both Loco-JS and Loco-Rails are pretty well tested. And because they work in cooperation with each other, they must be tested as one library (Loco-Rails has a suite of integration / _"end to end"_ tests). 
+```bash
+npm run test
+```
+
+Like it's been said at the beginning, Loco-JS-Model has been extracted from Loco-JS. And Loco-JS is a front-end part of the whole Loco framework along with Loco-Rails.
+Both Loco-JS and Loco-Rails are pretty well tested. And because they work in cooperation with each other, they must be tested as one library (Loco-Rails has a suite of integration / _"end to end"_ tests).
 
 So every change made to Loco-JS-Model must be tested with Loco-JS' unit tests and then together as Loco framework it must be tested against Loco-Rails' integration test suite.
-
-Future changes will also be tested with local unit tests, using [Jest](https://facebook.github.io/jest/) probably.
 
 # 📈 Changelog
 

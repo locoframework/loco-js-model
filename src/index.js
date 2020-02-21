@@ -7,4 +7,4 @@ import Models from "./models";
 
 Models.Base = Base;
 
-export { Base, Config, I18n, IdentityMap, Models, Validators };
+export { Config, I18n, IdentityMap, Models, Validators };

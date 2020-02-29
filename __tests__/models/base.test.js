@@ -165,3 +165,12 @@ describe("#assignAttr", () => {
     expect(comment.approved).toEqual(false);
   });
 });
+
+describe("#clone", () => {
+  it("clones an object", () => {
+    const comment = new Comment({ id: 123, author: "Joe", text: "good article", articleId: 100, approved: true });
+    const clonedComment = comment.clone();
+    expect(comment).toEqual(clonedComment);
+    expect(comment).not.toBe(clonedComment);
+  });
+});

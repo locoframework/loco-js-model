@@ -1,7 +1,6 @@
 import Validators from './validators'
 import Config from './config'
 import IdentityMap from './identity_map.coffee'
-import Models from './models'
 import { sendReq } from './helpers/connectivity';
 
 class Base
@@ -65,16 +64,6 @@ class Base
     else if opts.obj? and opts.obj[match[1]]?
       resourcesUrl = resourcesUrl.replace ":#{match[1]}", opts.obj[match[1]]
     return resourcesUrl
-
-  @__initSubclass: (params = {}) ->
-    parts = this.getIdentity().split "."
-    if parts.length is 1
-      model = Models[parts[0]]
-      if not model?
-        return new this params
-      return new model params
-    model = Models[parts[0]][parts[1]]
-    new model params
 
   @__page: (i, pageData, resp) ->
     url = pageData.url
@@ -160,7 +149,7 @@ class Base
     this.__paginate data
 
   @__initFromJSON: (record, resource) ->
-    obj = this.__initSubclass record
+    obj = new this(record)
     obj.resource = resource
     IdentityMap.add obj
     obj

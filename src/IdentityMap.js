@@ -26,6 +26,10 @@ class IdentityMap {
     imap = {};
   }
 
+  static subscribe(args) {
+    this.connect(args.with, { with: args.to });
+  }
+
   static add(obj) {
     const identity = obj.getIdentity();
     if (imap[identity] === undefined) imap[identity] = {};

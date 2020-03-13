@@ -42,7 +42,6 @@ describe(".add", () => {
 
 describe(".connect", () => {
   it("creates a correct structure", () => {
-    IdentityMap.add(comment);
     IdentityMap.connect(view, { with: comment })
     const imap = {
       "Article.Comment": {
@@ -67,7 +66,6 @@ describe(".addCollection", () => {
 
 describe(".all", () => {
   it("returns proper objects", () => {
-    IdentityMap.add(comment);
     IdentityMap.connect(view, { with: comment })
     IdentityMap.addCollection("Article.Comment", { to: view })
     expect(IdentityMap.all("Article.Comment")).toEqual([comment]);
@@ -83,8 +81,20 @@ describe(".find", () => {
 
 describe(".findConnected", () => {
   it("returns proper objects", () => {
-    IdentityMap.add(comment);
     IdentityMap.connect(view, { with: comment })
     expect(IdentityMap.findConnected("Article.Comment", 106)).toEqual([view]);
+  });
+});
+
+describe(".subscribe", () => {
+  it("creates a correct structure", () => {
+    const func = () => {};
+    IdentityMap.subscribe({ to: comment, with: func })
+    const imap = {
+      "Article.Comment": {
+        106: [comment, func]
+      }
+    };
+    expect(IdentityMap.imap).toEqual(imap);
   });
 });

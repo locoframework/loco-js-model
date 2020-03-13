@@ -1,6 +1,6 @@
 import Config from "./config";
 import I18n from "./i18n";
-import IdentityMap from "./identity_map.coffee";
+import IdentityMap from "./IdentityMap";
 import Models from "./models";
 import Validators from "./validators";
 

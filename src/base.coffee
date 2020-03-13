@@ -1,6 +1,6 @@
 import Validators from './validators'
 import Config from './config'
-import IdentityMap from './identity_map.coffee'
+import IdentityMap from './IdentityMap'
 import { sendReq } from './helpers/connectivity';
 
 class Base

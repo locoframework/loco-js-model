@@ -1,5 +1,16 @@
 let imap = {};
 
+const findPosition = arr => {
+  let idx = arr.length;
+  arr.find((element, index) => {
+    if (element === null) {
+      idx = index;
+      return true;
+    }
+  });
+  return idx;
+};
+
 class IdentityMap {
   /*
   Ex.
@@ -27,10 +38,14 @@ class IdentityMap {
   }
 
   static subscribe(args) {
-    const idx = this.connect(args.with, { with: args.to });
-    return () => {
-      this.unsubscribe(args.to.getIdentity(), args.to.id, idx);
-    };
+    if (typeof args.to === "object") {
+      const idx = IdentityMap.connect(args.with, { with: args.to });
+      return () => {
+        IdentityMap.unsubscribe(args.to.getIdentity(), args.to.id, idx);
+      };
+    } else if (typeof args.to === "function") {
+      // ...
+    }
   }
 
   static unsubscribe(identity, id, idx) {
@@ -46,15 +61,9 @@ class IdentityMap {
 
   static connect(obj, opts = {}) {
     const model = opts.with;
-    this.add(model);
+    IdentityMap.add(model);
     const arr = imap[model.getIdentity()][model.id];
-    let idx = arr.length;
-    arr.find((element, index) => {
-      if (element === null) {
-        idx = index;
-        return true;
-      }
-    });
+    const idx = findPosition(arr);
     arr[idx] = obj;
     return idx;
   }

@@ -97,4 +97,21 @@ describe(".subscribe", () => {
     };
     expect(IdentityMap.imap).toEqual(imap);
   });
+
+  it("returns a function that can be used to unsubscribe", () => {
+    const f1 = () => {};
+    const f2 = () => {};
+    const unsubscribe1 = IdentityMap.subscribe({ to: comment, with: f1 });
+    const unsubscribe2 = IdentityMap.subscribe({ to: comment, with: f2 });
+    const arr = IdentityMap.imap["Article.Comment"][106];
+    expect(arr).toEqual([comment, f1, f2]);
+    unsubscribe1();
+    expect(arr).toEqual([comment, null, f2]);
+    unsubscribe2();
+    expect(arr).toEqual([comment, null, null]);
+    const unsubscribe3 = IdentityMap.subscribe({ to: comment, with: f2 });
+    expect(arr).toEqual([comment, f2, null]);
+    unsubscribe3();
+    expect(arr).toEqual([comment, null, null]);
+  });
 });

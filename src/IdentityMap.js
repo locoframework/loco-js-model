@@ -27,7 +27,14 @@ class IdentityMap {
   }
 
   static subscribe(args) {
-    this.connect(args.with, { with: args.to });
+    const idx = this.connect(args.with, { with: args.to });
+    return () => {
+      this.unsubscribe(args.to.getIdentity(), args.to.id, idx);
+    };
+  }
+
+  static unsubscribe(identity, id, idx) {
+    imap[identity][id][idx] = null;
   }
 
   static add(obj) {
@@ -40,7 +47,16 @@ class IdentityMap {
   static connect(obj, opts = {}) {
     const model = opts.with;
     this.add(model);
-    imap[model.getIdentity()][model.id].push(obj);
+    const arr = imap[model.getIdentity()][model.id];
+    let idx = arr.length;
+    arr.find((element, index) => {
+      if (element === null) {
+        idx = index;
+        return true;
+      }
+    });
+    arr[idx] = obj;
+    return idx;
   }
 
   static addCollection(identity, opts = {}) {

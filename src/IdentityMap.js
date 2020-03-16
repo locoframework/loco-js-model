@@ -11,6 +11,13 @@ const findPosition = arr => {
   return idx;
 };
 
+const addToImap = (arr, obj) => {
+  if (arr.indexOf(obj) !== -1) return null;
+  const idx = findPosition(arr);
+  arr[idx] = obj;
+  return idx;
+};
+
 class IdentityMap {
   /*
   Ex.
@@ -71,10 +78,7 @@ class IdentityMap {
     const model = opts.with;
     IdentityMap.add(model);
     const arr = imap[model.getIdentity()][model.id];
-    if (arr.indexOf(obj) !== -1) return null;
-    const idx = findPosition(arr);
-    arr[idx] = obj;
-    return idx;
+    return addToImap(arr, obj);
   }
 
   static addCollection(identity, opts = {}) {
@@ -82,10 +86,7 @@ class IdentityMap {
     if (imap[identity]["collection"] === undefined)
       imap[identity]["collection"] = [];
     const arr = imap[identity]["collection"];
-    if (arr.indexOf(opts.to) !== -1) return null;
-    const idx = findPosition(arr);
-    arr[idx] = opts.to;
-    return idx;
+    return addToImap(arr, opts.to);
   }
 
   static all(identity) {

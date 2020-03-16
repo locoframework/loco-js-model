@@ -38,13 +38,21 @@ class IdentityMap {
   }
 
   static subscribe(args) {
+    const forExistingElement = () => {};
     if (typeof args.to === "object") {
       const idx = IdentityMap.connect(args.with, { with: args.to });
+      if (idx === null) return forExistingElement;
       return () => {
         IdentityMap.unsubscribe(args.to.getIdentity(), args.to.id, idx);
       };
     } else if (typeof args.to === "function") {
-      // ...
+      const idx = IdentityMap.addCollection(args.to.getIdentity(), {
+        to: args.with
+      });
+      if (idx === null) return forExistingElement;
+      return () => {
+        IdentityMap.unsubscribe(args.to.getIdentity(), "collection", idx);
+      };
     }
   }
 
@@ -63,6 +71,7 @@ class IdentityMap {
     const model = opts.with;
     IdentityMap.add(model);
     const arr = imap[model.getIdentity()][model.id];
+    if (arr.indexOf(obj) !== -1) return null;
     const idx = findPosition(arr);
     arr[idx] = obj;
     return idx;
@@ -72,8 +81,11 @@ class IdentityMap {
     if (imap[identity] === undefined) imap[identity] = {};
     if (imap[identity]["collection"] === undefined)
       imap[identity]["collection"] = [];
-    if (imap[identity]["collection"].indexOf(opts.to) !== -1) return;
-    imap[identity]["collection"].push(opts.to);
+    const arr = imap[identity]["collection"];
+    if (arr.indexOf(opts.to) !== -1) return null;
+    const idx = findPosition(arr);
+    arr[idx] = opts.to;
+    return idx;
   }
 
   static all(identity) {

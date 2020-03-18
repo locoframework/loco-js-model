@@ -1,3 +1,19 @@
+/*
+Ex.
+imap = {
+  Post: {
+    1: [
+      #<Post id:1>
+    ],
+    10: [
+      #<Post id:10>, #<PostView>
+    ],
+    collection: [
+      #<PostsView>
+    ]
+  }
+}
+*/
 let imap = {};
 
 const findPosition = arr => {
@@ -18,24 +34,22 @@ const addToImap = (arr, obj) => {
   return idx;
 };
 
-class IdentityMap {
-  /*
-  Ex.
-  imap = {
-    Post: {
-      1: [
-        #<Post id:1>
-      ],
-      10: [
-        #<Post id:10>, #<PostView>
-      ],
-      collection: [
-        #<PostsView>
-      ]
-    }
-  }
-  */
+const connect = (obj, opts = {}) => {
+  const model = opts.with;
+  IdentityMap.add(model);
+  const arr = imap[model.getIdentity()][model.id];
+  return addToImap(arr, obj);
+};
 
+const addCollection = (identity, opts = {}) => {
+  if (imap[identity] === undefined) imap[identity] = {};
+  if (imap[identity]["collection"] === undefined)
+    imap[identity]["collection"] = [];
+  const arr = imap[identity]["collection"];
+  return addToImap(arr, opts.to);
+};
+
+class IdentityMap {
   static get imap() {
     return imap;
   }
@@ -47,13 +61,16 @@ class IdentityMap {
   static subscribe(args) {
     const forExistingElement = () => {};
     if (typeof args.to === "object") {
-      const idx = IdentityMap.connect(args.with, { with: args.to });
+      const idx = connect(
+        args.with,
+        { with: args.to }
+      );
       if (idx === null) return forExistingElement;
       return () => {
         IdentityMap.unsubscribe(args.to.getIdentity(), args.to.id, idx);
       };
     } else if (typeof args.to === "function") {
-      const idx = IdentityMap.addCollection(args.to.getIdentity(), {
+      const idx = addCollection(args.to.getIdentity(), {
         to: args.with
       });
       if (idx === null) return forExistingElement;
@@ -72,31 +89,6 @@ class IdentityMap {
     if (imap[identity] === undefined) imap[identity] = {};
     if (imap[identity][obj.id] === undefined) imap[identity][obj.id] = [];
     imap[identity][obj.id][0] = obj;
-  }
-
-  static connect(obj, opts = {}) {
-    const model = opts.with;
-    IdentityMap.add(model);
-    const arr = imap[model.getIdentity()][model.id];
-    return addToImap(arr, obj);
-  }
-
-  static addCollection(identity, opts = {}) {
-    if (imap[identity] === undefined) imap[identity] = {};
-    if (imap[identity]["collection"] === undefined)
-      imap[identity]["collection"] = [];
-    const arr = imap[identity]["collection"];
-    return addToImap(arr, opts.to);
-  }
-
-  static all(identity) {
-    if (imap[identity] === undefined) return null;
-    const arr = [];
-    for (const id of Object.keys(imap[identity])) {
-      if (id === "collection") continue;
-      arr.push(imap[identity][id][0]);
-    }
-    return arr;
   }
 
   static find(klass, id) {

@@ -17,12 +17,18 @@ This is how it can be visualized:
 Loco Framework
 |
 |--- Loco-Rails (back-end part)
+|       |
+|       |--- Loco-Rails-Core (logical structure for JS / can be used separately with Loco-JS-Core)
 |
 |--- Loco-JS (front-end part / can be used separately)
+        |
+        |--- Loco-JS-Core (logical structure for JS)
         |
         |--- Loco-JS-Model (model part / can be used separately)
         |
         |--- other parts of Loco-JS
+
+        Loco-JS-UI - TODO extracted to a separate library
 ```
 
 Following sections contain more detailed description of its internals and API.

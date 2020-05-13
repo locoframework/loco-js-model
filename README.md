@@ -11,7 +11,7 @@ And **Loco-Rails** is a back-end part of the whole [**Loco**](http://github.com/
 **Loco-Rails** is just a concept that simplifies communication between front-end and back-end code. It can be implemented in other languages or frameworks as well.
 I am a Rails programmer that's why I created **Loco** for **Rails**.
 
-This is how it can be visualized:
+*Visualization of the Loco framework:*
 
 ```
 Loco Framework
@@ -26,34 +26,12 @@ Loco Framework
         |
         |--- Loco-JS-Model (model part / can be used separately)
         |
-        |--- other parts of Loco-JS
+        |--- other built-in parts of Loco-JS
 
-        Loco-JS-UI - connects models with UI elements (extracted to a separate library)
+        Loco-JS-UI - connects models with UI elements (a separate library)
 ```
 
 Following sections contain more detailed description of its internals and API.
-
-# ⛑ But how is Loco supposed to help?
-
-* by providing logical structure for a JavaScript code (along with base classes for models, controllers and views). You exactly know where to start, when looking for a JavaScript code that runs current page ([**Loco-JS**](https://github.com/locoframework/loco-js))
-* you have models that protect from sending invalid data to the API endpoints. They also facilitate fetching objects of a given type from the server (**Loco-JS-Model**)
-* you can easily assign a model to a form what will enrich this form with fields' validation ([**Loco-JS**](https://github.com/locoframework/loco-js))
-* you can connect models with controllers and views on the front-end. And they will be notified about every change made to a corresponding model on the server side. This change will be emitted as a signal to the front-end code. And signal is just a fancy name for a JS object (**Loco**)
-* it allows you to send messages over WebSockets in both directions with just a single line of code on each side (**Loco**)
-* respects permissions (you can send messages only to specified, signed in on the server models _e.g. given admin or user_) (**Loco**)
-* solves other common problems
-
-# 🦕 Origins
-
-**Loco** framework was created back in 2016. The main reason for it was a need to make my life easier as a full-stack developer.
-I was using [Coffeescript](http://coffeescript.org) on the front-end back then and [Ruby on Rails](http://rubyonrails.org) on the back-end.
-
-I still use **Rails** but my front-end toolbox has changed a lot. Now, I work with modern goodies such as **ES6**, [Webpack](https://webpack.js.org), [Babel](https://babeljs.io), [React](https://reactjs.org), [Redux](https://redux.js.org)... and **Loco-JS** obviously :)
-
-**Loco-Rails** enriches Ruby on Rails. It's a functionality layer that works on top of Rails to simplify communication between front-end na back-end code. It is a concept that utilizes good parts of Rails to make this communication straightforward.
-
-But **Loco-JS** can be used as a standalone library to structure a JavaScript code, for example.
-[**Loco-JS-Model**](https://github.com/locoframework/loco-js-model/) can be used without Rails as well and in cooperation with other modern tools such as React and Redux. You have to follow only a few rules of formatting JSON responses from the server.
 
 # 🔬 Tech stack of Loco-JS-Model
 

@@ -4,12 +4,9 @@
 
 # 🧐 What is Loco-JS-Model?
 
-It can be said that **Loco-JS-Model** is a model part of [**Loco-JS**](http://github.com/locoframework/loco-js), which __can be used separately__.
-**Loco-JS** is in turn a front-end part of [**Loco-Rails**](http://github.com/locoframework/loco-rails). It can be used separately as well (with limited functionality).
-And **Loco-Rails** is a back-end part of the whole [**Loco**](http://github.com/locoframework) framework and it requires **Loco-JS** to work.
-
-**Loco-Rails** is just a concept that simplifies communication between front-end and back-end code. It can be implemented in other languages or frameworks as well.
-I am a Rails programmer that's why I created **Loco** for **Rails**.
+**Loco-JS-Model** is one of the [Loco framework](http://locoframework.org) components. It is a model layer for JavaScript that can be used separately.  
+Loco framework is a concept that simplifies communication between front-end and back-end. The back-end part can be implemented in other languages and frameworks as well.
+I am a Rails programmer. That's why I created **Loco** for [**Rails**](https://github.com/locoframework/loco-rails).
 
 *Visualization of the Loco framework:*
 
@@ -30,8 +27,6 @@ Loco Framework
 
         Loco-JS-UI - connects models with UI elements (a separate library)
 ```
-
-Following sections contain more detailed description of its internals and API.
 
 # 🔬 Tech stack of Loco-JS-Model
 

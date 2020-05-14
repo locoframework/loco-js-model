@@ -67,19 +67,14 @@ Loco-JS-Model uses Promises, so remember to **polyfill** them❗️
 ```javascript
 import { Config } from "loco-js-model";
 
-// If provided - Loco will be using absolute path
-// instead of site-root-relative path in all XHR requests
+// If provided - Loco-JS uses an absolute path instead of a site-root-relative path in all XHR requests
 Config.protocolWithHost = "http://localhost:3000";
 
 Config.locale = "pl";   // "en" by default
 
-// Models have static class property - "resources".
-// You use it to specify named scopes (base URLs),
-// where you can fetch objects of given type.
-// You can setup default scope for all models,
-// using this property.
+// Models have a static class property - "resources". It is used to specify base URLs (scopes)  
+// from which data are retrieved. This property sets a default scope for all models.
 Config.scope = "admin"; // null by default
-
 ```
 
 # 🎮 Usage

@@ -28,15 +28,11 @@ Loco Framework
         Loco-JS-UI - connects models with UI elements (a separate library)
 ```
 
-# 🔬 Tech stack of Loco-JS-Model
+Loco-JS-Model works well as a part of the modern JavaScript ecosystem alongside libraries such as React and Redux.
 
-The Origins explain why the major part of **Loco-JS-Model** is still written in CoffeeScript.	 It is just an extraction from Loco-JS for everyone who don't need all the features that Loco-JS provides. It shouldn't worry you though unless you want to contribute.
-
-What's more important is that all Loco-JS-Model's modules are transpiled and bundled using modern tools such as **Babel** and **Webpack** accordingly. Loco-JS-Model works well as a part of modern JavaScript ecosystem alongside libraries such as React and Redux.
-In the future, while adding features, all modules will be rewritten to Javascript.
-
-This 🎁[**example**](https://github.com/artofcodelabs/front-end-boilerplate)🎁 presents how to combine Loco-JS-Model with React and Redux _(+ other neat tools)_.
-This repo is also a good starting point when you want to start hack on multi-static-page app powered by React, Redux, React, React-Router, Webpack, Babel etc. and you look for something pre-configured and more straightforward than [Create React App](https://github.com/facebook/create-react-app) at the same time.
+This 🎁[**example**](https://github.com/artofcodelabs/front-end-boilerplate)🎁 presents how to combine Loco-JS-Model with React and Redux _(+ other neat tools)_.  
+This repo is also a good starting point if you want to start hack on a multi-static-page app powered by React, Redux, React, React-Router, Webpack, Babel, etc.  
+Especially if you are looking for something pre-configured and more straightforward than [Create React App](https://github.com/facebook/create-react-app).
 
 # 📡 Model Layer
 

@@ -58,9 +58,9 @@ $ npm install --save loco-js-model
 
 🎊 Loco-JS-Model has no dependencies. 🎉
 
-Although, [class properties transform](https://babeljs.io/docs/plugins/transform-class-properties/) Babel plugin may be helpful to support static class properties, which are useful in defining models.
+Although [babel-plugin-transform-class-properties](https://babeljs.io/docs/en/babel-plugin-transform-class-properties) may be helpful to support static class properties, which are useful in defining models.
 
-Loco-JS-Model uses Promises so remember to **polyfill** them❗️
+Loco-JS-Model uses Promises, so remember to **polyfill** them❗️
 
 # ⚙️ Configuration
 

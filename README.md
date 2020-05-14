@@ -36,18 +36,17 @@ Especially if you are looking for something pre-configured and more straightforw
 
 # 📡 Model Layer
 
-I really liked [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) throughout the years of using Rails. This layer stands between the business logic of your app and database itself and does a lot of useful things. One of many is providing validations of the objects to ensure that only valid data are saved into your database. It also provides several finder methods to perform certain queries on your database without writing raw SQL.
+I liked [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) throughout the years of using Rails. This layer stands between the business logic of your app and a database and does a lot of useful things. One of them is providing validations of objects to ensure that only valid ones are saved in a database. It also provides several finder methods to perform certain queries on a database without writing raw SQL.
 
-## But what does model mean when it comes to the app that works inside the browser? 🤔
+## But what does model mean when it comes to an app working inside the browser? 🤔
 
 Well, you have at least 2 ways to persist your data:
 
-1. You can save them in the local storage
-2. You can send them to the server using the API endpoint, where they will be stored in the database
+1. You can save them in local storage.
+2. You can send them to a server using the API endpoint. Data are then stored in a database.
 
-So we can assume that validating the data before they reach destination will be useful in both cases. But when it comes to persistence, Loco-JS-Model gravitates towards communication with the server. It provides methods that facilitate both persisting data and fetching them from server.
-
-It will be more obvious, when we look at the examples. But first we have to set things up.
+So we can assume that validating data before they reach the destination can be useful in both cases.  
+But when it comes to persistence - Loco-JS-Model gravitates towards communication with a server. It provides methods that facilitate both: persisting data and fetching them from a server.
 
 # 📥 Installation
 

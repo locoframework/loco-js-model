@@ -88,8 +88,6 @@ This is how an exemplary model can look like:
 
 import { Models } from "loco-js-model";
 
-import { decimalize, nullIfNaN } from "helpers/number";
-
 class Coupon extends Models.Base {
   // This property should have the name of the class.
   // Setting this property is required when you use full Loco framework
@@ -169,26 +167,6 @@ class Coupon extends Models.Base {
         }
       }
     },
-    durationInMonths: {
-      remoteName: "duration_in_months",
-      type: "Integer",
-      validations: {
-        numericality: {
-          greater_than: 0,
-          if: o => o.duration === "repeating"
-        }
-      }
-    },
-    maxRedemptions: {
-      remoteName: "max_redemptions",
-      type: "Integer",
-      validations: {
-        numericality: {
-          greater_than: 0,
-          if: o => o.maxRedemptions != null
-        }
-      }
-    },
     redeemBy: {
       remoteName: "redeem_by",
       type: "Date"
@@ -196,23 +174,11 @@ class Coupon extends Models.Base {
   };
 
   // Contains names of custom validation methods
-  static validate = ["amountOrPercent", "futureRedeemBy"];
-
-  // This method is called when you use full Loco framework
-  // and emit signals from the server to the whole class of objects
-  static receivedSignal(signal, data) {}
+  static validate = ["futureRedeemBy"];
 
   constructor(data = {}) {
     super(data);
   }
-
-  get amountOffNum() {
-    return Number(this.amountOff);
-  }
-
-  // This method is called when you use full Loco framework
-  // and emit signals from the server to this specific instance of model
-  receivedSignal(signal, data) {}
 
   // Custom method that is called when user changes value of field
   // in React component
@@ -220,42 +186,6 @@ class Coupon extends Models.Base {
     // This Loco-JS-Model's method makes a convertion to given type,
     // when assigning value to attribute
     this.assignAttr(name, val);
-    this.normalizeAttributes();
-  }
-
-  // private
-
-  normalizeAttributes() {
-    this.percentOff = nullIfNaN(this.percentOff);
-    this.maxRedemptions = nullIfNaN(this.maxRedemptions);
-    this.durationInMonths = nullIfNaN(this.durationInMonths);
-    this.normalizeAmountOff();
-  }
-
-  normalizeAmountOff() {
-    if (Number.isNaN(this.amountOffNum)) this.amountOff = null;
-    if (!this.amountOff) return;
-    this.amountOff = decimalize(this.amountOff);
-  }
-
-  amountOrPercent() {
-    if (this.percentOff === 0 && this.amountOffNum === 0) {
-      // This Loco-JS-Model's method allows you
-      // to assign error message to given attribute
-      this.addErrorMessage('can\'t be 0 if "Percent off" is 0', {
-        for: "amountOff"
-      });
-      this.addErrorMessage('can\'t be 0 if "Amount off" is 0', {
-        for: "percentOff"
-      });
-    } else if (this.percentOff !== 0 && this.amountOffNum !== 0) {
-      this.addErrorMessage('should be 0 if "Percent off" is not 0', {
-        for: "amountOff"
-      });
-      this.addErrorMessage('should be 0 if "Amount off" is not 0', {
-        for: "percentOff"
-      });
-    }
   }
 
   futureRedeemBy() {
@@ -267,22 +197,6 @@ class Coupon extends Models.Base {
 }
 
 export default Coupon;
-```
-
-```javascript
-// helpers/number.js
-
-export const decimalize = val => {
-  const integer = parseInt(String(val).split(".")[0], 10);
-  const precision = String(val).split(".")[1];
-  if (!precision) return val;
-  if (precision.length > 2) {
-    return `${integer}.${precision.substring(0, 2)}`;
-  }
-  return val;
-};
-
-export const nullIfNaN = val => (Number.isNaN(val) ? null : val);
 ```
 
 ## Fetching a collection of resources 👨‍👩‍👧‍👦
@@ -309,8 +223,6 @@ Loco-JS-Model can handle responses in 2 JSON formats.
     "amount_off":20,
     "currency":"USD",
     "duration":"once",
-    "duration_in_months":null,
-    "max_redemptions":1,
     "percent_off":null,
     "redeem_by":null,
     "created_at":"2017-12-19T14:42:18.000Z",
@@ -341,8 +253,6 @@ Coupon.get("all", {resource: "admin", planId: 6, total: 603}).then(coupons => {}
       "amount_off":20,
       "currency":"USD",
       "duration":"once",
-      "duration_in_months":null,
-      "max_redemptions":1,
       "percent_off":null,
       "redeem_by":null,
       "created_at":"2017-12-19T14:42:18.000Z",
@@ -459,8 +369,7 @@ const coupon = new Coupon({
 coupon.save().then(resp => {
 // POST "/admin/plans/19/coupons"
 // Parameters: { "coupon" => { "stripe_id"=>nil, "percent_off"=>50, "amount_off"=>nil,
-//                             "duration"=>nil, "duration_in_months"=>nil,
-//                             "max_redemptions"=>nil, "redeem_by"=>nil
+//                             "duration"=>nil, "redeem_by"=>nil
 //                           },
 //               "plan_id" => "19"
 //             }

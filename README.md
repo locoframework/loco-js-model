@@ -81,7 +81,7 @@ Config.scope = "admin"; // null by default
 
 ## Anatomy of the model 💀
 
-This is how an exemplary model can look like:
+An exemplary model can look like this:
 
 ```javascript
 // models/Coupon.js
@@ -89,17 +89,15 @@ This is how an exemplary model can look like:
 import { Models } from "loco-js-model";
 
 class Coupon extends Models.Base {
-  // This property should have the name of the class.
-  // Setting this property is required when you use full Loco framework
+  // The value of this property should be a "stringified" class name.
+  // Setting this property is required if you use a full Loco framework 
   // and send notifications from the server.
-  // Because of minification, finding this class by name,
-  // is improssible in production env.
-  // Loco relies on naming, so it has to be persisted.
+  // It is because finding this class by its name is impossible in a production
+  // environment due to minification.
   static identity = "Coupon";
 
-  // It stores information about scopes in your app.
   // You can fetch the same type of resource from different API endpoints.
-  // So you can define them using this property.
+  // These endpoints can be defined using resources property.
   static resources = {
     url: "/user/coupons",
     admin: {
@@ -108,14 +106,14 @@ class Coupon extends Models.Base {
     }
   };
 
-  // This property stores information about model's attributes
+  // This property stores information about the model's attributes
   static attributes = {
     stripeId: {
-      // Specify if different from what API returns
+      // Specify if different than the value returned via API
       remoteName: "stripe_id",
       // When assigning values from API endpoint,
       // Loco-JS-Model may convert them to certain types.
-      // Available: Date, Integer, Float, Boolean, Number, String
+      // Available: Date, Integer, Float, Boolean, Number, String, Decimal
       type: "String",
       // Available validators: Absence, Confirmation, Exclusion,
       // Format, Inclusion, Length, Numericality, Presence, Size
@@ -130,7 +128,7 @@ class Coupon extends Models.Base {
       remoteName: "percent_off",
       type: "Integer",
       validations: {
-        // you can run given validators conditionally
+        // a validator can run conditionally
         presence: { if: o => o.amountOff == null },
         numericality: {
           greater_than_or_equal_to: 0,
@@ -138,19 +136,9 @@ class Coupon extends Models.Base {
         }
       }
     },
-    // This attribute should be of type decimal but it has no type.
-    // It is because of I use this model with React
-    // and I change the value of this attribute,
-    // every time user fills number in the input field.
-    // So it can have incorrect decimal value (like "12." for example),
-    // when user is in the middle of writting final value.
-    // If I'd specify the type, Loco-JS-Model would make a convertion
-    // to this type on every key press.
-    // This would make it improssible to fill in the desired number.
-    // If you don't use React, this "constant binding" or just you use
-    // a different strategy, it's a good practice to always specify type.
     amountOff: {
       remoteName: "amount_off",
+      type: "Decimal",
       validations: {
         presence: { if: o => o.percentOff == null },
         numericality: {
@@ -173,18 +161,16 @@ class Coupon extends Models.Base {
     }
   };
 
-  // Contains names of custom validation methods
+  // It contains names of custom validation methods
   static validate = ["futureRedeemBy"];
 
   constructor(data = {}) {
     super(data);
   }
 
-  // Custom method that is called when user changes value of field
-  // in React component
+  // This custom method is called when the user changes the value of the field in a React component
   setAttribute(name, val) {
-    // This Loco-JS-Model's method makes a convertion to given type,
-    // when assigning value to attribute
+    // This Loco-JS-Model's method converts to a given type defined in attributes property
     this.assignAttr(name, val);
   }
 

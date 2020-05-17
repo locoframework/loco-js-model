@@ -113,7 +113,7 @@ class Coupon extends Models.Base {
       remoteName: "stripe_id",
       // When assigning values from API endpoint,
       // Loco-JS-Model may convert them to certain types.
-      // Available: Date, Integer, Float, Boolean, Number, String, Decimal
+      // Available: Date, Integer, Float, Boolean, Number, String
       type: "String",
       // Available validators: Absence, Confirmation, Exclusion,
       // Format, Inclusion, Length, Numericality, Presence, Size

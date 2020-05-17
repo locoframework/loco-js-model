@@ -187,13 +187,13 @@ export default Coupon;
 
 ## Fetching a collection of resources 👨‍👩‍👧‍👦
 
-### Specifying scope 🔎
+### Specifying a scope 🔎
 
-You can fetch resources from given scope in 3 ways:
+You can fetch resources from a given scope in 3 ways:
 
-* by specifying scope in method calls e.g. `Coupon.get("all", {resource: "admin"})`
-* setting up default scope on configuration stage _(see Configuration)_
-* if you use **Loco-JS** you can set scope by calling `setScope "<scope name>"` controller's instance method. It's done in a namespace controller most often.
+* by specifying a scope as `resource` in method calls e.g. `Coupon.get("all", {resource: "admin"})`
+* setting up default scope at the configuration stage _(see Configuration)_
+* if you use **Loco-JS** you can set scope by calling `setScope("<scope name>")` controller's instance method. It's done in a namespace controller most often.
 
 ### Response formats 𝌮
 
@@ -218,7 +218,7 @@ Loco-JS-Model can handle responses in 2 JSON formats.
 ]
 ```
 
-To fetch all resources you have to specify total number of records by using _total_ or _count_ keys.
+To fetch all resources, you have to specify a total number of records by using _total_ or _count_ keys.
 
 ```javascript
 Coupon.get("all", {resource: "admin", planId: 6, total: 603}).then(coupons => {});
@@ -250,7 +250,7 @@ Coupon.get("all", {resource: "admin", planId: 6, total: 603}).then(coupons => {}
 }
 ```
 
-To fetch all resources you don't have to specify total number of records in this case, because API does it already.
+To fetch all resources, you don't have to specify a total number of records in this case, because API does it already.
 
 ```javascript
 Coupon.get("all", {resource: "admin", planId: 6}).then(res => {
@@ -291,7 +291,7 @@ Coupon.get("recent", {
 
 ## Fetching a single resource 💃
 
-Loco-JS-Model provides `find` static method for fetching a single resource. The response from the server should be in a plain JSON format with remote names of attributes as keys.
+Loco-JS-Model provides `find` static method for fetching a single resource. The server's response should be in a plain JSON format with remote names of attributes as keys.
 
 ```javascript
 Coupon.find(25).then(coupon => {});

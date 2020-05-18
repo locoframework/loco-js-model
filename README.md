@@ -344,7 +344,7 @@ You can also look at [source code](https://github.com/locoframework/loco-js-mode
 
 ## Saving ✍️
 
-Loco-JS-Model provides `save` method that facilitates persisting resources on the server. This method requires responses in specific JSON format. I recommend to use the format below, but if you don't plan to use `UI.Form` from **Loco-JS** for handling forms, the only requirement is specified format of **errors** key to have errors assigned to the object.
+Loco-JS-Model provides the `save` method that facilitates persisting resources on the server. This method requires responses in a specific JSON format. I recommend using the format below. But if you don't plan to use `UI.Form` from **Loco-JS-UI** for handling forms, the only requirement is a specified format of the **errors** key to having errors assigned to the object.
 
 ```javascript
 const coupon = new Coupon({

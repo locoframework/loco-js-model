@@ -382,7 +382,8 @@ Coupon.find({id: 25, resource: "admin", planId: 8}).then(coupon => {
   coupon.planId = 8; // set planId explicitly if API does not return it
   coupon; // Coupon { ... id: 25, duration: "once", percentOff: 30 }
 
-  // change percent_off and duration on the server and after some time ...
+  // change percent_off and duration on the server
+  // after some time ...
 
   setTimeout(() => {
     coupon.reload().then(coupon => {

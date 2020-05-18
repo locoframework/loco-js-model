@@ -432,7 +432,7 @@ setTimeout(() => {
 
 # 🇵🇱 i18n
 
-Loco-JS-Model supports internationalization. Following example shows how to display errors in a different language.
+Loco-JS-Model supports internationalization. The following example shows how to display errors in a different language.
 
 First, create a translation of the [base English file](https://github.com/locoframework/loco-js-model/blob/master/src/locales/en.coffee).
 
@@ -455,7 +455,7 @@ const pl = {
 export default pl;
 ```
 
-Loco-JS-Model must have all translations assigned to `I18n` object.
+Loco-JS-Model must have all translations assigned to the `I18n` object.
 
 ```javascript
 import { Config, I18n } from "loco-js-model";
@@ -481,13 +481,13 @@ coupon.errors; // { duration: ["nie może być puste", "nie jest na liście dopu
 # 👩🏽‍🔬 Tests
 
 ```bash
-npm run test
+$ npm run test
 ```
 
-Like it's been said at the beginning, Loco-JS-Model has been extracted from Loco-JS. And Loco-JS is a front-end part of the whole Loco framework along with Loco-Rails.
+Loco-JS-Model has been extracted from Loco-JS. Loco-JS is a front-end part of the whole Loco framework, along with Loco-Rails (the back-end part).
 Both Loco-JS and Loco-Rails are pretty well tested. And because they work in cooperation with each other, they must be tested as one library (Loco-Rails has a suite of integration / _"end to end"_ tests).
 
-So every change made to Loco-JS-Model must be tested with Loco-JS' unit tests and then together as Loco framework it must be tested against Loco-Rails' integration test suite.
+So every change made to Loco-JS-Model must be tested with Loco-JS' unit tests and then together as Loco framework, it must be tested against Loco-Rails' integration test suite.
 
 # 📈 Changelog
 

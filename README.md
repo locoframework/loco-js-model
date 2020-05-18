@@ -396,13 +396,13 @@ Coupon.find({id: 25, resource: "admin", planId: 8}).then(coupon => {
 
 ## 💥 Dirty object 🧙🏽‍♂️
 
-This feature looks like a pure magic when you look at how this works for the first time.
+This feature looks like pure magic when you look at how this works for the first time.
 
-_Dirty object_ is an ability of model instances to express how attribute values have been changed between 2 moments in time - when an object was initialized and their current value on the server.
+The _Dirty object_ is an ability of model instances to express how attribute values have been changed between 2 moments in time - when an object was initialized and their current value on the server.
 
 It is especially useful when you use `Connectivity` features from Loco-JS.
 
-Just look at the example below and bare in mind the order of things 💥
+Just look at the example below and bear in mind the order of things 💥
 
 ```javascript
 // IN THE 1ST ORDER

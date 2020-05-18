@@ -339,8 +339,8 @@ coupon.errors; // {
                // }
 ```
 
-Loco-JS-Model implements almost all built-in [Rails](http://guides.rubyonrails.org/active_record_validations.html) validators, except of _uniqueness_. And you can use them nearly identically.
-You can also look at [source code](https://github.com/locoframework/loco-js-model/tree/master/src/validators) if you are looking for all available options. They are pretty straightforward to decipher.
+Loco-JS-Model implements almost all built-in [Rails](http://guides.rubyonrails.org/active_record_validations.html) validators, except for _uniqueness_. And you can use them nearly identically.
+You can also look at [source code](https://github.com/locoframework/loco-js-model/tree/master/src/validators) if you are looking for all available configuration options. They are pretty straightforward to decipher.
 
 ## Saving ✍️
 

@@ -426,7 +426,11 @@ setTimeout(() => {
 
 ## Useful methods 🔧
 
-`#assignAttr(name, val)` - it converts `val` to a given type defined in attributes property before assigning
+### `Models.Base` instance methods
+
+* `assignAttr(name, val)` - it converts `val` to a given type defined in `attributes` property before assigning
+
+* `clone` - it clones and returns a model instance.
 
 # 🇵🇱 i18n
 
@@ -490,6 +494,10 @@ So every change made to Loco-JS-Model must be tested with Loco-JS' unit tests an
 # 📈 Changelog
 
 ## Major releases 🎙
+
+### 1.0  _(2020-05-19)_
+
+* Breaking changes: `Base` is no longer exported. You must use `Models.Base`
 
 ### 0.3.1
 

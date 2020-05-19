@@ -168,12 +168,6 @@ class Coupon extends Models.Base {
     super(data);
   }
 
-  // This custom method is called when the user changes the value of the field in a React component
-  setAttribute(name, val) {
-    // This Loco-JS-Model's method converts to a given type defined in attributes property
-    this.assignAttr(name, val);
-  }
-
   futureRedeemBy() {
     if (this.redeemBy === null) return;
     if (this.redeemBy <= new Date()) {
@@ -429,6 +423,10 @@ setTimeout(() => {
 }, 3000);
 
 ```
+
+## Useful methods 🔧
+
+`#assignAttr(name, val)` - it converts `val` to a given type defined in attributes property before assigning
 
 # 🇵🇱 i18n
 

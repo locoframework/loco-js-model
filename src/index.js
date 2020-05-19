@@ -1,13 +1,7 @@
-import Base from "./base.coffee";
-import IdentityMap from "./identity_map.coffee";
-import BaseValidator from "./validators/base.coffee";
-import Validators from "./validators";
 import Config from "./config";
 import I18n from "./i18n";
+import IdentityMap from "./IdentityMap";
 import Models from "./models";
+import Validators from "./validators";
 
-Validators.Base = BaseValidator;
-
-Models.Base = Base;
-
-export { Base, Config, I18n, IdentityMap, Models, Validators };
+export { Config, I18n, IdentityMap, Models, Validators };

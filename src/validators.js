@@ -1,4 +1,5 @@
 import Absence from "./validators/absence.coffee";
+import Base from "./validators/base.coffee";
 import Confirmation from "./validators/confirmation.coffee";
 import Exclusion from "./validators/exclusion.coffee";
 import Format from "./validators/format.coffee";
@@ -10,6 +11,7 @@ import Size from "./validators/size.coffee";
 
 const Validators = {
   Absence,
+  Base,
   Confirmation,
   Exclusion,
   Format,

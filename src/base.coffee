@@ -1,20 +1,19 @@
 import Validators from './validators'
 import Config from './config'
-import IdentityMap from './identity_map.coffee'
-import Models from './models'
+import IdentityMap from './IdentityMap'
 import { sendReq } from './helpers/connectivity';
 
 class Base
-  @getIdentity: -> if @identity? then @identity else throw("Specify Model's @identity!")
+  @getIdentity: -> if this.identity? then this.identity else throw("Specify Model's identity!")
 
-  @getRemoteName: -> if @remoteName? then @remoteName else @getIdentity()
+  @getRemoteName: -> if this.remoteName? then this.remoteName else this.getIdentity()
 
-  @all: (opts = {}) -> @get "all", opts
-  @get: (action, opts = {}) -> @__send "GET", action, opts
-  @post: (action, opts = {}) -> @__send "POST", action, opts
-  @put: (action, opts = {}) -> @__send "PUT", action, opts
-  @patch: (action, opts = {}) -> @__send "PATCH", action, opts
-  @delete: (action, opts = {}) -> @__send "DELETE", action, opts
+  @all: (opts = {}) -> this.get "all", opts
+  @get: (action, opts = {}) -> this.__send "GET", action, opts
+  @post: (action, opts = {}) -> this.__send "POST", action, opts
+  @put: (action, opts = {}) -> this.__send "PUT", action, opts
+  @patch: (action, opts = {}) -> this.__send "PATCH", action, opts
+  @delete: (action, opts = {}) -> this.__send "DELETE", action, opts
 
   @find: (idOrObj) ->
     urlParams = {}
@@ -24,12 +23,12 @@ class Base
       delete urlParams.id
     else
       id = idOrObj
-    req = sendReq 'GET', "#{@__getResourcesUrl(urlParams)}/#{id}", urlParams
+    req = sendReq 'GET', "#{this.__getResourcesUrl(urlParams)}/#{id}", urlParams
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject e
       req.onload = (e) =>
         record = JSON.parse e.target.response
-        resolve @__initFromJSON(record, idOrObj.resource)
+        resolve this.__initFromJSON(record, idOrObj.resource)
 
   @getAttribRemoteName: (attrib) ->
     return null if not this.attributes?
@@ -38,7 +37,7 @@ class Base
     this.attributes[attrib].remoteName
 
   @getResourcesUrlParams: (opts) ->
-    url = @__getResourcesUrl(resource: opts.resource)
+    url = this.__getResourcesUrl(resource: opts.resource)
     regexp = /:(\w+)\/?/
     params = []
     while match = regexp.exec url
@@ -47,14 +46,14 @@ class Base
     params
 
   @__getResourcesUrl: (opts) ->
-    resourcesUrl = if not @resources?
-      "/#{@getRemoteName().toLowerCase()}s"
+    resourcesUrl = if not this.resources?
+      "/#{this.getRemoteName().toLowerCase()}s"
     else if opts.resource
-      @resources[opts.resource].url
-    else if Config.scope? and @resources[Config.scope]?
-      @resources[Config.scope].url
+      this.resources[opts.resource].url
+    else if Config.scope? and this.resources[Config.scope]?
+      this.resources[Config.scope].url
     else
-      @resources.url
+      this.resources.url
     if Config.protocolWithHost?
       resourcesUrl = "#{Config.protocolWithHost}#{resourcesUrl}"
     match = /:(\w+)\/?/.exec resourcesUrl
@@ -66,16 +65,6 @@ class Base
       resourcesUrl = resourcesUrl.replace ":#{match[1]}", opts.obj[match[1]]
     return resourcesUrl
 
-  @__initSubclass: (params = {}) ->
-    parts = @getIdentity().split "."
-    if parts.length is 1
-      model = Models[parts[0]]
-      if not model?
-        return new this params
-      return new model params
-    model = Models[parts[0]][parts[1]]
-    new model params
-
   @__page: (i, pageData, resp) ->
     url = pageData.url
     pageData.params[pageData.pageParam] = i
@@ -86,13 +75,13 @@ class Base
         data = JSON.parse e.target.response
         if data.constructor is Array
           for record in data
-            obj = @__initFromJSON record, pageData.resource
+            obj = this.__initFromJSON record, pageData.resource
             resp.push obj
         else if data.resources?
           if resp.constructor is Array
             resp = {resources: [], count: 0}
           for record in data.resources
-            obj = @__initFromJSON record, pageData.resource
+            obj = this.__initFromJSON record, pageData.resource
             resp.resources.push obj
           resp.count = data.count
         else
@@ -108,7 +97,7 @@ class Base
       pageParam: opts.pageParam,
       resource: opts.resource
     }
-    @__page(opts.pageNum || 1, pageData, []).then (data) =>
+    this.__page(opts.pageNum || 1, pageData, []).then (data) =>
       total = data.count || opts.total
       promise = Promise.resolve data
       return promise if opts.pageNum?
@@ -119,32 +108,32 @@ class Base
       for i in [2..max]
         func = (i) =>
           promise = promise.then (_) =>
-            return @__page i, pageData, data
+            return this.__page i, pageData, data
         func i
       return promise
 
   @__getPaginationParam: (resource) ->
     defaultParam = 'page'
-    if resource? and @resources? and @resources[resource]
-      return @resources[resource].paginate?.param || defaultParam
-    if Config.scope? and @resources? and @resources[Config.scope]?
-      param = @resources[Config.scope]?.paginate?.param
+    if resource? and this.resources? and this.resources[resource]
+      return this.resources[resource].paginate?.param || defaultParam
+    if Config.scope? and this.resources? and this.resources[Config.scope]?
+      param = this.resources[Config.scope]?.paginate?.param
       return param || defaultParam
-    if @resources?.paginate?.param?
-      return @resources.paginate.param
+    if this.resources?.paginate?.param?
+      return this.resources.paginate.param
     defaultParam
 
   @__getPaginationPer: (resource) ->
-    if resource? and @resources? and @resources[resource]
-      return @resources[resource].paginate?.per
-    if Config.scope? and @resources? and @resources[Config.scope]?
-      return @resources[Config.scope]?.paginate?.per
-    if @resources?.paginate?.per?
-      return @resources.paginate.per
+    if resource? and this.resources? and this.resources[resource]
+      return this.resources[resource].paginate?.per
+    if Config.scope? and this.resources? and this.resources[Config.scope]?
+      return this.resources[Config.scope]?.paginate?.per
+    if this.resources?.paginate?.per?
+      return this.resources.paginate.per
     null
 
   @__send: (method, action, opts) ->
-    url = @__getResourcesUrl opts
+    url = this.__getResourcesUrl opts
     if action isnt "all"
       url = "#{url}/#{action}"
     data = {
@@ -152,27 +141,27 @@ class Base
       url: url,
       params: opts,
       resource: opts.resource,
-      perPage: @__getPaginationPer(opts.resource),
+      perPage: this.__getPaginationPer(opts.resource),
       pageNum: opts.page,
-      pageParam: @__getPaginationParam(opts.resource),
+      pageParam: this.__getPaginationParam(opts.resource),
       total: opts.total || opts.count
     }
-    @__paginate data
+    this.__paginate data
 
   @__initFromJSON: (record, resource) ->
-    obj = @__initSubclass record
+    obj = new this(record)
     obj.resource = resource
     IdentityMap.add obj
     obj
 
   constructor: (data = {}) ->
-    @id = null
-    @errors = null
-    @resource = data.resource
+    this.id = null
+    this.errors = null
+    this.resource = data.resource
     this.__initAttributes() if this.constructor.attributes?
     this.__assignAttributes(data) if data?
 
-  setResource: (name) -> @resource = name
+  setResource: (name) -> this.resource = name
 
   getIdentity: -> this.constructor.getIdentity()
 
@@ -197,7 +186,7 @@ class Base
   assignAttr: (attrName, val) ->
     attrType = this.getAttrType attrName
     if not val?
-      @[attrName] = null
+      this[attrName] = null
       return
     switch attrType
       when "Date" then val = new Date Date.parse val
@@ -210,7 +199,7 @@ class Base
           Boolean parseInt val
       when "Number" then val = Number val
       when "String" then val = String val
-    @[attrName] = val
+    this[attrName] = val
 
   attributes: ->
     attribs = {id: this.id}
@@ -221,7 +210,7 @@ class Base
 
   isValid: ->
     return true if not this.constructor.attributes?
-    @errors = null
+    this.errors = null
     for name, config of this.constructor.attributes
       continue if not config.validations?
       for validationName, validationSettings of config.validations
@@ -246,12 +235,12 @@ class Base
     true
 
   addErrorMessage: (message, opts = {}) ->
-    @errors = {} if not @errors?
-    @errors[opts.for] = [] if not @errors[opts.for]?
-    @errors[opts.for].push message
+    this.errors = {} if not this.errors?
+    this.errors[opts.for] = [] if not this.errors[opts.for]?
+    this.errors[opts.for].push message
 
   save: ->
-    httpMeth = if @id? then "PUT" else "POST"
+    httpMeth = if this.id? then "PUT" else "POST"
     req = sendReq httpMeth, this.__getResourceUrl(), this.serialize()
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject e
@@ -349,8 +338,8 @@ class Base
 
   __getResourceUrl: ->
     url = this.constructor.__getResourcesUrl resource: this.resource, obj: this
-    return url if not @id?
-    "#{url}/#{@id}"
+    return url if not this.id?
+    "#{url}/#{this.id}"
 
   __processedValidationSettings: (validationSettings) ->
     res = {}

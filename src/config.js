@@ -3,6 +3,16 @@ class Configurator {
     this.localeVar = "en";
     this.protocolWithHostVar = null;
     this.scopeVar = null;
+    this.cookiesByCORSVar = false;
+  }
+
+  get cookiesByCORS() {
+    return this.cookiesByCORSVar;
+  }
+
+  set cookiesByCORS(val) {
+    this.cookiesByCORSVar = val;
+    return this.cookiesByCORSVar;
   }
 
   get locale() {

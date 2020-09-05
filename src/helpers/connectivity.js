@@ -1,3 +1,4 @@
+import Config from "../config";
 import { toURIParams } from "./obj";
 
 const filterParams = data => {
@@ -23,6 +24,7 @@ export const sendReq = (httpMeth, url, data) => {
   if (meta) {
     req.setRequestHeader("X-CSRF-Token", meta.content);
   }
+  req.withCredentials = Config.cookiesByCORS;
   req.send(JSON.stringify(params));
   return req;
 };

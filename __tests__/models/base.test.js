@@ -1,5 +1,5 @@
 import createMockXHR from "../../__mock__/xhr";
-import { Models } from "index";
+import { Config, Models } from "index";
 
 class Comment extends Models.Base {
   static identity = "Article.Comment";
@@ -93,6 +93,21 @@ it("does not send param if was used in URL", () => {
     "GET",
     "/user/articles/1/comments?page=1"
   );
+});
+
+describe("requests", () => {
+  it("does not set withCredentials by default", () => {
+    new Comment({ articleId: 1, author: "Joe Doe", text: "foo bar baz"}).save();
+    expect(mockXHR.open).toBeCalledWith("POST", "/user/articles/1/comments");
+    expect(mockXHR.withCredentials).toEqual(false);
+  });
+
+  it("is possible to set withCredentials via Config", () => {
+    Config.cookiesByCORS = true;
+    new Comment({ articleId: 1, author: "Joe Doe", text: "foo bar baz"}).save();
+    expect(mockXHR.open).toBeCalledWith("POST", "/user/articles/1/comments");
+    expect(mockXHR.withCredentials).toEqual(true);
+  });
 });
 
 describe("attribute types", () => {

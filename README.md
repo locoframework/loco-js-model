@@ -67,14 +67,17 @@ Loco-JS-Model uses Promises, so remember to **polyfill** them❗️
 ```javascript
 import { Config } from "loco-js-model";
 
-// If provided - Loco-JS uses an absolute path instead of a site-root-relative path in all XHR requests
+// If provided - Loco-JS-Model uses an absolute path instead of a site-root-relative path in all XHR requests
 Config.protocolWithHost = "http://localhost:3000";
 
-Config.locale = "pl";   // "en" by default
+// Send and receive cookies by a CORS request 
+Config.cookiesByCORS = true;  // false by default
+
+Config.locale = "pl";  // "en" by default
 
 // Models have a static class property - "resources". It is used to specify base URLs (scopes)  
 // from which data are retrieved. This property sets a default scope for all models.
-Config.scope = "admin"; // null by default
+Config.scope = "admin";  // null by default
 ```
 
 # 🎮 Usage
@@ -494,6 +497,10 @@ So every change made to Loco-JS-Model must be tested with Loco-JS' unit tests an
 # 📈 Changelog
 
 ## Major releases 🎙
+
+### 1.1  _(2020-09-06)_
+
+* ability to receive & send cookies by a CORS request
 
 ### 1.0  _(2020-05-19)_
 

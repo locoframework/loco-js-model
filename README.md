@@ -500,7 +500,7 @@ So every change made to Loco-JS-Model must be tested with Loco-JS' unit tests an
 
 ### 1.1  _(2020-09-06)_
 
-* ability to receive & send cookies by a CORS request
+* Ability to receive & send cookies by a CORS request
 
 ### 1.0  _(2020-05-19)_
 

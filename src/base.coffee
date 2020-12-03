@@ -23,12 +23,15 @@ class Base
       delete urlParams.id
     else
       id = idOrObj
-    req = sendReq 'GET', "#{this.__getResourcesUrl(urlParams)}/#{id}", urlParams
+    req = sendReq('GET', "#{this.__getResourcesUrl(urlParams)}/#{id}", urlParams)
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject e
       req.onload = (e) =>
-        record = JSON.parse e.target.response
-        resolve this.__initFromJSON(record, idOrObj.resource)
+        if e.target.status is 302 or e.target.status is 200
+          record = JSON.parse(e.target.response)
+          resolve(this.__initFromJSON(record, idOrObj.resource))
+        else
+          resolve(null)
 
   @getAttribRemoteName: (attrib) ->
     return null if not this.attributes?

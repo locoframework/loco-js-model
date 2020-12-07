@@ -25,13 +25,13 @@ class Base
       id = idOrObj
     req = sendReq('GET', "#{this.__getResourcesUrl(urlParams)}/#{id}", urlParams)
     return new Promise (resolve, reject) =>
-      req.onerror = (e) -> reject e
+      req.onerror = (e) -> reject(e)
       req.onload = (e) =>
-        if e.target.status is 302 or e.target.status is 200
-          record = JSON.parse(e.target.response)
-          resolve(this.__initFromJSON(record, idOrObj.resource))
-        else
+        if e.target.status is 404
           resolve(null)
+          return
+        record = JSON.parse(e.target.response)
+        resolve(this.__initFromJSON(record, idOrObj.resource))
 
   @getAttribRemoteName: (attrib) ->
     return null if not this.attributes?

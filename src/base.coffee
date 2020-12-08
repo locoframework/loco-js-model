@@ -23,7 +23,8 @@ class Base
       delete urlParams.id
     else
       id = idOrObj
-    req = sendReq('GET', "#{this.__getResourcesUrl(urlParams)}/#{id}", urlParams)
+    url = "#{this.__getResourcesUrl(urlParams)}/#{id}"
+    req = sendReq('GET', url, urlParams)
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject(e)
       req.onload = (e) =>
@@ -59,13 +60,13 @@ class Base
       this.resources.url
     if Config.protocolWithHost?
       resourcesUrl = "#{Config.protocolWithHost}#{resourcesUrl}"
-    match = /:(\w+)\/?/.exec resourcesUrl
+    match = /:(\w+)\/?/.exec(resourcesUrl)
     return resourcesUrl if not match?
     if opts[match[1]]?
-      resourcesUrl = resourcesUrl.replace ":#{match[1]}", opts[match[1]]
+      resourcesUrl = resourcesUrl.replace(":#{match[1]}", opts[match[1]])
       delete opts[match[1]]
     else if opts.obj? and opts.obj[match[1]]?
-      resourcesUrl = resourcesUrl.replace ":#{match[1]}", opts.obj[match[1]]
+      resourcesUrl = resourcesUrl.replace(":#{match[1]}", opts.obj[match[1]])
     return resourcesUrl
 
   @__page: (i, pageData, resp) ->

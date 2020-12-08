@@ -76,10 +76,9 @@ class Dummy extends Models.Base {
 }
 
 const oldXMLHttpRequest = window.XMLHttpRequest;
-let mockXHR = null;
+let mockXHR = createMockXHR();
 
 beforeEach(() => {
-  mockXHR = createMockXHR();
   window.XMLHttpRequest = jest.fn(() => mockXHR);
 });
 
@@ -141,6 +140,25 @@ describe("validation", () => {
     dummy.dumbAttrib5 = "KRK";
     dummy.isValid();
     expect(dummy.errors).toBe(null);
+  });
+});
+
+describe(".find", () => {
+  afterEach(() => {
+    Config.protocolWithHost = null;
+  });
+
+  it.todo("returns null if 404");
+
+  it("uses a correct URL", () => {
+    Comment.find({id: 25, articleId: 4});
+    expect(mockXHR.open).toBeCalledWith("GET", "/user/articles/4/comments/25?");
+  });
+
+  it("uses a correct URL even with the specified protocol and host", () => {
+    Config.protocolWithHost = "http://localhost:3001";
+    Comment.find({id: 25, articleId: 4});
+    expect(mockXHR.open).toBeCalledWith("GET", "http://localhost:3001/user/articles/4/comments/25?");
   });
 });
 

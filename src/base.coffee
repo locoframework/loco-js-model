@@ -60,7 +60,7 @@ class Base
       this.resources.url
     if Config.protocolWithHost?
       resourcesUrl = "#{Config.protocolWithHost}#{resourcesUrl}"
-    match = /:(\w+)\/?/.exec(resourcesUrl)
+    match = /:([a-zA-Z]+)\/?/.exec(resourcesUrl)
     return resourcesUrl if not match?
     if opts[match[1]]?
       resourcesUrl = resourcesUrl.replace(":#{match[1]}", opts[match[1]])

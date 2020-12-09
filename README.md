@@ -288,7 +288,8 @@ Coupon.get("recent", {
 
 ## Fetching a single resource 💃
 
-Loco-JS-Model provides `find` static method for fetching a single resource. The server's response should be in a plain JSON format with remote names of attributes as keys.
+Loco-JS-Model provides `find` static method for fetching a single resource. The server's response should be in a plain JSON format with remote names of attributes as keys.  
+`find` returns `null` if server responds with 404 HTTP status code.
 
 ```javascript
 Coupon.find(25).then(coupon => {});
@@ -497,6 +498,11 @@ So every change made to Loco-JS-Model must be tested with Loco-JS' unit tests an
 # 📈 Changelog
 
 ## Major releases 🎙
+
+### 1.1.1  _(2020-12-09)_
+
+* `find` method reacts on 404 HTTP response
+* a URL generation was fixed when `Config.protocolWithHost` is used
 
 ### 1.1  _(2020-09-06)_
 

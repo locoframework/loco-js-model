@@ -1,3 +1,4 @@
+import nock from 'nock';
 import createMockXHR from "../../__mock__/xhr";
 import { Config, Models } from "index";
 
@@ -76,19 +77,21 @@ class Dummy extends Models.Base {
 }
 
 const oldXMLHttpRequest = window.XMLHttpRequest;
-let mockXHR = createMockXHR();
 
-beforeEach(() => {
-  window.XMLHttpRequest = jest.fn(() => mockXHR);
-});
+const mockXHR = () => {
+  const mock = createMockXHR();
+  window.XMLHttpRequest = jest.fn(() => mock);
+  return mock;
+};
 
 afterEach(() => {
   window.XMLHttpRequest = oldXMLHttpRequest;
 });
 
 it("does not send param if was used in URL", () => {
+  const mock = mockXHR();
   Comment.all({ articleId: 1 });
-  expect(mockXHR.open).toBeCalledWith(
+  expect(mock.open).toBeCalledWith(
     "GET",
     "/user/articles/1/comments?page=1"
   );
@@ -96,16 +99,18 @@ it("does not send param if was used in URL", () => {
 
 describe("requests", () => {
   it("does not set withCredentials by default", () => {
+    const mock = mockXHR();
     new Comment({ articleId: 1, author: "Joe Doe", text: "foo bar baz"}).save();
-    expect(mockXHR.open).toBeCalledWith("POST", "/user/articles/1/comments");
-    expect(mockXHR.withCredentials).toEqual(false);
+    expect(mock.open).toBeCalledWith("POST", "/user/articles/1/comments");
+    expect(mock.withCredentials).toEqual(false);
   });
 
   it("is possible to set withCredentials via Config", () => {
+    const mock = mockXHR();
     Config.cookiesByCORS = true;
     new Comment({ articleId: 1, author: "Joe Doe", text: "foo bar baz"}).save();
-    expect(mockXHR.open).toBeCalledWith("POST", "/user/articles/1/comments");
-    expect(mockXHR.withCredentials).toEqual(true);
+    expect(mock.open).toBeCalledWith("POST", "/user/articles/1/comments");
+    expect(mock.withCredentials).toEqual(true);
   });
 });
 
@@ -148,29 +153,42 @@ describe(".find", () => {
     Config.protocolWithHost = null;
   });
 
-  it.todo("returns null if 404");
+  it("returns null if 404", (done) => {
+    Config.protocolWithHost = "http://localhost";
+    const scope = nock('http://localhost')
+      .get('/user/articles/4/comments/25?')
+      .reply(404, '');
+    Comment.find({id: 25, articleId: 4}).then(comment => {
+      expect(comment).toBe(null);
+      scope.done();
+      done();
+    });
+  });
 
   it("uses a correct URL", () => {
+    const mock = mockXHR();
     Comment.find({id: 25, articleId: 4});
-    expect(mockXHR.open).toBeCalledWith("GET", "/user/articles/4/comments/25?");
+    expect(mock.open).toBeCalledWith("GET", "/user/articles/4/comments/25?");
   });
 
   it("uses a correct URL even with the specified protocol and host", () => {
+    const mock = mockXHR();
     Config.protocolWithHost = "http://localhost:3001";
     Comment.find({id: 25, articleId: 4});
-    expect(mockXHR.open).toBeCalledWith("GET", "http://localhost:3001/user/articles/4/comments/25?");
+    expect(mock.open).toBeCalledWith("GET", "http://localhost:3001/user/articles/4/comments/25?");
   });
 });
 
 describe("#save", () => {
   it("properly builds URL for nested models", () => {
+    const mock = mockXHR();
     const comment = new Comment({
       articleId: 1,
       author: "Joe Doe",
       text: "foo bar baz"
     });
     comment.save();
-    expect(mockXHR.open).toBeCalledWith("POST", "/user/articles/1/comments");
+    expect(mock.open).toBeCalledWith("POST", "/user/articles/1/comments");
   });
 });
 

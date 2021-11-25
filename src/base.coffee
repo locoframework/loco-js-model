@@ -58,7 +58,9 @@ class Base
       this.resources[Config.scope].url
     else
       this.resources.url
-    if Config.protocolWithHost?
+    if this.protocolWithHost?
+      resourcesUrl = "#{this.protocolWithHost}#{resourcesUrl}"
+    else if Config.protocolWithHost?
       resourcesUrl = "#{Config.protocolWithHost}#{resourcesUrl}"
     match = /:([a-zA-Z]+)\/?/.exec(resourcesUrl)
     return resourcesUrl if not match?

@@ -1,11 +1,11 @@
 import Config from "../config";
 import { toURIParams } from "./obj";
 
-const filterParams = data => {
+const filterParams = (data) => {
   const params = {};
   if (!data) return params;
   const forbidden = ["resource", "total", "count"];
-  Object.keys(data).forEach(prop => {
+  Object.keys(data).forEach((prop) => {
     if (forbidden.indexOf(prop) === -1) {
       params[prop] = data[prop];
     }

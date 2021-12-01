@@ -16,7 +16,7 @@ imap = {
 */
 let imap = {};
 
-const findPosition = arr => {
+const findPosition = (arr) => {
   let idx = arr.length;
   arr.find((element, index) => {
     if (element === null) {
@@ -49,20 +49,17 @@ const addCollection = (identity, opts = {}) => {
   return addToImap(arr, opts.to);
 };
 
-const subscribe = args => {
+const subscribe = (args) => {
   const forExistingElement = () => {};
   if (typeof args.to === "object") {
-    const idx = connect(
-      args.with,
-      { with: args.to }
-    );
+    const idx = connect(args.with, { with: args.to });
     if (idx === null) return forExistingElement;
     return () => {
       unsubscribe(args.to.getIdentity(), args.to.id, idx);
     };
   } else if (typeof args.to === "function") {
     const idx = addCollection(args.to.getIdentity(), {
-      to: args.with
+      to: args.with,
     });
     if (idx === null) return forExistingElement;
     return () => {
@@ -73,7 +70,7 @@ const subscribe = args => {
 
 const unsubscribe = (identity, id, idx) => (imap[identity][id][idx] = null);
 
-const add = obj => {
+const add = (obj) => {
   const identity = obj.getIdentity();
   if (imap[identity] === undefined) imap[identity] = {};
   if (imap[identity][obj.id] === undefined) imap[identity][obj.id] = [];
@@ -107,5 +104,5 @@ export default {
   unsubscribe,
   add,
   find,
-  findConnected
+  findConnected,
 };

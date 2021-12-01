@@ -1,7 +1,7 @@
 import en from "./locales/en.coffee";
 
 const I18n = {
-  en
+  en,
 };
 
 export default I18n;

@@ -13,7 +13,7 @@ const filterParams = (data) => {
   return params;
 };
 
-export const sendReq = (httpMeth, url, data) => {
+export const sendReq = (httpMeth, url, data, opts = {}) => {
   const params = filterParams(data);
   const finalURL = httpMeth === "GET" ? `${url}?${toURIParams(params)}` : url;
   const meta = document.querySelector("meta[name='csrf-token']");
@@ -25,6 +25,9 @@ export const sendReq = (httpMeth, url, data) => {
     req.setRequestHeader("X-CSRF-Token", meta.content);
   }
   req.withCredentials = Config.cookiesByCORS;
+  if (opts.authorizationHeader != null) {
+    req.setRequestHeader("Authorization", opts.authorizationHeader);
+  }
   req.send(JSON.stringify(params));
   return req;
 };

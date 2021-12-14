@@ -24,7 +24,7 @@ class Base
     else
       id = idOrObj
     url = "#{this.__getResourcesUrl(urlParams)}/#{id}"
-    req = sendReq('GET', url, urlParams)
+    req = sendReq('GET', url, urlParams, this.__requestOpts())
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject(e)
       req.onload = (e) =>
@@ -71,10 +71,13 @@ class Base
       resourcesUrl = resourcesUrl.replace(":#{match[1]}", opts.obj[match[1]])
     return resourcesUrl
 
+  @__requestOpts: () ->
+    { authorizationHeader: this.authorizationHeader }
+
   @__page: (i, pageData, resp) ->
     url = pageData.url
     pageData.params[pageData.pageParam] = i
-    req = sendReq pageData.method, url, pageData.params
+    req = sendReq pageData.method, url, pageData.params, this.__requestOpts()
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject e
       req.onload = (e) =>
@@ -247,7 +250,7 @@ class Base
 
   save: ->
     httpMeth = if this.id? then "PUT" else "POST"
-    req = sendReq httpMeth, this.__getResourceUrl(), this.serialize()
+    req = sendReq httpMeth, this.__getResourceUrl(), this.serialize(), this.constructor.__requestOpts()
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject e
       req.onload = (e) =>
@@ -259,7 +262,7 @@ class Base
         resolve data
 
   updateAttribute: (attr) ->
-    req = sendReq 'PUT', this.__getResourceUrl(), this.serialize(attr)
+    req = sendReq 'PUT', this.__getResourceUrl(), this.serialize(attr), this.constructor.__requestOpts()
     return new Promise (resolve, reject) =>
       req.onerror = (e) -> reject e
       req.onload = (e) =>
@@ -317,7 +320,7 @@ class Base
     url = this.__getResourceUrl()
     if action?
       url = "#{url}/#{action}"
-    req = sendReq method, url, data
+    req = sendReq method, url, data, this.constructor.__requestOpts()
     return new Promise (resolve, reject) ->
       req.onerror = (e) -> reject e
       req.onload = (e) ->

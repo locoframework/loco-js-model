@@ -98,6 +98,9 @@ class Coupon extends Models.Base {
   // It is because finding this class by its name is impossible in a production
   // environment due to minification.
   static identity = "Coupon";
+  
+  // (optional) it overrides the protocolWithHost passed during configuration
+  static protocolWithHost = "https://myapp.test";
 
   // You can fetch the same type of resource from different API endpoints.
   // These endpoints can be defined using resources property.

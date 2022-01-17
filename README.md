@@ -502,6 +502,10 @@ So every change made to Loco-JS-Model must be tested with Loco-JS' unit tests an
 
 ## Major releases 🎙
 
+### 1.2.0  _(2022-01-XX)_
+
+* Ability to set an individual `protocolWithHost` for a given model
+
 ### 1.1.1  _(2020-12-09)_
 
 * `find` method reacts on 404 HTTP response

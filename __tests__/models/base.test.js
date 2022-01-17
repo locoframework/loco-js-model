@@ -61,6 +61,8 @@ class Article extends Models.Base {
 }
 
 class Dummy extends Models.Base {
+  static protocolWithHost = "https://myapp.test";
+
   static identity = "Dummy";
 
   static attributes = {
@@ -176,6 +178,12 @@ describe(".find", () => {
     Config.protocolWithHost = "http://localhost:3001";
     Comment.find({id: 25, articleId: 4});
     expect(mock.open).toBeCalledWith("GET", "http://localhost:3001/user/articles/4/comments/25?");
+  });
+});
+
+describe(".__getResourcesUrl", () => {
+  it("returns a correct URL", () => {
+    expect(Dummy.__getResourcesUrl()).toEqual("https://myapp.test/dummys");
   });
 });
 

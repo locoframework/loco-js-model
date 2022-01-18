@@ -103,6 +103,10 @@ it("does not send param if was used in URL + .all uses Authorization header if d
 });
 
 describe("requests", () => {
+  afterEach(() => {
+    Config.authorizationHeader = null;
+  });
+
   it("does not set withCredentials by default", () => {
     const mock = mockXHR();
     new Comment({ articleId: 1, author: "Joe Doe", text: "foo bar baz"}).save();
@@ -116,6 +120,13 @@ describe("requests", () => {
     new Comment({ articleId: 1, author: "Joe Doe", text: "foo bar baz"}).save();
     expect(mock.open).toBeCalledWith("POST", "/user/articles/1/comments");
     expect(mock.withCredentials).toEqual(true);
+  });
+
+  it("is possible to change Authorization header via Config", () => {
+    const mock = mockXHR();
+    Config.authorizationHeader = "Bearer YYY";
+    Comment.find({id: 25, articleId: 4});
+    expect(mock.setRequestHeader).toBeCalledWith("Authorization", "Bearer YYY");
   });
 });
 

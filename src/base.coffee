@@ -72,7 +72,7 @@ class Base
     return resourcesUrl
 
   @__requestOpts: () ->
-    { authorizationHeader: this.authorizationHeader }
+    { authorizationHeader: Config.authorizationHeader || this.authorizationHeader }
 
   @__page: (i, pageData, resp) ->
     url = pageData.url

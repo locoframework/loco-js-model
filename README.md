@@ -67,6 +67,9 @@ Loco-JS-Model uses Promises, so remember to **polyfill** them❗️
 ```javascript
 import { Config } from "loco-js-model";
 
+// Loco-JS-Model sends Authorization header in all XHR requests if provided 
+Config.authorizationHeader = "Bearer XXX";
+
 // If provided - Loco-JS-Model uses an absolute path instead of a site-root-relative path in all XHR requests
 Config.protocolWithHost = "http://localhost:3000";
 
@@ -505,6 +508,7 @@ So every change made to Loco-JS-Model must be tested with Loco-JS' unit tests an
 ### 1.2.0  _(2022-01-XX)_
 
 * Ability to set an individual `protocolWithHost` for a given model
+* `Config.authorizationHeader` getter / setter
 
 ### 1.1.1  _(2020-12-09)_
 

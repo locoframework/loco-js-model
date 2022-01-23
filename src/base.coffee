@@ -72,7 +72,10 @@ class Base
     return resourcesUrl
 
   @__requestOpts: () ->
-    { authorizationHeader: Config.authorizationHeader || this.authorizationHeader }
+    {
+      authorizationHeader: Config.authorizationHeader || this.authorizationHeader,
+      cookiesByCORS: if this.cookiesByCORS? then this.cookiesByCORS else Config.cookiesByCORS
+    }
 
   @__page: (i, pageData, resp) ->
     url = pageData.url

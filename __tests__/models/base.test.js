@@ -1,5 +1,5 @@
 import nock from 'nock';
-import createMockXHR from "../../__mock__/xhr";
+import mockXHR from "../../__mock__/xhr";
 import { Config, Models } from "index";
 
 class Comment extends Models.Base {
@@ -81,12 +81,6 @@ class Dummy extends Models.Base {
 }
 
 const oldXMLHttpRequest = window.XMLHttpRequest;
-
-const mockXHR = () => {
-  const mock = createMockXHR();
-  window.XMLHttpRequest = jest.fn(() => mock);
-  return mock;
-};
 
 afterEach(() => {
   window.XMLHttpRequest = oldXMLHttpRequest;

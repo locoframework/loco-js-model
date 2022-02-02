@@ -505,7 +505,7 @@ So every change made to Loco-JS-Model must be tested with Loco-JS' unit tests an
 
 ## Major releases 🎙
 
-### 2.0.0  _(2022-01-XX)_
+### 2.0.0  _(2022-02-03)_
 
 * Ability to set an individual `protocolWithHost` for a given model
 * `Config.authorizationHeader` getter / setter

@@ -19,7 +19,7 @@ const Validators = {
   Length,
   Numericality,
   Presence,
-  Size
+  Size,
 };
 
 export default Validators;

@@ -67,6 +67,9 @@ Loco-JS-Model uses Promises, so remember to **polyfill** them❗️
 ```javascript
 import { Config } from "loco-js-model";
 
+// Loco-JS-Model sends Authorization header in all XHR requests if provided 
+Config.authorizationHeader = "Bearer XXX";
+
 // If provided - Loco-JS-Model uses an absolute path instead of a site-root-relative path in all XHR requests
 Config.protocolWithHost = "http://localhost:3000";
 
@@ -98,6 +101,9 @@ class Coupon extends Models.Base {
   // It is because finding this class by its name is impossible in a production
   // environment due to minification.
   static identity = "Coupon";
+  
+  // (optional) it overrides the protocolWithHost passed during configuration
+  static protocolWithHost = "https://myapp.test";
 
   // You can fetch the same type of resource from different API endpoints.
   // These endpoints can be defined using resources property.
@@ -498,6 +504,12 @@ So every change made to Loco-JS-Model must be tested with Loco-JS' unit tests an
 # 📈 Changelog
 
 ## Major releases 🎙
+
+### 2.0.0  _(2022-02-03)_
+
+* Ability to set an individual `protocolWithHost` for a given model
+* `Config.authorizationHeader` getter / setter
+* `Config` setters don't return a value
 
 ### 1.1.1  _(2020-12-09)_
 

@@ -1,8 +1,10 @@
 import nock from 'nock';
-import createMockXHR from "../../__mock__/xhr";
+import mockXHR from "../../__mock__/xhr";
 import { Config, Models } from "index";
 
 class Comment extends Models.Base {
+  static authorizationHeader = "Bearer XXX";
+
   static identity = "Article.Comment";
   static remoteName = "Comment";
   static resources = {
@@ -61,6 +63,8 @@ class Article extends Models.Base {
 }
 
 class Dummy extends Models.Base {
+  static protocolWithHost = "https://myapp.test";
+
   static identity = "Dummy";
 
   static attributes = {
@@ -78,26 +82,25 @@ class Dummy extends Models.Base {
 
 const oldXMLHttpRequest = window.XMLHttpRequest;
 
-const mockXHR = () => {
-  const mock = createMockXHR();
-  window.XMLHttpRequest = jest.fn(() => mock);
-  return mock;
-};
-
 afterEach(() => {
   window.XMLHttpRequest = oldXMLHttpRequest;
 });
 
-it("does not send param if was used in URL", () => {
+it("does not send param if was used in URL + .all uses Authorization header if defined", () => {
   const mock = mockXHR();
   Comment.all({ articleId: 1 });
   expect(mock.open).toBeCalledWith(
     "GET",
     "/user/articles/1/comments?page=1"
   );
+  expect(mock.setRequestHeader).toBeCalledWith("Authorization", "Bearer XXX");
 });
 
 describe("requests", () => {
+  afterEach(() => {
+    Config.authorizationHeader = null;
+  });
+
   it("does not set withCredentials by default", () => {
     const mock = mockXHR();
     new Comment({ articleId: 1, author: "Joe Doe", text: "foo bar baz"}).save();
@@ -111,6 +114,13 @@ describe("requests", () => {
     new Comment({ articleId: 1, author: "Joe Doe", text: "foo bar baz"}).save();
     expect(mock.open).toBeCalledWith("POST", "/user/articles/1/comments");
     expect(mock.withCredentials).toEqual(true);
+  });
+
+  it("is possible to change Authorization header via Config", () => {
+    const mock = mockXHR();
+    Config.authorizationHeader = "Bearer YYY";
+    Comment.find({id: 25, articleId: 4});
+    expect(mock.setRequestHeader).toBeCalledWith("Authorization", "Bearer YYY");
   });
 });
 
@@ -165,10 +175,11 @@ describe(".find", () => {
     });
   });
 
-  it("uses a correct URL", () => {
+  it("uses a correct URL and sets Authorization if defined", () => {
     const mock = mockXHR();
     Comment.find({id: 25, articleId: 4});
     expect(mock.open).toBeCalledWith("GET", "/user/articles/4/comments/25?");
+    expect(mock.setRequestHeader).toBeCalledWith("Authorization", "Bearer XXX");
   });
 
   it("uses a correct URL even with the specified protocol and host", () => {
@@ -179,8 +190,14 @@ describe(".find", () => {
   });
 });
 
+describe(".__getResourcesUrl", () => {
+  it("returns a correct URL", () => {
+    expect(Dummy.__getResourcesUrl()).toEqual("https://myapp.test/dummys");
+  });
+});
+
 describe("#save", () => {
-  it("properly builds URL for nested models", () => {
+  it("properly builds URL for nested models and sets Authorization header if defined", () => {
     const mock = mockXHR();
     const comment = new Comment({
       articleId: 1,
@@ -189,6 +206,7 @@ describe("#save", () => {
     });
     comment.save();
     expect(mock.open).toBeCalledWith("POST", "/user/articles/1/comments");
+    expect(mock.setRequestHeader).toBeCalledWith("Authorization", "Bearer XXX");
   });
 });
 

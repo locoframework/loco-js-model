@@ -3,16 +3,6 @@ class Configurator {
     this.localeVar = "en";
     this.protocolWithHostVar = null;
     this.scopeVar = null;
-    this.cookiesByCORSVar = false;
-  }
-
-  get cookiesByCORS() {
-    return this.cookiesByCORSVar;
-  }
-
-  set cookiesByCORS(val) {
-    this.cookiesByCORSVar = val;
-    return this.cookiesByCORSVar;
   }
 
   get locale() {
@@ -21,7 +11,6 @@ class Configurator {
 
   set locale(val) {
     this.localeVar = val;
-    return this.localeVar;
   }
 
   get protocolWithHost() {
@@ -31,14 +20,11 @@ class Configurator {
   set protocolWithHost(val) {
     if (!val) {
       this.protocolWithHostVar = null;
-      return this.protocolWithHostVar;
-    }
-    if (val[val.length - 1] === "/") {
+    } else if (val[val.length - 1] === "/") {
       this.protocolWithHostVar = val.slice(0, val.length - 1);
-      return this.protocolWithHostVar;
+    } else {
+      this.protocolWithHostVar = val;
     }
-    this.protocolWithHostVar = val;
-    return this.protocolWithHostVar;
   }
 
   get scope() {
@@ -47,7 +33,6 @@ class Configurator {
 
   set scope(val) {
     this.scopeVar = val;
-    return this.scopeVar;
   }
 }
 

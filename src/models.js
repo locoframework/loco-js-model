@@ -1,6 +1,6 @@
 import Base from "./base.coffee";
 
-Base.prototype.clone = function() {
+Base.prototype.clone = function () {
   return new this.constructor({ ...this.attributes() });
 };
 

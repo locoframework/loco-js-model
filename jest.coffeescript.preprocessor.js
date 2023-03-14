@@ -1,5 +1,3 @@
-/* eslint-env node */
-
 const coffee = require("coffeescript");
 const babelJest = require("babel-jest");
 

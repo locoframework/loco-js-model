@@ -1,4 +1,5 @@
-import { IdentityMap, Models } from "index";
+import { Models } from "index";
+import IdentityMap from "IdentityMap";
 
 class Comment extends Models.Base {
   static identity = "Article.Comment";

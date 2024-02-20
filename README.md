@@ -4,7 +4,7 @@
 
 # 🧐 What is Loco-JS-Model?
 
-**Loco-JS-Model** is one of the [Loco framework](http://locoframework.org) components. It is a model layer for JavaScript that can be used separately.  
+**Loco-JS-Model** is one of the [Loco framework](http://locoframework.org) components. It is a model layer for JavaScript that can be used separately.
 Loco framework is a concept that simplifies communication between front-end and back-end. The back-end part can be implemented in other languages and frameworks as well.
 I am a Rails programmer. That's why I created **Loco** for [**Rails**](https://github.com/locoframework/loco-rails).
 
@@ -14,24 +14,22 @@ I am a Rails programmer. That's why I created **Loco** for [**Rails**](https://g
 Loco Framework
 |
 |--- Loco-Rails (back-end part)
-|       |
-|       |--- Loco-Rails-Core (logical structure for JS / can be used separately with Loco-JS-Core)
+|
+|       Loco-Rails-Core (logical structure for JS to use with Loco-JS-Core)
 |
 |--- Loco-JS (front-end part)
-        |
-        |--- Loco-JS-Core (logical structure for JS / can be used separately)
-        |
-        |--- Loco-JS-Model (model part / can be used separately)
-        |
-        |--- other built-in parts of Loco-JS
 
-        Loco-JS-UI - connects models with UI elements (a separate library)
+        Loco-JS-Core (logical structure for JS)
+
+        Loco-JS-Model (model part)
+
+        Loco-JS-UI - connects models with UI elements
 ```
 
 Loco-JS-Model works well as a part of the modern JavaScript ecosystem alongside libraries such as React and Redux.
 
-This 🎁[**example**](https://github.com/artofcodelabs/front-end-boilerplate)🎁 presents how to combine Loco-JS-Model with React and Redux _(+ other neat tools)_.  
-This repo is also a good starting point if you want to start hack on a multi-static-page app powered by React, Redux, React, React-Router, Webpack, Babel, etc.  
+This 🎁[**example**](https://github.com/artofcodelabs/front-end-boilerplate)🎁 presents how to combine Loco-JS-Model with React and Redux _(+ other neat tools)_.
+This repo is also a good starting point if you want to start hack on a multi-static-page app powered by React, Redux, React, React-Router, Webpack, Babel, etc.
 Especially if you are looking for something pre-configured and more straightforward than [Create React App](https://github.com/facebook/create-react-app).
 
 # 📡 Model Layer
@@ -45,7 +43,7 @@ Well, you have at least 2 ways to persist your data:
 1. You can save them in local storage.
 2. You can send them to a server using the API endpoint. Data are then stored in a database.
 
-So we can assume that validating data before they reach the destination can be useful in both cases.  
+So we can assume that validating data before they reach the destination can be useful in both cases.
 But when it comes to persistence - Loco-JS-Model gravitates towards communication with a server. It provides methods that facilitate both: persisting data and fetching them from a server.
 
 # 📥 Installation
@@ -58,27 +56,23 @@ $ npm install --save loco-js-model
 
 🎊 Loco-JS-Model has no dependencies. 🎉
 
-Although [babel-plugin-transform-class-properties](https://babeljs.io/docs/en/babel-plugin-transform-class-properties) may be helpful to support static class properties, which are useful in defining models.
-
-Loco-JS-Model uses Promises, so remember to **polyfill** them❗️
-
 # ⚙️ Configuration
 
 ```javascript
 import { Config } from "loco-js-model";
 
-// Loco-JS-Model sends Authorization header in all XHR requests if provided 
+// Loco-JS-Model sends Authorization header in all XHR requests if provided
 Config.authorizationHeader = "Bearer XXX";
 
 // If provided - Loco-JS-Model uses an absolute path instead of a site-root-relative path in all XHR requests
 Config.protocolWithHost = "http://localhost:3000";
 
-// Send and receive cookies by a CORS request 
+// Send and receive cookies by a CORS request
 Config.cookiesByCORS = true;  // false by default
 
 Config.locale = "pl";  // "en" by default
 
-// Models have a static class property - "resources". It is used to specify base URLs (scopes)  
+// Models have a static class property - "resources". It is used to specify base URLs (scopes)
 // from which data are retrieved. This property sets a default scope for all models.
 Config.scope = "admin";  // null by default
 ```
@@ -96,12 +90,12 @@ import { Models } from "loco-js-model";
 
 class Coupon extends Models.Base {
   // The value of this property should be a "stringified" class name.
-  // Setting this property is required if you use a full Loco framework 
+  // Setting this property is required if you use a full Loco framework
   // and send notifications from the server.
   // It is because finding this class by its name is impossible in a production
   // environment due to minification.
   static identity = "Coupon";
-  
+
   // (optional) it overrides the protocolWithHost passed during configuration
   static protocolWithHost = "https://myapp.test";
 
@@ -294,7 +288,7 @@ Coupon.get("recent", {
 
 ## Fetching a single resource 💃
 
-Loco-JS-Model provides `find` static method for fetching a single resource. The server's response should be in a plain JSON format with remote names of attributes as keys.  
+Loco-JS-Model provides `find` static method for fetching a single resource. The server's response should be in a plain JSON format with remote names of attributes as keys.
 `find` returns `null` if server responds with 404 HTTP status code.
 
 ```javascript

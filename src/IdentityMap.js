@@ -68,7 +68,11 @@ const subscribe = (args) => {
   }
 };
 
-const unsubscribe = (identity, id, idx) => (imap[identity][id][idx] = null);
+const unsubscribe = (identity, id, idx) => {
+  if (imap?.[identity]?.[id]?.[idx] !== undefined) {
+    imap[identity][id][idx] = null;
+  }
+};
 
 const add = (obj) => {
   const identity = obj.getIdentity();

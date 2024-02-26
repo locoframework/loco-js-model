@@ -4,8 +4,7 @@ import IdentityMap from "IdentityMap";
 class Comment extends Models.Base {
   static identity = "Article.Comment";
 
-  static attributes = {
-  };
+  static attributes = {};
 }
 
 class View {
@@ -14,7 +13,7 @@ class View {
   }
 }
 
-const comment = new Comment({id: 106});
+const comment = new Comment({ id: 106 });
 const view = new View("show-comment");
 
 beforeEach(() => {
@@ -34,8 +33,8 @@ describe(".add", () => {
     IdentityMap.add(comment);
     const imap = {
       "Article.Comment": {
-        106: [comment]
-      }
+        106: [comment],
+      },
     };
     expect(IdentityMap.imap).toEqual(imap);
   });
@@ -43,11 +42,11 @@ describe(".add", () => {
 
 describe(".connect", () => {
   it("creates a correct structure", () => {
-    IdentityMap.subscribe({ to: comment, with: view })
+    IdentityMap.subscribe({ to: comment, with: view });
     const imap = {
       "Article.Comment": {
-        106: [comment, view]
-      }
+        106: [comment, view],
+      },
     };
     expect(IdentityMap.imap).toEqual(imap);
   });
@@ -55,11 +54,11 @@ describe(".connect", () => {
 
 describe(".addCollection", () => {
   it("creates a correct structure", () => {
-    IdentityMap.subscribe({ to: Comment, with: view })
+    IdentityMap.subscribe({ to: Comment, with: view });
     const imap = {
       "Article.Comment": {
-        "collection": [view]
-      }
+        collection: [view],
+      },
     };
     expect(IdentityMap.imap).toEqual(imap);
   });
@@ -82,11 +81,11 @@ describe(".findConnected", () => {
 describe(".subscribe", () => {
   it("creates a correct structure", () => {
     const func = () => {};
-    IdentityMap.subscribe({ to: comment, with: func })
+    IdentityMap.subscribe({ to: comment, with: func });
     const imap = {
       "Article.Comment": {
-        106: [comment, func]
-      }
+        106: [comment, func],
+      },
     };
     expect(IdentityMap.imap).toEqual(imap);
   });
@@ -136,8 +135,8 @@ describe(".subscribe", () => {
     const imap = {
       "Article.Comment": {
         106: [comment, f1],
-        "collection": [f1]
-      }
+        collection: [f1],
+      },
     };
     expect(IdentityMap.imap).toEqual(imap);
   });

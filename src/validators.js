@@ -1,13 +1,13 @@
-import Absence from "./validators/absence.coffee";
-import Base from "./validators/base.coffee";
-import Confirmation from "./validators/confirmation.coffee";
-import Exclusion from "./validators/exclusion.coffee";
-import Format from "./validators/format.coffee";
-import Inclusion from "./validators/inclusion.coffee";
-import Length from "./validators/length.coffee";
-import Numericality from "./validators/numericality.coffee";
-import Presence from "./validators/presence.coffee";
-import Size from "./validators/size.coffee";
+import Absence from "./validators/absence";
+import Base from "./validators/base";
+import Confirmation from "./validators/confirmation";
+import Exclusion from "./validators/exclusion";
+import Format from "./validators/format";
+import Inclusion from "./validators/inclusion";
+import Length from "./validators/length";
+import Numericality from "./validators/numericality";
+import Presence from "./validators/presence";
+import Size from "./validators/size";
 
 const Validators = {
   Absence,

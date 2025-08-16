@@ -440,7 +440,7 @@ setTimeout(() => {
 
 Loco-JS-Model supports internationalization. The following example shows how to display errors in a different language.
 
-First, create a translation of the [base English file](https://github.com/locoframework/loco-js-model/blob/master/src/locales/en.coffee).
+First, create a translation of the [base English file](https://github.com/locoframework/loco-js-model/blob/master/src/locales/en.js).
 
 ```javascript
 // locales/pl.js

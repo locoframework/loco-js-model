@@ -1,7 +1,5 @@
-import en from "./locales/en.coffee";
+import en from "./locales/en";
 
-const I18n = {
-  en,
-};
+const I18n = { en };
 
 export default I18n;

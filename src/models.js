@@ -1,4 +1,4 @@
-import Base from "./base.coffee";
+import Base from "./base";
 
 Base.prototype.clone = function () {
   return new this.constructor({ ...this.attributes() });

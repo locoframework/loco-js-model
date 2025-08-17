@@ -1,9 +1,8 @@
-import Base from './base.js';
-import I18n from '../i18n';
-import Config from '../config';
+import Base from "./base.js";
+import I18n from "../i18n";
+import Config from "../config";
 
 class Inclusion extends Base {
-
   constructor() {
     super();
   }
@@ -15,13 +14,14 @@ class Inclusion extends Base {
   }
 
   _addErrorMessage() {
-    const message = this.opts.message != null ? this.opts.message : I18n[Config.locale].errors.messages.inclusion;
+    const message =
+      this.opts.message != null
+        ? this.opts.message
+        : I18n[Config.locale].errors.messages.inclusion;
     this.obj.addErrorMessage(message, { for: this.attr });
   }
 }
 
 export default Inclusion;
 
-Inclusion.identity = 'Inclusion';
-
-
+Inclusion.identity = "Inclusion";

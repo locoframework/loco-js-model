@@ -7,12 +7,12 @@ class User extends Models.Base {
     password: {
       validations: {
         presence: { on: "create" },
-        confirmation: true
-      }
+        confirmation: true,
+      },
     },
     passwordConfirmation: {
-      remoteName: "password_confirmation"
-    }
+      remoteName: "password_confirmation",
+    },
   };
 }
 
@@ -22,9 +22,9 @@ class DummyCustomMsg extends Models.Base {
   static attributes = {
     accessPassword: {
       validations: {
-        confirmation: { message: "different than confirmation" }
-      }
-    }
+        confirmation: { message: "different than confirmation" },
+      },
+    },
   };
 }
 
@@ -32,17 +32,17 @@ I18n.pl = {
   attributes: {
     User: {
       password: "Hasło",
-      passwordConfirmation: "Powtórz hasło"
-    }
+      passwordConfirmation: "Powtórz hasło",
+    },
   },
   errors: {
     messages: {
-      confirmation: "nie zgadza się z polem %{attribute}"
-    }
+      confirmation: "nie zgadza się z polem %{attribute}",
+    },
   },
   models: {
-    User: "Użytkownik"
-  }
+    User: "Użytkownik",
+  },
 };
 
 it("validates format", () => {

@@ -6,9 +6,9 @@ class Dummy extends Models.Base {
   static attributes = {
     author: {
       validations: {
-        exclusion: { in: ["admin", "superadmin"] }
-      }
-    }
+        exclusion: { in: ["admin", "superadmin"] },
+      },
+    },
   };
 }
 
@@ -20,19 +20,19 @@ class DummyCustomMsg extends Models.Base {
       validations: {
         exclusion: {
           in: ["admin", "superadmin"],
-          message: "being an admin is not for u"
-        }
-      }
-    }
+          message: "being an admin is not for u",
+        },
+      },
+    },
   };
 }
 
 I18n.pl = {
   errors: {
     messages: {
-      exclusion: "jest zarezerwowane"
-    }
-  }
+      exclusion: "jest zarezerwowane",
+    },
+  },
 };
 
 it("adds error if value is in an array", () => {

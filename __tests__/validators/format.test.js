@@ -7,9 +7,9 @@ class User extends Models.Base {
     email: {
       validations: {
         presence: true,
-        format: { with: /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }
-      }
-    }
+        format: { with: /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i },
+      },
+    },
   };
 }
 
@@ -19,18 +19,18 @@ class DummyCustomMsg extends Models.Base {
   static attributes = {
     countryCode: {
       validations: {
-        format: { with: /^[A-Z]{2}$/, message: "invalid country code" }
-      }
-    }
+        format: { with: /^[A-Z]{2}$/, message: "invalid country code" },
+      },
+    },
   };
 }
 
 I18n.pl = {
   errors: {
     messages: {
-      invalid: "jest nieprawidłowe"
-    }
-  }
+      invalid: "jest nieprawidłowe",
+    },
+  },
 };
 
 it("validates format", () => {

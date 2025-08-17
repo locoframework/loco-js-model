@@ -6,9 +6,9 @@ class Article extends Models.Base {
   static attributes = {
     title: {
       validations: {
-        presence: true
-      }
-    }
+        presence: true,
+      },
+    },
   };
 }
 
@@ -18,18 +18,18 @@ class DummyCustomMsg extends Models.Base {
   static attributes = {
     title: {
       validations: {
-        presence: { message: "presence is required" }
-      }
-    }
+        presence: { message: "presence is required" },
+      },
+    },
   };
 }
 
 I18n.pl = {
   errors: {
     messages: {
-      blank: "nie może być puste"
-    }
-  }
+      blank: "nie może być puste",
+    },
+  },
 };
 
 let article = null;

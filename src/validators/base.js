@@ -1,7 +1,6 @@
-import Validators from '../validators';
+import Validators from "../validators";
 
 class Base {
-
   static instance(obj, attr, opts) {
     const validatorName = this.identity;
     if (this.sharedInstances[validatorName] == null) {
@@ -30,5 +29,3 @@ class Base {
 export default Base;
 
 Base.sharedInstances = {};
-
-

@@ -1,8 +1,7 @@
-import Base from './base.js';
-import Length from './length.js';
+import Base from "./base.js";
+import Length from "./length.js";
 
 class Size extends Base {
-
   constructor() {
     super();
   }
@@ -14,6 +13,4 @@ class Size extends Base {
 
 export default Size;
 
-Size.identity = 'Size';
-
-
+Size.identity = "Size";

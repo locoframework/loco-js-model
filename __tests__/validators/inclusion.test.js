@@ -6,9 +6,9 @@ class Dummy extends Models.Base {
   static attributes = {
     rate: {
       validations: {
-        inclusion: { within: ["bad", "good", "excellent"] }
-      }
-    }
+        inclusion: { within: ["bad", "good", "excellent"] },
+      },
+    },
   };
 }
 
@@ -20,19 +20,19 @@ class DummyCustomMsg extends Models.Base {
       validations: {
         inclusion: {
           within: ["bad", "good", "excellent"],
-          message: "value is not good"
-        }
-      }
-    }
+          message: "value is not good",
+        },
+      },
+    },
   };
 }
 
 I18n.pl = {
   errors: {
     messages: {
-      inclusion: "nie znajduje się na liście dopuszczalnych wartości"
-    }
-  }
+      inclusion: "nie znajduje się na liście dopuszczalnych wartości",
+    },
+  },
 };
 
 it("adds error if value is not available in an array", () => {

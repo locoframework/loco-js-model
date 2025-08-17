@@ -1,7 +1,7 @@
-import Validators from './validators';
-import Config from './config';
-import IdentityMap from './IdentityMap';
-import { sendReq } from './helpers/connectivity';
+import Validators from "./validators";
+import Config from "./config";
+import IdentityMap from "./IdentityMap";
+import { sendReq } from "./helpers/connectivity";
 
 class Base {
   static getIdentity() {
@@ -14,33 +14,33 @@ class Base {
   }
 
   static all(opts = {}) {
-    return this.get('all', opts);
+    return this.get("all", opts);
   }
 
   static get(action, opts = {}) {
-    return this.__send('GET', action, opts);
+    return this.__send("GET", action, opts);
   }
 
   static post(action, opts = {}) {
-    return this.__send('POST', action, opts);
+    return this.__send("POST", action, opts);
   }
 
   static put(action, opts = {}) {
-    return this.__send('PUT', action, opts);
+    return this.__send("PUT", action, opts);
   }
 
   static patch(action, opts = {}) {
-    return this.__send('PATCH', action, opts);
+    return this.__send("PATCH", action, opts);
   }
 
   static delete(action, opts = {}) {
-    return this.__send('DELETE', action, opts);
+    return this.__send("DELETE", action, opts);
   }
 
   static find(idOrObj) {
     let urlParams = {};
     let id;
-    if (typeof idOrObj === 'object') {
+    if (typeof idOrObj === "object") {
       urlParams = { ...idOrObj };
       id = idOrObj.id;
       delete urlParams.id;
@@ -48,7 +48,7 @@ class Base {
       id = idOrObj;
     }
     const url = `${this.__getResourcesUrl(urlParams)}/${id}`;
-    const req = sendReq('GET', url, urlParams, this.__requestOpts());
+    const req = sendReq("GET", url, urlParams, this.__requestOpts());
     return new Promise((resolve, reject) => {
       req.onerror = (e) => reject(e);
       req.onload = (e) => {
@@ -88,7 +88,11 @@ class Base {
       resourcesUrl = `/${this.getRemoteName().toLowerCase()}s`;
     } else if (opts.resource) {
       resourcesUrl = this.resources[opts.resource].url;
-    } else if (Config.scope != null && this.resources != null && this.resources[Config.scope] != null) {
+    } else if (
+      Config.scope != null &&
+      this.resources != null &&
+      this.resources[Config.scope] != null
+    ) {
       resourcesUrl = this.resources[Config.scope].url;
     } else {
       resourcesUrl = this.resources.url;
@@ -111,15 +115,22 @@ class Base {
 
   static __requestOpts() {
     return {
-      authorizationHeader: Config.authorizationHeader || this.authorizationHeader,
-      cookiesByCORS: this.cookiesByCORS != null ? this.cookiesByCORS : Config.cookiesByCORS,
+      authorizationHeader:
+        Config.authorizationHeader || this.authorizationHeader,
+      cookiesByCORS:
+        this.cookiesByCORS != null ? this.cookiesByCORS : Config.cookiesByCORS,
     };
   }
 
   static __page(i, pageData, resp) {
     const url = pageData.url;
     pageData.params[pageData.pageParam] = i;
-    const req = sendReq(pageData.method, url, pageData.params, this.__requestOpts());
+    const req = sendReq(
+      pageData.method,
+      url,
+      pageData.params,
+      this.__requestOpts()
+    );
     return new Promise((resolve, reject) => {
       req.onerror = (e) => reject(e);
       req.onload = (e) => {
@@ -177,28 +188,66 @@ class Base {
   }
 
   static __getPaginationParam(resource) {
-    const defaultParam = 'page';
-    if (resource != null && this.resources != null && this.resources[resource]) {
-      return (this.resources[resource].paginate && this.resources[resource].paginate.param) || defaultParam;
+    const defaultParam = "page";
+    if (
+      resource != null &&
+      this.resources != null &&
+      this.resources[resource]
+    ) {
+      return (
+        (this.resources[resource].paginate &&
+          this.resources[resource].paginate.param) ||
+        defaultParam
+      );
     }
-    if (Config.scope != null && this.resources != null && this.resources[Config.scope] != null) {
-      const param = this.resources[Config.scope] && this.resources[Config.scope].paginate && this.resources[Config.scope].paginate.param;
+    if (
+      Config.scope != null &&
+      this.resources != null &&
+      this.resources[Config.scope] != null
+    ) {
+      const param =
+        this.resources[Config.scope] &&
+        this.resources[Config.scope].paginate &&
+        this.resources[Config.scope].paginate.param;
       return param || defaultParam;
     }
-    if (this.resources != null && this.resources.paginate != null && this.resources.paginate.param != null) {
+    if (
+      this.resources != null &&
+      this.resources.paginate != null &&
+      this.resources.paginate.param != null
+    ) {
       return this.resources.paginate.param;
     }
     return defaultParam;
   }
 
   static __getPaginationPer(resource) {
-    if (resource != null && this.resources != null && this.resources[resource]) {
-      return this.resources[resource].paginate && this.resources[resource].paginate.per;
+    if (
+      resource != null &&
+      this.resources != null &&
+      this.resources[resource]
+    ) {
+      return (
+        this.resources[resource].paginate &&
+        this.resources[resource].paginate.per
+      );
     }
-    if (Config.scope != null && this.resources != null && this.resources[Config.scope] != null) {
-      return this.resources[Config.scope] && this.resources[Config.scope].paginate && this.resources[Config.scope].paginate.per;
+    if (
+      Config.scope != null &&
+      this.resources != null &&
+      this.resources[Config.scope] != null
+    ) {
+      return (
+        this.resources[Config.scope] &&
+        this.resources[Config.scope].paginate &&
+        this.resources[Config.scope].paginate.per
+      );
     }
-    if (this.resources != null && this.resources.paginate != null && this.resources.paginate.per != null) {
+    if (
+      this.resources != null &&
+      this.resources.paginate != null &&
+      this.resources.paginate.per != null
+    ) {
       return this.resources.paginate.per;
     }
     return null;
@@ -206,7 +255,7 @@ class Base {
 
   static __send(method, action, opts) {
     let url = this.__getResourcesUrl(opts);
-    if (action !== 'all') {
+    if (action !== "all") {
       url = `${url}/${action}`;
     }
     const data = {
@@ -274,29 +323,29 @@ class Base {
       return;
     }
     switch (attrType) {
-      case 'Date':
+      case "Date":
         // eslint-disable-next-line no-param-reassign
         val = new Date(Date.parse(val));
         break;
-      case 'Integer':
-      case 'Int':
+      case "Integer":
+      case "Int":
         // eslint-disable-next-line no-param-reassign
         val = parseInt(val, 10);
         break;
-      case 'Float':
+      case "Float":
         // eslint-disable-next-line no-param-reassign
         val = parseFloat(val);
         break;
-      case 'Boolean':
-      case 'Bool':
+      case "Boolean":
+      case "Bool":
         // eslint-disable-next-line no-param-reassign
-        val = typeof val === 'boolean' ? val : Boolean(parseInt(val, 10));
+        val = typeof val === "boolean" ? val : Boolean(parseInt(val, 10));
         break;
-      case 'Number':
+      case "Number":
         // eslint-disable-next-line no-param-reassign
         val = Number(val);
         break;
-      case 'String':
+      case "String":
         // eslint-disable-next-line no-param-reassign
         val = String(val);
         break;
@@ -323,10 +372,12 @@ class Base {
       if (config == null || config.validations == null) continue;
       for (const validationName in config.validations) {
         const validationSettings = config.validations[validationName];
-        if (this.id != null && validationSettings.on === 'create') continue;
-        if (this.id == null && validationSettings.on === 'update') continue;
-        if (validationSettings.if != null && !validationSettings.if(this)) continue;
-        const validator = validationName.charAt(0).toUpperCase() + validationName.slice(1);
+        if (this.id != null && validationSettings.on === "create") continue;
+        if (this.id == null && validationSettings.on === "update") continue;
+        if (validationSettings.if != null && !validationSettings.if(this))
+          continue;
+        const validator =
+          validationName.charAt(0).toUpperCase() + validationName.slice(1);
         if (Validators[validator] == null) {
           // eslint-disable-next-line no-console
           console.warn(`"${validator}" validator is not implemented!`);
@@ -338,7 +389,7 @@ class Base {
     }
     if (this.constructor.validate != null) {
       for (const meth of this.constructor.validate) {
-        if (typeof this[meth] === 'function') this[meth]();
+        if (typeof this[meth] === "function") this[meth]();
       }
     }
     return this.errors == null;
@@ -364,8 +415,13 @@ class Base {
   }
 
   save() {
-    const httpMeth = this.id != null ? 'PUT' : 'POST';
-    const req = sendReq(httpMeth, this.__getResourceUrl(), this.serialize(), this.constructor.__requestOpts());
+    const httpMeth = this.id != null ? "PUT" : "POST";
+    const req = sendReq(
+      httpMeth,
+      this.__getResourceUrl(),
+      this.serialize(),
+      this.constructor.__requestOpts()
+    );
     return new Promise((resolve, reject) => {
       req.onerror = (e) => reject(e);
       req.onload = (e) => {
@@ -381,7 +437,12 @@ class Base {
   }
 
   updateAttribute(attr) {
-    const req = sendReq('PUT', this.__getResourceUrl(), this.serialize(attr), this.constructor.__requestOpts());
+    const req = sendReq(
+      "PUT",
+      this.__getResourceUrl(),
+      this.serialize(attr),
+      this.constructor.__requestOpts()
+    );
     return new Promise((resolve, reject) => {
       req.onerror = (e) => reject(e);
       req.onload = (e) => {
@@ -391,7 +452,8 @@ class Base {
             resolve(data);
             return;
           }
-          if (data.errors != null) this.__assignRemoteErrorMessages(data.errors);
+          if (data.errors != null)
+            this.__assignRemoteErrorMessages(data.errors);
           resolve(data);
         } else if (e.target.status >= 500) {
           reject(e);
@@ -420,7 +482,9 @@ class Base {
 
   reload() {
     const findParams = { id: this.id, resource: this.resource };
-    const params = this.constructor.getResourcesUrlParams({ resource: this.resource });
+    const params = this.constructor.getResourcesUrlParams({
+      resource: this.resource,
+    });
     for (const param of params) {
       findParams[param] = this[param];
     }
@@ -434,8 +498,14 @@ class Base {
     for (const name in attrs) {
       const val = attrs[name];
       if (val !== currentObj[name]) {
-        if (val != null && val.constructor === Date && currentObj[name] - val === 0) continue;
-        if (val !== currentObj[name]) result[name] = { is: currentObj[name], was: val };
+        if (
+          val != null &&
+          val.constructor === Date &&
+          currentObj[name] - val === 0
+        )
+          continue;
+        if (val !== currentObj[name])
+          result[name] = { is: currentObj[name], was: val };
       }
     }
     return result;
@@ -453,23 +523,23 @@ class Base {
   }
 
   get(action, data = {}) {
-    return this.__send('GET', action, data);
+    return this.__send("GET", action, data);
   }
 
   post(action, data = {}) {
-    return this.__send('POST', action, data);
+    return this.__send("POST", action, data);
   }
 
   put(action, data = {}) {
-    return this.__send('PUT', action, data);
+    return this.__send("PUT", action, data);
   }
 
   patch(action, data = {}) {
-    return this.__send('PATCH', action, data);
+    return this.__send("PATCH", action, data);
   }
 
   delete(action, data = {}) {
-    return this.__send('DELETE', action, data);
+    return this.__send("DELETE", action, data);
   }
 
   __send(method, action, data) {
@@ -516,7 +586,10 @@ class Base {
   }
 
   __getResourceUrl() {
-    const url = this.constructor.__getResourcesUrl({ resource: this.resource, obj: this });
+    const url = this.constructor.__getResourcesUrl({
+      resource: this.resource,
+      obj: this,
+    });
     if (this.id == null) return url;
     return `${url}/${this.id}`;
   }
@@ -525,7 +598,7 @@ class Base {
     const res = {};
     for (const confName in validationSettings) {
       const confVal = validationSettings[confName];
-      if (typeof confVal === 'function') {
+      if (typeof confVal === "function") {
         res[confName] = confVal(this);
       } else {
         res[confName] = confVal;
@@ -536,5 +609,3 @@ class Base {
 }
 
 export default Base;
-
-

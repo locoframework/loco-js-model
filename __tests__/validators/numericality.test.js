@@ -6,18 +6,18 @@ class Dummy extends Models.Base {
   static attributes = {
     dumbAttrib: {
       validations: {
-        numericality: { equal_to: 5 }
-      }
+        numericality: { equal_to: 5 },
+      },
     },
     dumbAttrib2: {
       validations: {
-        numericality: { odd: true }
-      }
+        numericality: { odd: true },
+      },
     },
     dumbAttrib3: {
       validations: {
-        numericality: { even: true }
-      }
+        numericality: { even: true },
+      },
     },
     releaseYear: {
       validations: {
@@ -25,19 +25,19 @@ class Dummy extends Models.Base {
           only_integer: true,
           greater_than_or_equal_to: new Date().getFullYear(),
           less_than: 2100,
-          other_than: 2098
-        }
-      }
+          other_than: 2098,
+        },
+      },
     },
     year: {
       validations: {
         numericality: {
           only_integer: true,
           greater_than: 1887,
-          less_than_or_equal_to: o => o.releaseYear
-        }
-      }
-    }
+          less_than_or_equal_to: (o) => o.releaseYear,
+        },
+      },
+    },
   };
 }
 
@@ -50,11 +50,11 @@ class DummyCustomMsg extends Models.Base {
         numericality: {
           only_integer: true,
           greater_than: 1887,
-          less_than_or_equal_to: o => o.releaseYear,
-          message: "your number is not acceptable"
-        }
-      }
-    }
+          less_than_or_equal_to: (o) => o.releaseYear,
+          message: "your number is not acceptable",
+        },
+      },
+    },
   };
 }
 
@@ -70,9 +70,9 @@ I18n.pl = {
       not_a_number: "nie jest liczbą",
       not_an_integer: "musi być liczbą całkowitą",
       odd: "musi być nieparzyste",
-      other_than: "musi być inna niż %{count}"
-    }
-  }
+      other_than: "musi być inna niż %{count}",
+    },
+  },
 };
 
 it("is valid if int required and int is passed as string", () => {

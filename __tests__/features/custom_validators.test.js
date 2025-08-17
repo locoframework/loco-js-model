@@ -1,4 +1,4 @@
-import { Config, Env, I18n, Models, Validators } from "index";
+import { Config, I18n, Models, Validators } from "index";
 
 class Vulgarity extends Validators.Base {
   static identity = "Vulgarity";
@@ -47,9 +47,9 @@ I18n.en.errors.messages.vulgarity = "contains strong language.";
 I18n.pl = {
   errors: {
     messages: {
-      vulgarity: "zawiera mocny język."
-    }
-  }
+      vulgarity: "zawiera mocny język.",
+    },
+  },
 };
 
 class Comment extends Models.Base {
@@ -58,9 +58,9 @@ class Comment extends Models.Base {
   static attributes = {
     text: {
       validations: {
-        vulgarity: true
-      }
-    }
+        vulgarity: true,
+      },
+    },
   };
 }
 
@@ -74,7 +74,7 @@ it("allows to define custom validators", () => {
 it("supports i18n", () => {
   Config.locale = "pl";
   const comment = new Comment({
-    text: "Trochę ciepłych słów + KuRwA na końcu."
+    text: "Trochę ciepłych słów + KuRwA na końcu.",
   });
   expect(comment.isInvalid()).toBe(true);
   expect(comment.errors.text[0]).toEqual("zawiera mocny język.");

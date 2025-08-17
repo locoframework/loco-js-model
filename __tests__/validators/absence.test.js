@@ -6,9 +6,9 @@ class Dummy extends Models.Base {
   static attributes = {
     blankAttrib: {
       validations: {
-        absence: true
-      }
-    }
+        absence: true,
+      },
+    },
   };
 }
 
@@ -19,19 +19,19 @@ class DummyCustomMsg extends Models.Base {
     blankAttrib: {
       validations: {
         absence: {
-          message: "only blank dude"
-        }
-      }
-    }
+          message: "only blank dude",
+        },
+      },
+    },
   };
 }
 
 I18n.pl = {
   errors: {
     messages: {
-      present: "musi być puste"
-    }
-  }
+      present: "musi być puste",
+    },
+  },
 };
 
 describe("attribute is a string", () => {

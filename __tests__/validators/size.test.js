@@ -6,9 +6,9 @@ class Dummy extends Models.Base {
   static attributes = {
     dumbAttrib5: {
       validations: {
-        size: { minimum: 1 }
-      }
-    }
+        size: { minimum: 1 },
+      },
+    },
   };
 }
 

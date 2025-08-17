@@ -6,39 +6,39 @@ class Dummy extends Models.Base {
   static attributes = {
     dumbAttrib: {
       validations: {
-        length: { within: [0, 1] }
-      }
+        length: { within: [0, 1] },
+      },
     },
     dumbAttrib2: {
       validations: {
-        length: { within: [2, 4] }
-      }
+        length: { within: [2, 4] },
+      },
     },
     dumbAttrib4: {
       validations: {
-        length: { is: 100 }
-      }
+        length: { is: 100 },
+      },
     },
     lang: {
       validations: {
-        length: { is: 2 }
-      }
+        length: { is: 2 },
+      },
     },
     letter: {
       validations: {
-        length: { is: 1 }
-      }
+        length: { is: 1 },
+      },
     },
     shortDesc: {
       validations: {
-        length: { minimum: 10, maximum: 50 }
-      }
+        length: { minimum: 10, maximum: 50 },
+      },
     },
     title: {
       validations: {
-        length: { minimum: 1, maximum: 255 }
-      }
-    }
+        length: { minimum: 1, maximum: 255 },
+      },
+    },
   };
 }
 
@@ -48,14 +48,14 @@ class DummyCustomMsg extends Models.Base {
   static attributes = {
     lang: {
       validations: {
-        length: { is: 2, message: "length is not what I expect" }
-      }
+        length: { is: 2, message: "length is not what I expect" },
+      },
     },
     shortDesc: {
       validations: {
-        length: { minimum: 10, maximum: 50, message: "length is bloody wrong" }
-      }
-    }
+        length: { minimum: 10, maximum: 50, message: "length is bloody wrong" },
+      },
+    },
   };
 }
 
@@ -66,9 +66,9 @@ class Article extends Models.Base {
     title: {
       validations: {
         presence: true,
-        length: { within: [3, 255] }
-      }
-    }
+        length: { within: [3, 255] },
+      },
+    },
   };
 }
 
@@ -77,13 +77,13 @@ const tooLongTitle =
 
 I18n.pl = {
   variants: {
-    few: i => {
+    few: (i) => {
       const num = parseInt(String(i)[String(i).length - 1]);
       return (
         [2, 3, 4].indexOf(num) !== -1 &&
         !(String(i).length === 2 && String(i)[0] === "1")
       );
-    }
+    },
   },
   errors: {
     messages: {
@@ -91,23 +91,23 @@ I18n.pl = {
         few: "jest za długie (maksymalnie %{count} znaki)",
         many: "jest za długie (maksymalnie %{count} znaków)",
         one: "jest za długie (maksymalnie jeden znak)",
-        other: "jest za długie (maksymalnie %{count} znaków)"
+        other: "jest za długie (maksymalnie %{count} znaków)",
       },
       too_short: {
         few: "jest za krótkie (przynajmniej %{count} znaki)",
         many: "jest za krótkie (przynajmniej %{count} znaków)",
         one: "jest za krótkie (przynajmniej jeden znak)",
-        other: "jest za krótkie (przynajmniej %{count} znaków)"
+        other: "jest za krótkie (przynajmniej %{count} znaków)",
       },
       wrong_length: {
         few: "ma nieprawidłową długość (powinna wynosić %{count} znaki)",
         many: "ma nieprawidłową długość (powinna wynosić %{count} znaków)",
         one: "ma nieprawidłową długość (powinna wynosić jeden znak)",
-        other: "ma nieprawidłową długość (powinna wynosić %{count} znaków)"
+        other: "ma nieprawidłową długość (powinna wynosić %{count} znaków)",
       },
-      other_than: "musi być inna niż %{count}"
-    }
-  }
+      other_than: "musi być inna niż %{count}",
+    },
+  },
 };
 
 describe("i18n support (en)", () => {

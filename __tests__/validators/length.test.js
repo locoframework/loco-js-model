@@ -116,7 +116,7 @@ describe("i18n support (en)", () => {
       const dummy = new Dummy({ title: "" });
       dummy.isValid();
       expect(dummy.errors.title[0]).toEqual(
-        "is too short (minimum is 1 character)"
+        "is too short (minimum is 1 character)",
       );
     });
 
@@ -124,7 +124,7 @@ describe("i18n support (en)", () => {
       const article = new Article({ title: "ab" });
       article.isValid();
       expect(article.errors.title[0]).toEqual(
-        "is too short (minimum is 3 characters)"
+        "is too short (minimum is 3 characters)",
       );
     });
   });
@@ -134,7 +134,7 @@ describe("i18n support (en)", () => {
       const dummy = new Dummy({ dumbAttrib: "ab" });
       dummy.isValid();
       expect(dummy.errors.dumbAttrib[0]).toEqual(
-        "is too long (maximum is 1 character)"
+        "is too long (maximum is 1 character)",
       );
     });
 
@@ -142,7 +142,7 @@ describe("i18n support (en)", () => {
       const article = new Article({ title: tooLongTitle });
       article.isValid();
       expect(article.errors.title[0]).toEqual(
-        "is too long (maximum is 255 characters)"
+        "is too long (maximum is 255 characters)",
       );
     });
   });
@@ -152,7 +152,7 @@ describe("i18n support (en)", () => {
       const dummy = new Dummy({ letter: "ab" });
       dummy.isValid();
       expect(dummy.errors.letter[0]).toEqual(
-        "is the wrong length (should be 1 character)"
+        "is the wrong length (should be 1 character)",
       );
     });
 
@@ -160,7 +160,7 @@ describe("i18n support (en)", () => {
       const dummy = new Dummy({ lang: "a" });
       dummy.isValid();
       expect(dummy.errors.lang[0]).toEqual(
-        "is the wrong length (should be 2 characters)"
+        "is the wrong length (should be 2 characters)",
       );
     });
   });
@@ -180,7 +180,7 @@ describe("i18n support (pl)", () => {
       const dummy = new Dummy({ title: "" });
       dummy.isValid();
       expect(dummy.errors.title[0]).toEqual(
-        "jest za krótkie (przynajmniej jeden znak)"
+        "jest za krótkie (przynajmniej jeden znak)",
       );
     });
 
@@ -188,7 +188,7 @@ describe("i18n support (pl)", () => {
       const article = new Article({ title: "ab" });
       article.isValid();
       expect(article.errors.title[0]).toEqual(
-        "jest za krótkie (przynajmniej 3 znaki)"
+        "jest za krótkie (przynajmniej 3 znaki)",
       );
     });
 
@@ -196,7 +196,7 @@ describe("i18n support (pl)", () => {
       const dummy = new Dummy({ shortDesc: "abc" });
       dummy.isValid();
       expect(dummy.errors.shortDesc[0]).toEqual(
-        "jest za krótkie (przynajmniej 10 znaków)"
+        "jest za krótkie (przynajmniej 10 znaków)",
       );
     });
 
@@ -204,7 +204,7 @@ describe("i18n support (pl)", () => {
       const dummy = new Dummy({ shortDesc: "abc" });
       dummy.isValid();
       expect(dummy.errors.shortDesc[0]).toEqual(
-        "jest za krótkie (przynajmniej 10 znaków)"
+        "jest za krótkie (przynajmniej 10 znaków)",
       );
     });
   });
@@ -214,7 +214,7 @@ describe("i18n support (pl)", () => {
       const dummy = new Dummy({ dumbAttrib: "ab" });
       dummy.isValid();
       expect(dummy.errors.dumbAttrib[0]).toEqual(
-        "jest za długie (maksymalnie jeden znak)"
+        "jest za długie (maksymalnie jeden znak)",
       );
     });
 
@@ -222,7 +222,7 @@ describe("i18n support (pl)", () => {
       const dummy = new Dummy({ dumbAttrib2: "cdefgah" });
       dummy.isValid();
       expect(dummy.errors.dumbAttrib2[0]).toEqual(
-        "jest za długie (maksymalnie 4 znaki)"
+        "jest za długie (maksymalnie 4 znaki)",
       );
     });
 
@@ -230,7 +230,7 @@ describe("i18n support (pl)", () => {
       const article = new Article({ title: tooLongTitle });
       article.isValid();
       expect(article.errors.title[0]).toEqual(
-        "jest za długie (maksymalnie 255 znaków)"
+        "jest za długie (maksymalnie 255 znaków)",
       );
     });
   });
@@ -240,7 +240,7 @@ describe("i18n support (pl)", () => {
       const dummy = new Dummy({ letter: "ab" });
       dummy.isValid();
       expect(dummy.errors.letter[0]).toEqual(
-        "ma nieprawidłową długość (powinna wynosić jeden znak)"
+        "ma nieprawidłową długość (powinna wynosić jeden znak)",
       );
     });
 
@@ -248,7 +248,7 @@ describe("i18n support (pl)", () => {
       const dummy = new Dummy({ lang: "a" });
       dummy.isValid();
       expect(dummy.errors.lang[0]).toEqual(
-        "ma nieprawidłową długość (powinna wynosić 2 znaki)"
+        "ma nieprawidłową długość (powinna wynosić 2 znaki)",
       );
     });
 
@@ -256,7 +256,7 @@ describe("i18n support (pl)", () => {
       const dummy = new Dummy({ dumbAttrib4: "a" });
       dummy.isValid();
       expect(dummy.errors.dumbAttrib4[0]).toEqual(
-        "ma nieprawidłową długość (powinna wynosić 100 znaków)"
+        "ma nieprawidłową długość (powinna wynosić 100 znaków)",
       );
     });
   });

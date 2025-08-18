@@ -20,7 +20,7 @@ class Vulgarity extends Validators.Base {
       }
       default:
         throw new TypeError(
-          "Vulgarity validator is applicable only for strings and #{this.attr} isn't."
+          "Vulgarity validator is applicable only for strings and #{this.attr} isn't.",
         );
     }
   }

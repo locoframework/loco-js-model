@@ -52,7 +52,7 @@ it("supports i18n", () => {
   const dummy = new Dummy({ rate: "decent" });
   dummy.isValid();
   expect(dummy.errors.rate[0]).toEqual(
-    "nie znajduje się na liście dopuszczalnych wartości"
+    "nie znajduje się na liście dopuszczalnych wartości",
   );
 });
 

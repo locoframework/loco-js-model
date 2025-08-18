@@ -116,7 +116,7 @@ describe("i18n support (en)", () => {
     dummy.releaseYear = 2015;
     dummy.isValid();
     expect(dummy.errors.releaseYear[0]).toEqual(
-      `must be greater than or equal to ${new Date().getFullYear()}`
+      `must be greater than or equal to ${new Date().getFullYear()}`,
     );
   });
 
@@ -191,7 +191,7 @@ describe("i18n support (pl)", () => {
     dummy.releaseYear = 2015;
     dummy.isValid();
     expect(dummy.errors.releaseYear[0]).toEqual(
-      `musi być większe lub równe ${new Date().getFullYear()}`
+      `musi być większe lub równe ${new Date().getFullYear()}`,
     );
   });
 

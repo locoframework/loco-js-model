@@ -129,7 +129,7 @@ class Base {
       pageData.method,
       url,
       pageData.params,
-      this.__requestOpts()
+      this.__requestOpts(),
     );
     return new Promise((resolve, reject) => {
       req.onerror = (e) => reject(e);
@@ -324,29 +324,23 @@ class Base {
     }
     switch (attrType) {
       case "Date":
-        // eslint-disable-next-line no-param-reassign
         val = new Date(Date.parse(val));
         break;
       case "Integer":
       case "Int":
-        // eslint-disable-next-line no-param-reassign
         val = parseInt(val, 10);
         break;
       case "Float":
-        // eslint-disable-next-line no-param-reassign
         val = parseFloat(val);
         break;
       case "Boolean":
       case "Bool":
-        // eslint-disable-next-line no-param-reassign
         val = typeof val === "boolean" ? val : Boolean(parseInt(val, 10));
         break;
       case "Number":
-        // eslint-disable-next-line no-param-reassign
         val = Number(val);
         break;
       case "String":
-        // eslint-disable-next-line no-param-reassign
         val = String(val);
         break;
       default:
@@ -379,7 +373,6 @@ class Base {
         const validator =
           validationName.charAt(0).toUpperCase() + validationName.slice(1);
         if (Validators[validator] == null) {
-          // eslint-disable-next-line no-console
           console.warn(`"${validator}" validator is not implemented!`);
           continue;
         }
@@ -420,7 +413,7 @@ class Base {
       httpMeth,
       this.__getResourceUrl(),
       this.serialize(),
-      this.constructor.__requestOpts()
+      this.constructor.__requestOpts(),
     );
     return new Promise((resolve, reject) => {
       req.onerror = (e) => reject(e);
@@ -441,7 +434,7 @@ class Base {
       "PUT",
       this.__getResourceUrl(),
       this.serialize(attr),
-      this.constructor.__requestOpts()
+      this.constructor.__requestOpts(),
     );
     return new Promise((resolve, reject) => {
       req.onerror = (e) => reject(e);

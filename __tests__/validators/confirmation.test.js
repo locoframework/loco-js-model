@@ -56,7 +56,7 @@ it("supports i18n", () => {
   const user = new User({ password: "secret", passwordConfirmation: "sexret" });
   user.isValid();
   expect(user.errors.passwordConfirmation[0]).toEqual(
-    "nie zgadza się z polem Hasło"
+    "nie zgadza się z polem Hasło",
   );
 });
 
@@ -64,6 +64,6 @@ it("supports custom message", () => {
   const dummy = new DummyCustomMsg({ accessPassword: "secret" });
   dummy.isValid();
   expect(dummy.errors.accessPasswordConfirmation[0]).toEqual(
-    "different than confirmation"
+    "different than confirmation",
   );
 });

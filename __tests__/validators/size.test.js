@@ -16,6 +16,6 @@ it("is alias for Length Validator", () => {
   const dummy = new Dummy({ dumbAttrib5: "" });
   dummy.isValid();
   expect(dummy.errors.dumbAttrib5[0]).toEqual(
-    "is too short (minimum is 1 character)"
+    "is too short (minimum is 1 character)",
   );
 });

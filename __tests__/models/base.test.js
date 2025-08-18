@@ -88,8 +88,14 @@ afterEach(() => {
 it("does not send param if was used in URL + .all uses Authorization header if defined", () => {
   const mock = mockXHR();
   Comment.all({ articleId: 1 });
-  expect(mock.open).toHaveBeenCalledWith("GET", "/user/articles/1/comments?page=1");
-  expect(mock.setRequestHeader).toHaveBeenCalledWith("Authorization", "Bearer XXX");
+  expect(mock.open).toHaveBeenCalledWith(
+    "GET",
+    "/user/articles/1/comments?page=1",
+  );
+  expect(mock.setRequestHeader).toHaveBeenCalledWith(
+    "Authorization",
+    "Bearer XXX",
+  );
 });
 
 describe("requests", () => {
@@ -124,7 +130,10 @@ describe("requests", () => {
     const mock = mockXHR();
     Config.authorizationHeader = "Bearer YYY";
     Comment.find({ id: 25, articleId: 4 });
-    expect(mock.setRequestHeader).toHaveBeenCalledWith("Authorization", "Bearer YYY");
+    expect(mock.setRequestHeader).toHaveBeenCalledWith(
+      "Authorization",
+      "Bearer YYY",
+    );
   });
 });
 
@@ -182,8 +191,14 @@ describe(".find", () => {
   it("uses a correct URL and sets Authorization if defined", () => {
     const mock = mockXHR();
     Comment.find({ id: 25, articleId: 4 });
-    expect(mock.open).toHaveBeenCalledWith("GET", "/user/articles/4/comments/25?");
-    expect(mock.setRequestHeader).toHaveBeenCalledWith("Authorization", "Bearer XXX");
+    expect(mock.open).toHaveBeenCalledWith(
+      "GET",
+      "/user/articles/4/comments/25?",
+    );
+    expect(mock.setRequestHeader).toHaveBeenCalledWith(
+      "Authorization",
+      "Bearer XXX",
+    );
   });
 
   it("uses a correct URL even with the specified protocol and host", () => {
@@ -192,7 +207,7 @@ describe(".find", () => {
     Comment.find({ id: 25, articleId: 4 });
     expect(mock.open).toHaveBeenCalledWith(
       "GET",
-      "http://localhost:3001/user/articles/4/comments/25?"
+      "http://localhost:3001/user/articles/4/comments/25?",
     );
   });
 });
@@ -213,7 +228,10 @@ describe("#save", () => {
     });
     comment.save();
     expect(mock.open).toHaveBeenCalledWith("POST", "/user/articles/1/comments");
-    expect(mock.setRequestHeader).toHaveBeenCalledWith("Authorization", "Bearer XXX");
+    expect(mock.setRequestHeader).toHaveBeenCalledWith(
+      "Authorization",
+      "Bearer XXX",
+    );
   });
 });
 

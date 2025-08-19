@@ -15,10 +15,10 @@ class Absence extends Base {
       default:
         if (this.val == null) return;
     }
-    this._addErrorMessage();
+    this.#addErrorMessage();
   }
 
-  _addErrorMessage() {
+  #addErrorMessage() {
     const message =
       this.opts.message != null
         ? this.opts.message

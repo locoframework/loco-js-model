@@ -282,8 +282,8 @@ class Base {
     this.id = null;
     this.errors = null;
     this.resource = data.resource;
-    if (this.constructor.attributes != null) this.__initAttributes();
-    if (data != null) this.__assignAttributes(data);
+    if (this.constructor.attributes != null) this.#initAttributes();
+    if (data != null) this.#assignAttributes(data);
   }
 
   setResource(name) {
@@ -376,7 +376,7 @@ class Base {
           console.warn(`"${validator}" validator is not implemented!`);
           continue;
         }
-        const pvs = this.__processedValidationSettings(validationSettings);
+        const pvs = this.#processedValidationSettings(validationSettings);
         Validators[validator].instance(this, name, pvs).validate();
       }
     }
@@ -411,7 +411,7 @@ class Base {
     const httpMeth = this.id != null ? "PUT" : "POST";
     const req = sendReq(
       httpMeth,
-      this.__getResourceUrl(),
+      this.#getResourceUrl(),
       this.serialize(),
       this.constructor.__requestOpts(),
     );
@@ -423,7 +423,7 @@ class Base {
           resolve(data);
           return;
         }
-        if (data.errors != null) this.__assignRemoteErrorMessages(data.errors);
+        if (data.errors != null) this.#assignRemoteErrorMessages(data.errors);
         resolve(data);
       };
     });
@@ -432,7 +432,7 @@ class Base {
   updateAttribute(attr) {
     const req = sendReq(
       "PUT",
-      this.__getResourceUrl(),
+      this.#getResourceUrl(),
       this.serialize(attr),
       this.constructor.__requestOpts(),
     );
@@ -445,8 +445,7 @@ class Base {
             resolve(data);
             return;
           }
-          if (data.errors != null)
-            this.__assignRemoteErrorMessages(data.errors);
+          if (data.errors != null) this.#assignRemoteErrorMessages(data.errors);
           resolve(data);
         } else if (e.target.status >= 500) {
           reject(e);
@@ -516,26 +515,26 @@ class Base {
   }
 
   get(action, data = {}) {
-    return this.__send("GET", action, data);
+    return this.#send("GET", action, data);
   }
 
   post(action, data = {}) {
-    return this.__send("POST", action, data);
+    return this.#send("POST", action, data);
   }
 
   put(action, data = {}) {
-    return this.__send("PUT", action, data);
+    return this.#send("PUT", action, data);
   }
 
   patch(action, data = {}) {
-    return this.__send("PATCH", action, data);
+    return this.#send("PATCH", action, data);
   }
 
   delete(action, data = {}) {
-    return this.__send("DELETE", action, data);
+    return this.#send("DELETE", action, data);
   }
 
-  __send(method, action, data) {
+  #send(method, action, data) {
     let url = this.__getResourceUrl();
     if (action != null) {
       url = `${url}/${action}`;
@@ -554,7 +553,7 @@ class Base {
     });
   }
 
-  __assignAttributes(data) {
+  #assignAttributes(data) {
     for (const key in data) {
       const val = data[key];
       const attrName = this.getAttrName(key);
@@ -562,13 +561,13 @@ class Base {
     }
   }
 
-  __initAttributes() {
+  #initAttributes() {
     for (const name in this.constructor.attributes) {
       this[name] = null;
     }
   }
 
-  __assignRemoteErrorMessages(remoteErrors) {
+  #assignRemoteErrorMessages(remoteErrors) {
     for (const remoteName in remoteErrors) {
       const errors = remoteErrors[remoteName];
       const attr = this.getAttrName(remoteName);
@@ -578,7 +577,7 @@ class Base {
     }
   }
 
-  __getResourceUrl() {
+  #getResourceUrl() {
     const url = this.constructor.__getResourcesUrl({
       resource: this.resource,
       obj: this,
@@ -587,7 +586,7 @@ class Base {
     return `${url}/${this.id}`;
   }
 
-  __processedValidationSettings(validationSettings) {
+  #processedValidationSettings(validationSettings) {
     const res = {};
     for (const confName in validationSettings) {
       const confVal = validationSettings[confName];

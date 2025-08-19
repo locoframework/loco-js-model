@@ -9,50 +9,50 @@ class Numericality extends Base {
 
   validate() {
     if (isNaN(this.val)) {
-      this._addNaNErrorMessage();
+      this.#addNaNErrorMessage();
     } else if (
       this.opts.only_integer != null &&
       Number(this.val) !== parseInt(this.val, 10)
     ) {
-      this._addIntErrorMessage();
+      this.#addIntErrorMessage();
     } else if (
       this.opts.greater_than != null &&
       Number(this.val) <= this.opts.greater_than
     ) {
-      this._addGreatherThanErrorMessage();
+      this.#addGreatherThanErrorMessage();
     } else if (
       this.opts.greater_than_or_equal_to != null &&
       Number(this.val) < this.opts.greater_than_or_equal_to
     ) {
-      this._addGreatherThanOrEqualToErrorMessage();
+      this.#addGreatherThanOrEqualToErrorMessage();
     } else if (
       this.opts.equal_to != null &&
       Number(this.val) !== this.opts.equal_to
     ) {
-      this._addEqualToErrorMessage();
+      this.#addEqualToErrorMessage();
     } else if (
       this.opts.less_than != null &&
       Number(this.val) >= this.opts.less_than
     ) {
-      this._addLessThanErrorMessage();
+      this.#addLessThanErrorMessage();
     } else if (
       this.opts.less_than_or_equal_to != null &&
       Number(this.val) > this.opts.less_than_or_equal_to
     ) {
-      this._addLessThanOrEqualToErrorMessage();
+      this.#addLessThanOrEqualToErrorMessage();
     } else if (
       this.opts.other_than != null &&
       Number(this.val) === this.opts.other_than
     ) {
-      this._addOtherThanErrorMessage();
+      this.#addOtherThanErrorMessage();
     } else if (this.opts.odd != null && Number(this.val) % 2 !== 1) {
-      this._addOddErrorMessage();
+      this.#addOddErrorMessage();
     } else if (this.opts.even != null && Number(this.val) % 2 !== 0) {
-      this._addEvenErrorMessage();
+      this.#addEvenErrorMessage();
     }
   }
 
-  _addNaNErrorMessage() {
+  #addNaNErrorMessage() {
     const message =
       this.opts.message != null
         ? this.opts.message
@@ -60,53 +60,53 @@ class Numericality extends Base {
     this.obj.addErrorMessage(message, { for: this.attr });
   }
 
-  _addIntErrorMessage() {
+  #addIntErrorMessage() {
     const message = I18n[Config.locale].errors.messages.not_an_integer;
     this.obj.addErrorMessage(message, { for: this.attr });
   }
 
-  _addGreatherThanErrorMessage() {
+  #addGreatherThanErrorMessage() {
     let message = I18n[Config.locale].errors.messages.greater_than;
     message = message.replace("%{count}", this.opts.greater_than);
     this.obj.addErrorMessage(message, { for: this.attr });
   }
 
-  _addGreatherThanOrEqualToErrorMessage() {
+  #addGreatherThanOrEqualToErrorMessage() {
     let message = I18n[Config.locale].errors.messages.greater_than_or_equal_to;
     message = message.replace("%{count}", this.opts.greater_than_or_equal_to);
     this.obj.addErrorMessage(message, { for: this.attr });
   }
 
-  _addEqualToErrorMessage() {
+  #addEqualToErrorMessage() {
     let message = I18n[Config.locale].errors.messages.equal_to;
     message = message.replace("%{count}", this.opts.equal_to);
     this.obj.addErrorMessage(message, { for: this.attr });
   }
 
-  _addLessThanErrorMessage() {
+  #addLessThanErrorMessage() {
     let message = I18n[Config.locale].errors.messages.less_than;
     message = message.replace("%{count}", this.opts.less_than);
     this.obj.addErrorMessage(message, { for: this.attr });
   }
 
-  _addLessThanOrEqualToErrorMessage() {
+  #addLessThanOrEqualToErrorMessage() {
     let message = I18n[Config.locale].errors.messages.less_than_or_equal_to;
     message = message.replace("%{count}", this.opts.less_than_or_equal_to);
     this.obj.addErrorMessage(message, { for: this.attr });
   }
 
-  _addOtherThanErrorMessage() {
+  #addOtherThanErrorMessage() {
     let message = I18n[Config.locale].errors.messages.other_than;
     message = message.replace("%{count}", this.opts.other_than);
     this.obj.addErrorMessage(message, { for: this.attr });
   }
 
-  _addOddErrorMessage() {
+  #addOddErrorMessage() {
     const message = I18n[Config.locale].errors.messages.odd;
     this.obj.addErrorMessage(message, { for: this.attr });
   }
 
-  _addEvenErrorMessage() {
+  #addEvenErrorMessage() {
     const message = I18n[Config.locale].errors.messages.even;
     this.obj.addErrorMessage(message, { for: this.attr });
   }

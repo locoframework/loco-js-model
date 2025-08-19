@@ -10,10 +10,10 @@ class Format extends Base {
   validate() {
     const match = this.opts.with.exec(this.val || "");
     if (match != null) return;
-    this._addErrorMessage();
+    this.#addErrorMessage();
   }
 
-  _addErrorMessage() {
+  #addErrorMessage() {
     const message =
       this.opts.message != null
         ? this.opts.message

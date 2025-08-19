@@ -10,10 +10,10 @@ class Inclusion extends Base {
   validate() {
     const set = this.opts.in || this.opts.within || [];
     if (set.indexOf(this.val) !== -1) return;
-    this._addErrorMessage();
+    this.#addErrorMessage();
   }
 
-  _addErrorMessage() {
+  #addErrorMessage() {
     const message =
       this.opts.message != null
         ? this.opts.message

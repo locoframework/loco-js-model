@@ -8,12 +8,12 @@ class Confirmation extends Base {
   }
 
   validate() {
-    const properVal = this.obj[this._properAttr()];
+    const properVal = this.obj[this.#properAttr()];
     if (this.val != null && properVal != null && this.val === properVal) return;
-    this._addErrorMessage();
+    this.#addErrorMessage();
   }
 
-  _addErrorMessage() {
+  #addErrorMessage() {
     const defaultAttrName =
       this.attr.charAt(0).toUpperCase() + this.attr.slice(1);
     const attrNames = I18n[Config.locale].attributes[this.obj.getIdentity()];
@@ -23,10 +23,10 @@ class Confirmation extends Base {
         ? this.opts.message
         : I18n[Config.locale].errors.messages.confirmation;
     message = message.replace("%{attribute}", attrName);
-    this.obj.addErrorMessage(message, { for: this._properAttr() });
+    this.obj.addErrorMessage(message, { for: this.#properAttr() });
   }
 
-  _properAttr() {
+  #properAttr() {
     return `${this.attr}Confirmation`;
   }
 }

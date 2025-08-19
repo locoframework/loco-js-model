@@ -10,19 +10,19 @@ class Length extends Base {
   validate() {
     if (this.val == null) return;
     let message = null;
-    const [from, to] = this._range();
+    const [from, to] = this.#range();
     if (from != null && to != null && from === to && this.val.length !== from) {
-      message = this._selectErrorMessage("wrong_length", from);
+      message = this.#selectErrorMessage("wrong_length", from);
     } else if (from != null && this.val.length < from) {
-      message = this._selectErrorMessage("too_short", from);
+      message = this.#selectErrorMessage("too_short", from);
     } else if (to != null && this.val.length > to) {
-      message = this._selectErrorMessage("too_long", to);
+      message = this.#selectErrorMessage("too_long", to);
     }
     if (message === null) return;
     this.obj.addErrorMessage(message, { for: this.attr });
   }
 
-  _range() {
+  #range() {
     const from =
       this.opts.minimum ||
       this.opts.is ||
@@ -36,11 +36,11 @@ class Length extends Base {
     return [from, to];
   }
 
-  _selectErrorMessage(msg, val) {
+  #selectErrorMessage(msg, val) {
     if (val === 1) return I18n[Config.locale].errors.messages[msg].one;
     let message = null;
     for (const variant of ["few", "many"]) {
-      if (this._checkVariant(variant, val)) {
+      if (this.#checkVariant(variant, val)) {
         message = I18n[Config.locale].errors.messages[msg][variant];
         break;
       }
@@ -57,7 +57,7 @@ class Length extends Base {
     return message;
   }
 
-  _checkVariant(variant, val) {
+  #checkVariant(variant, val) {
     if (I18n[Config.locale].variants[variant] == null) return undefined;
     return I18n[Config.locale].variants[variant](val);
   }

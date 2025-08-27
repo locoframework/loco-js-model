@@ -535,7 +535,7 @@ class Base {
   }
 
   #send(method, action, data) {
-    let url = this.__getResourceUrl();
+    let url = this.#getResourceUrl();
     if (action != null) {
       url = `${url}/${action}`;
     }

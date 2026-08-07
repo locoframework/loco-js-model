@@ -7,7 +7,6 @@ import Inclusion from "./validators/inclusion";
 import Length from "./validators/length";
 import Numericality from "./validators/numericality";
 import Presence from "./validators/presence";
-import Size from "./validators/size";
 
 const Validators = {
   Absence,
@@ -19,7 +18,7 @@ const Validators = {
   Length,
   Numericality,
   Presence,
-  Size,
+  Size: Length,
 };
 
 export default Validators;

@@ -16,20 +16,10 @@ imap = {
 */
 let imap = {};
 
-const findPosition = (arr) => {
-  let idx = arr.length;
-  arr.find((element, index) => {
-    if (element === null) {
-      idx = index;
-      return true;
-    }
-  });
-  return idx;
-};
-
 const addToImap = (arr, obj) => {
-  if (arr.indexOf(obj) !== -1) return null;
-  const idx = findPosition(arr);
+  if (arr.includes(obj)) return null;
+  const free = arr.indexOf(null);
+  const idx = free === -1 ? arr.length : free;
   arr[idx] = obj;
   return idx;
 };

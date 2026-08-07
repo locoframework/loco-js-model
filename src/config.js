@@ -1,41 +1,16 @@
-class Configurator {
-  constructor() {
-    this.localeVar = "en";
-    this.protocolWithHostVar = null;
-    this.scopeVar = null;
-  }
+let protocolWithHost = null;
 
-  get locale() {
-    return this.localeVar;
-  }
-
-  set locale(val) {
-    this.localeVar = val;
-  }
+const Config = {
+  locale: "en",
+  scope: null,
 
   get protocolWithHost() {
-    return this.protocolWithHostVar;
-  }
+    return protocolWithHost;
+  },
 
   set protocolWithHost(val) {
-    if (!val) {
-      this.protocolWithHostVar = null;
-    } else if (val[val.length - 1] === "/") {
-      this.protocolWithHostVar = val.slice(0, val.length - 1);
-    } else {
-      this.protocolWithHostVar = val;
-    }
-  }
-
-  get scope() {
-    return this.scopeVar;
-  }
-
-  set scope(val) {
-    this.scopeVar = val;
-  }
-}
-
-const Config = new Configurator();
+    protocolWithHost = val ? val.replace(/\/$/, "") : null;
+  },
+};
 
 export default Config;

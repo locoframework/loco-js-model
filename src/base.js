@@ -37,7 +37,7 @@ class Base {
     return this.__send("DELETE", action, opts);
   }
 
-  static find(idOrObj) {
+  static async find(idOrObj) {
     let urlParams = {};
     let id;
     if (typeof idOrObj === "object") {
@@ -48,25 +48,9 @@ class Base {
       id = idOrObj;
     }
     const url = `${this.__getResourcesUrl(urlParams)}/${id}`;
-    const req = sendReq("GET", url, urlParams, this.__requestOpts());
-    return new Promise((resolve, reject) => {
-      req.onerror = (e) => reject(e);
-      req.onload = (e) => {
-        if (e.target.status === 404) {
-          resolve(null);
-          return;
-        }
-        const record = JSON.parse(e.target.response);
-        resolve(this.__initFromJSON(record, idOrObj.resource));
-      };
-    });
-  }
-
-  static getAttribRemoteName(attrib) {
-    if (this.attributes == null) return null;
-    if (this.attributes[attrib] == null) return null;
-    if (this.attributes[attrib].remoteName == null) return attrib;
-    return this.attributes[attrib].remoteName;
+    const res = await sendReq("GET", url, urlParams, this.__requestOpts());
+    if (res.status === 404) return null;
+    return this.__initFromJSON(await res.json(), idOrObj.resource);
   }
 
   static getResourcesUrlParams(opts) {
@@ -122,46 +106,32 @@ class Base {
     };
   }
 
-  static __page(i, pageData, resp) {
-    const url = pageData.url;
+  static async __page(i, pageData, resp) {
     pageData.params[pageData.pageParam] = i;
-    const req = sendReq(
+    const res = await sendReq(
       pageData.method,
-      url,
+      pageData.url,
       pageData.params,
       this.__requestOpts(),
     );
-    return new Promise((resolve, reject) => {
-      req.onerror = (e) => reject(e);
-      req.onload = (e) => {
-        const data = JSON.parse(e.target.response);
-        if (Array.isArray(data)) {
-          for (const record of data) {
-            const obj = this.__initFromJSON(record, pageData.resource);
-            resp.push(obj);
-          }
-        } else if (data.resources != null) {
-          if (resp.constructor === Array) {
-            resp = { resources: [], count: 0 };
-          }
-          for (const record of data.resources) {
-            const obj = this.__initFromJSON(record, pageData.resource);
-            resp.resources.push(obj);
-          }
-          resp.count = data.count;
-        } else {
-          for (const key in data) {
-            if (Object.prototype.hasOwnProperty.call(data, key)) {
-              resp[key] = data[key];
-            }
-          }
-        }
-        resolve(resp);
-      };
-    });
+    const data = await res.json();
+    if (Array.isArray(data)) {
+      for (const record of data) {
+        resp.push(this.__initFromJSON(record, pageData.resource));
+      }
+    } else if (data.resources != null) {
+      if (Array.isArray(resp)) resp = { resources: [], count: 0 };
+      for (const record of data.resources) {
+        resp.resources.push(this.__initFromJSON(record, pageData.resource));
+      }
+      resp.count = data.count;
+    } else {
+      Object.assign(resp, data);
+    }
+    return resp;
   }
 
-  static __paginate(opts) {
+  static async __paginate(opts) {
     const pageData = {
       method: opts.method,
       url: opts.url,
@@ -169,88 +139,26 @@ class Base {
       pageParam: opts.pageParam,
       resource: opts.resource,
     };
-    return this.__page(opts.pageNum || 1, pageData, []).then((data) => {
-      const total = data.count || opts.total;
-      let promise = Promise.resolve(data);
-      if (opts.pageNum != null) return promise;
-      if (total <= opts.perPage) return promise;
-      let max = parseInt(total / opts.perPage, 10);
-      if (max !== total / opts.perPage) max += 1;
-      if (max === 1) return promise;
-      for (let i = 2; i <= max; i += 1) {
-        const func = (ii) => {
-          promise = promise.then(() => this.__page(ii, pageData, data));
-        };
-        func(i);
-      }
-      return promise;
-    });
+    const firstPage = await this.__page(opts.pageNum || 1, pageData, []);
+    const total = firstPage.count || opts.total;
+    if (opts.pageNum != null || opts.perPage == null) return firstPage;
+    if (!(total > opts.perPage)) return firstPage;
+    let result = firstPage;
+    const max = Math.ceil(total / opts.perPage);
+    for (let i = 2; i <= max; i += 1) {
+      result = await this.__page(i, pageData, firstPage);
+    }
+    return result;
   }
 
-  static __getPaginationParam(resource) {
-    const defaultParam = "page";
-    if (
-      resource != null &&
-      this.resources != null &&
-      this.resources[resource]
-    ) {
-      return (
-        (this.resources[resource].paginate &&
-          this.resources[resource].paginate.param) ||
-        defaultParam
-      );
-    }
-    if (
-      Config.scope != null &&
-      this.resources != null &&
-      this.resources[Config.scope] != null
-    ) {
-      const param =
-        this.resources[Config.scope] &&
-        this.resources[Config.scope].paginate &&
-        this.resources[Config.scope].paginate.param;
-      return param || defaultParam;
-    }
-    if (
-      this.resources != null &&
-      this.resources.paginate != null &&
-      this.resources.paginate.param != null
-    ) {
-      return this.resources.paginate.param;
-    }
-    return defaultParam;
-  }
-
-  static __getPaginationPer(resource) {
-    if (
-      resource != null &&
-      this.resources != null &&
-      this.resources[resource]
-    ) {
-      return (
-        this.resources[resource].paginate &&
-        this.resources[resource].paginate.per
-      );
-    }
-    if (
-      Config.scope != null &&
-      this.resources != null &&
-      this.resources[Config.scope] != null
-    ) {
-      return (
-        this.resources[Config.scope] &&
-        this.resources[Config.scope].paginate &&
-        this.resources[Config.scope].paginate.per
-      );
-    }
-    if (
-      this.resources != null &&
-      this.resources.paginate != null &&
-      this.resources.paginate.per != null
-    ) {
-      return this.resources.paginate.per;
-    }
-    return null;
+  static __paginateOpt(resource, key, fallback = null) {
+    if (this.resources == null) return fallback;
+    const scoped =
+      (resource != null && this.resources[resource]) ||
+      (Config.scope != null && this.resources[Config.scope]) ||
+      null;
+    const from = scoped || this.resources;
+    return (from.paginate && from.paginate[key]) || fallback;
   }
 
   static __send(method, action, opts) {
@@ -258,17 +166,16 @@ class Base {
     if (action !== "all") {
       url = `${url}/${action}`;
     }
-    const data = {
+    return this.__paginate({
       method,
       url,
       params: opts,
       resource: opts.resource,
-      perPage: this.__getPaginationPer(opts.resource),
+      perPage: this.__paginateOpt(opts.resource, "per"),
       pageNum: opts.page,
-      pageParam: this.__getPaginationParam(opts.resource),
+      pageParam: this.__paginateOpt(opts.resource, "param", "page"),
       total: opts.total || opts.count,
-    };
-    return this.__paginate(data);
+    });
   }
 
   static __initFromJSON(record, resource) {
@@ -284,10 +191,6 @@ class Base {
     this.resource = data.resource;
     if (this.constructor.attributes != null) this.#initAttributes();
     if (data != null) this.#assignAttributes(data);
-  }
-
-  setResource(name) {
-    this.resource = name;
   }
 
   getIdentity() {
@@ -358,6 +261,10 @@ class Base {
     return attribs;
   }
 
+  clone() {
+    return new this.constructor({ ...this.attributes() });
+  }
+
   isValid() {
     if (this.constructor.attributes == null) return true;
     this.errors = null;
@@ -407,51 +314,30 @@ class Base {
     this.errors[forKey].push(message);
   }
 
-  save() {
-    const httpMeth = this.id != null ? "PUT" : "POST";
-    const req = sendReq(
-      httpMeth,
+  async save() {
+    const res = await sendReq(
+      this.id != null ? "PUT" : "POST",
       this.#getResourceUrl(),
       this.serialize(),
       this.constructor.__requestOpts(),
     );
-    return new Promise((resolve, reject) => {
-      req.onerror = (e) => reject(e);
-      req.onload = (e) => {
-        const data = JSON.parse(e.target.response);
-        if (data.success) {
-          resolve(data);
-          return;
-        }
-        if (data.errors != null) this.#assignRemoteErrorMessages(data.errors);
-        resolve(data);
-      };
-    });
+    const data = await res.json();
+    if (!data.success && data.errors != null) {
+      this.#assignRemoteErrorMessages(data.errors);
+    }
+    return data;
   }
 
-  updateAttribute(attr) {
-    const req = sendReq(
+  async updateAttribute(attr) {
+    const data = await this.#request(
       "PUT",
       this.#getResourceUrl(),
       this.serialize(attr),
-      this.constructor.__requestOpts(),
     );
-    return new Promise((resolve, reject) => {
-      req.onerror = (e) => reject(e);
-      req.onload = (e) => {
-        if (e.target.status >= 200 && e.target.status < 400) {
-          const data = JSON.parse(e.target.response);
-          if (data.success) {
-            resolve(data);
-            return;
-          }
-          if (data.errors != null) this.#assignRemoteErrorMessages(data.errors);
-          resolve(data);
-        } else if (e.target.status >= 500) {
-          reject(e);
-        }
-      };
-    });
+    if (!data.success && data.errors != null) {
+      this.#assignRemoteErrorMessages(data.errors);
+    }
+    return data;
   }
 
   serialize(attr = null) {
@@ -489,16 +375,14 @@ class Base {
     const attrs = this.attributes();
     for (const name in attrs) {
       const val = attrs[name];
-      if (val !== currentObj[name]) {
-        if (
-          val != null &&
-          val.constructor === Date &&
-          currentObj[name] - val === 0
-        )
-          continue;
-        if (val !== currentObj[name])
-          result[name] = { is: currentObj[name], was: val };
-      }
+      if (val === currentObj[name]) continue;
+      if (
+        val != null &&
+        val.constructor === Date &&
+        currentObj[name] - val === 0
+      )
+        continue;
+      result[name] = { is: currentObj[name], was: val };
     }
     return result;
   }
@@ -535,22 +419,26 @@ class Base {
   }
 
   #send(method, action, data) {
-    let url = this.#getResourceUrl();
-    if (action != null) {
-      url = `${url}/${action}`;
-    }
-    const req = sendReq(method, url, data, this.constructor.__requestOpts());
-    return new Promise((resolve, reject) => {
-      req.onerror = (e) => reject(e);
-      req.onload = (e) => {
-        if (e.target.status >= 200 && e.target.status < 400) {
-          const respData = JSON.parse(e.target.response);
-          resolve(respData);
-        } else if (e.target.status >= 500) {
-          reject(e);
-        }
-      };
-    });
+    const url = this.#getResourceUrl();
+    return this.#request(
+      method,
+      action != null ? `${url}/${action}` : url,
+      data,
+    );
+  }
+
+  async #request(method, url, data) {
+    const res = await sendReq(
+      method,
+      url,
+      data,
+      this.constructor.__requestOpts(),
+    );
+    if (res.status >= 500) throw res;
+    // ponytail: 4xx never settles, as in the XHR version. Reject here once
+    // callers are ready to handle it.
+    if (res.status >= 400) return new Promise(() => {});
+    return res.json();
   }
 
   #assignAttributes(data) {

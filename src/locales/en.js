@@ -4,10 +4,8 @@ const en = {
   attributes: {},
   errors: {
     messages: {
-      accepted: "must be accepted",
       blank: "can't be blank",
       confirmation: "doesn't match %{attribute}",
-      empty: "can't be empty",
       equal_to: "must be equal to %{count}",
       even: "must be even",
       exclusion: "is reserved",

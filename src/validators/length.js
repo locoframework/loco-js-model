@@ -3,10 +3,6 @@ import I18n from "../i18n";
 import Config from "../config";
 
 class Length extends Base {
-  constructor() {
-    super();
-  }
-
   validate() {
     if (this.val == null) return;
     let message = null;
@@ -37,32 +33,18 @@ class Length extends Base {
   }
 
   #selectErrorMessage(msg, val) {
-    if (val === 1) return I18n[Config.locale].errors.messages[msg].one;
-    let message = null;
-    for (const variant of ["few", "many"]) {
-      if (this.#checkVariant(variant, val)) {
-        message = I18n[Config.locale].errors.messages[msg][variant];
-        break;
-      }
-    }
-    if (message == null) {
-      message = I18n[Config.locale].errors.messages[msg].other;
-    }
-    if (this.opts.message != null) {
-      message = this.opts.message;
-    }
-    if (/%\{count\}/.exec(message)) {
-      message = message.replace("%{count}", val);
-    }
-    return message;
-  }
-
-  #checkVariant(variant, val) {
-    if (I18n[Config.locale].variants[variant] == null) return undefined;
-    return I18n[Config.locale].variants[variant](val);
+    const messages = I18n[Config.locale].errors.messages[msg];
+    if (val === 1) return messages.one;
+    const variants = I18n[Config.locale].variants || {};
+    const variant = ["few", "many"].find(
+      (name) => variants[name] != null && variants[name](val),
+    );
+    const message =
+      this.opts.message != null
+        ? this.opts.message
+        : messages[variant] || messages.other;
+    return message.replace("%{count}", val);
   }
 }
 
 export default Length;
-
-Length.identity = "Length";

@@ -2,9 +2,39 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>loco-js-model</title>
+    <title>loco-js-model playground</title>
+    <style>
+      body {
+        font:
+          14px/1.5 system-ui,
+          sans-serif;
+        margin: 2rem;
+        max-width: 60rem;
+      }
+      button {
+        font: inherit;
+        margin: 0 0.25rem 0.5rem 0;
+      }
+      pre {
+        background: #f4f4f4;
+        padding: 1rem;
+        overflow-x: auto;
+        white-space: pre-wrap;
+      }
+    </style>
   </head>
   <body>
-    <script type="text/javascript" src="loco-model.js"></script>
+    <h1>loco-js-model playground</h1>
+    <p>
+      Edit <code>dev/index.js</code> and reload. Edit <code>src/</code> and the
+      bundle rebuilds itself — reload to pick it up.
+    </p>
+
+    <div id="actions"></div>
+
+    <pre id="log"></pre>
+
+    <script src="/loco-model.js"></script>
+    <script src="/index.js"></script>
   </body>
 </html>

@@ -1,31 +1,27 @@
-import Validators from "../validators";
+import I18n from "../i18n";
+import Config from "../config";
 
 class Base {
   static instance(obj, attr, opts) {
-    const validatorName = this.identity;
-    if (this.sharedInstances[validatorName] == null) {
-      this.sharedInstances[validatorName] = new Validators[validatorName]();
-    }
-    const sharedInstance = this.sharedInstances[validatorName];
-    sharedInstance.assignAttribs(obj, attr, opts);
-    return sharedInstance;
-  }
-
-  constructor() {
-    this.obj = null;
-    this.attr = null;
-    this.val = null;
-    this.opts = null;
+    const validator = new this();
+    validator.assignAttribs(obj, attr, opts);
+    return validator;
   }
 
   assignAttribs(obj, attr, opts) {
     this.obj = obj;
     this.attr = attr;
-    this.val = this.obj[this.attr];
+    this.val = obj[attr];
     this.opts = opts;
+  }
+
+  addError(msgKey) {
+    const message =
+      this.opts.message != null
+        ? this.opts.message
+        : I18n[Config.locale].errors.messages[msgKey];
+    this.obj.addErrorMessage(message, { for: this.attr });
   }
 }
 
 export default Base;
-
-Base.sharedInstances = {};

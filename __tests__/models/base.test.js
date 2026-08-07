@@ -1,5 +1,8 @@
-import mockXHR from "../../__mock__/xhr";
+import mockFetch from "../../__mock__/fetch";
 import { Config, Models } from "index";
+
+const requestedURL = (mock) => mock.mock.calls[0][0];
+const requestedOpts = (mock) => mock.mock.calls[0][1];
 
 class Comment extends Models.Base {
   static authorizationHeader = "Bearer XXX";
@@ -79,61 +82,71 @@ class Dummy extends Models.Base {
   };
 }
 
-const oldXMLHttpRequest = window.XMLHttpRequest;
+const oldFetch = window.fetch;
 
 afterEach(() => {
-  window.XMLHttpRequest = oldXMLHttpRequest;
+  window.fetch = oldFetch;
 });
 
 it("does not send param if was used in URL + .all uses Authorization header if defined", () => {
-  const mock = mockXHR();
+  const mock = mockFetch();
   Comment.all({ articleId: 1 });
-  expect(mock.open).toHaveBeenCalledWith(
-    "GET",
-    "/user/articles/1/comments?page=1",
-  );
-  expect(mock.setRequestHeader).toHaveBeenCalledWith(
-    "Authorization",
-    "Bearer XXX",
-  );
+  expect(requestedURL(mock)).toEqual("/user/articles/1/comments?page=1");
+  expect(requestedOpts(mock).method).toEqual("GET");
+  expect(requestedOpts(mock).headers.Authorization).toEqual("Bearer XXX");
 });
 
 describe("requests", () => {
   afterEach(() => {
     Config.authorizationHeader = null;
+    Config.cookiesByCORS = null;
   });
 
-  it("does not set withCredentials by default", () => {
-    const mock = mockXHR();
+  it("does not send cookies by CORS by default", () => {
+    const mock = mockFetch();
     new Comment({
       articleId: 1,
       author: "Joe Doe",
       text: "foo bar baz",
     }).save();
-    expect(mock.open).toHaveBeenCalledWith("POST", "/user/articles/1/comments");
-    expect(mock.withCredentials).toEqual(false);
+    expect(requestedURL(mock)).toEqual("/user/articles/1/comments");
+    expect(requestedOpts(mock).method).toEqual("POST");
+    expect(requestedOpts(mock).credentials).toEqual("same-origin");
   });
 
-  it("is possible to set withCredentials via Config", () => {
-    const mock = mockXHR();
+  it("is possible to send cookies by CORS via Config", () => {
+    const mock = mockFetch();
     Config.cookiesByCORS = true;
     new Comment({
       articleId: 1,
       author: "Joe Doe",
       text: "foo bar baz",
     }).save();
-    expect(mock.open).toHaveBeenCalledWith("POST", "/user/articles/1/comments");
-    expect(mock.withCredentials).toEqual(true);
+    expect(requestedURL(mock)).toEqual("/user/articles/1/comments");
+    expect(requestedOpts(mock).method).toEqual("POST");
+    expect(requestedOpts(mock).credentials).toEqual("include");
+  });
+
+  it("sends the serialized object as the body", () => {
+    const mock = mockFetch();
+    new Comment({
+      articleId: 1,
+      author: "Joe Doe",
+      text: "foo bar baz",
+    }).save();
+    expect(JSON.parse(requestedOpts(mock).body).comment).toEqual({
+      author: "Joe Doe",
+      text: "foo bar baz",
+      article_id: 1,
+      approved: null,
+    });
   });
 
   it("is possible to change Authorization header via Config", () => {
-    const mock = mockXHR();
+    const mock = mockFetch();
     Config.authorizationHeader = "Bearer YYY";
     Comment.find({ id: 25, articleId: 4 });
-    expect(mock.setRequestHeader).toHaveBeenCalledWith(
-      "Authorization",
-      "Bearer YYY",
-    );
+    expect(requestedOpts(mock).headers.Authorization).toEqual("Bearer YYY");
   });
 });
 
@@ -176,39 +189,26 @@ describe(".find", () => {
     Config.protocolWithHost = null;
   });
 
-  it("returns null if 404", (done) => {
-    const mock = mockXHR();
-    const promise = Comment.find({ id: 25, articleId: 4 });
-    mock.status = 404;
-    mock.response = "";
-    mock.onload({ target: mock });
-    promise.then((comment) => {
-      expect(comment).toBe(null);
-      done();
-    });
+  it("returns null if 404", async () => {
+    mockFetch({}, 404);
+    expect(await Comment.find({ id: 25, articleId: 4 })).toBe(null);
   });
 
   it("uses a correct URL and sets Authorization if defined", () => {
-    const mock = mockXHR();
+    const mock = mockFetch();
     Comment.find({ id: 25, articleId: 4 });
-    expect(mock.open).toHaveBeenCalledWith(
-      "GET",
-      "/user/articles/4/comments/25?",
-    );
-    expect(mock.setRequestHeader).toHaveBeenCalledWith(
-      "Authorization",
-      "Bearer XXX",
-    );
+    expect(requestedURL(mock)).toEqual("/user/articles/4/comments/25?");
+    expect(requestedOpts(mock).headers.Authorization).toEqual("Bearer XXX");
   });
 
   it("uses a correct URL even with the specified protocol and host", () => {
-    const mock = mockXHR();
+    const mock = mockFetch();
     Config.protocolWithHost = "http://localhost:3001";
     Comment.find({ id: 25, articleId: 4 });
-    expect(mock.open).toHaveBeenCalledWith(
-      "GET",
+    expect(requestedURL(mock)).toEqual(
       "http://localhost:3001/user/articles/4/comments/25?",
     );
+    expect(requestedOpts(mock).method).toEqual("GET");
   });
 });
 
@@ -220,18 +220,15 @@ describe(".__getResourcesUrl", () => {
 
 describe("#save", () => {
   it("properly builds URL for nested models and sets Authorization header if defined", () => {
-    const mock = mockXHR();
-    const comment = new Comment({
+    const mock = mockFetch();
+    new Comment({
       articleId: 1,
       author: "Joe Doe",
       text: "foo bar baz",
-    });
-    comment.save();
-    expect(mock.open).toHaveBeenCalledWith("POST", "/user/articles/1/comments");
-    expect(mock.setRequestHeader).toHaveBeenCalledWith(
-      "Authorization",
-      "Bearer XXX",
-    );
+    }).save();
+    expect(requestedURL(mock)).toEqual("/user/articles/1/comments");
+    expect(requestedOpts(mock).method).toEqual("POST");
+    expect(requestedOpts(mock).headers.Authorization).toEqual("Bearer XXX");
   });
 });
 

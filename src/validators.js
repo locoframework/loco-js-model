@@ -1,12 +1,12 @@
-import Absence from "./validators/absence";
-import Base from "./validators/base";
-import Confirmation from "./validators/confirmation";
-import Exclusion from "./validators/exclusion";
-import Format from "./validators/format";
-import Inclusion from "./validators/inclusion";
-import Length from "./validators/length";
-import Numericality from "./validators/numericality";
-import Presence from "./validators/presence";
+import Absence from "./validators/absence.js";
+import Base from "./validators/base.js";
+import Confirmation from "./validators/confirmation.js";
+import Exclusion from "./validators/exclusion.js";
+import Format from "./validators/format.js";
+import Inclusion from "./validators/inclusion.js";
+import Length from "./validators/length.js";
+import Numericality from "./validators/numericality.js";
+import Presence from "./validators/presence.js";
 
 const Validators = {
   Absence,

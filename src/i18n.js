@@ -1,4 +1,4 @@
-import en from "./locales/en";
+import en from "./locales/en.js";
 
 const I18n = { en };
 

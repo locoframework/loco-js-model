@@ -1,4 +1,4 @@
-import mockFetch from "../../__mock__/fetch";
+import mockFetch from "../../__mock__/fetch.js";
 import { Models, connector } from "index";
 
 const { IdentityMap } = connector;

@@ -1,3 +1,5 @@
+import { jest } from "@jest/globals";
+
 export default (responseJSON, status = 200) => {
   window.fetch = jest.fn(async (url, opts) => {
     // the real fetch throws on this, so the mock must too

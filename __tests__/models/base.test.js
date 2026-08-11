@@ -1,4 +1,4 @@
-import mockFetch from "../../__mock__/fetch";
+import mockFetch from "../../__mock__/fetch.js";
 import { Config, Models } from "index";
 
 const requestedURL = (mock) => mock.mock.calls[0][0];

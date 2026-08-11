@@ -1,16 +1,26 @@
-const express = require("express");
-const webpack = require("webpack");
-const webpackDevMiddleware = require("webpack-dev-middleware");
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const webpackConfig = require("../webpack.config.js");
+import express from "express";
+import webpack from "webpack";
+import webpackDevMiddleware from "webpack-dev-middleware";
+
+import webpackConfig from "../webpack.config.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const compiler = webpack({ ...webpackConfig, mode: "development" });
 
 app.use(express.json());
 
-// serves the freshly compiled /loco-model.js from memory, rebuilt on every src/ change
-app.use(webpackDevMiddleware(compiler));
+// serves the freshly compiled /loco-model.mjs from memory, rebuilt on every src/ change
+app.use(
+  webpackDevMiddleware(compiler, {
+    publicPath: webpackConfig.output.publicPath,
+  }),
+);
 
 // dev/index.html at "/", dev/index.js at "/index.js"
 app.use(express.static(__dirname));

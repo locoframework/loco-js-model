@@ -1,8 +1,5 @@
-module.exports = {
+export default {
   modulePaths: ["src"],
-  moduleFileExtensions: ["js"],
   testEnvironment: "jsdom",
-  transform: {
-    "^.+\\.js$": "babel-jest",
-  },
+  testMatch: ["**/*.test.js"],
 };

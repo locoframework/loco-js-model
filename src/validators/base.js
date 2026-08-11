@@ -1,5 +1,5 @@
-import I18n from "../i18n";
-import Config from "../config";
+import I18n from "../i18n.js";
+import Config from "../config.js";
 
 class Base {
   static instance(obj, attr, opts) {

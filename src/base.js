@@ -1,7 +1,7 @@
-import Validators from "./validators";
-import Config from "./config";
-import IdentityMap from "./IdentityMap";
-import { sendReq } from "./helpers/connectivity";
+import Validators from "./validators.js";
+import Config from "./config.js";
+import IdentityMap from "./IdentityMap.js";
+import { sendReq } from "./helpers/connectivity.js";
 
 class Base {
   static getIdentity() {

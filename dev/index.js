@@ -1,6 +1,4 @@
-/* global LocoModel */
-
-const { Config, Models } = LocoModel;
+import { Config, Models } from "/loco-model.mjs";
 
 Config.protocolWithHost = window.location.origin;
 

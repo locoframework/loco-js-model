@@ -1,6 +1,6 @@
 import Base from "./base.js";
-import I18n from "../i18n";
-import Config from "../config";
+import I18n from "../i18n.js";
+import Config from "../config.js";
 
 // [option, fails?, message key (defaults to the option name)]
 const CHECKS = [

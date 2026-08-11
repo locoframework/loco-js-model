@@ -2,15 +2,23 @@
   "name": "loco-js-model",
   "version": "2.0.1",
   "description": "Model part of loco-js",
-  "main": "dist/loco-model.js",
+  "type": "module",
+  "main": "dist/loco-model.mjs",
+  "module": "dist/loco-model.mjs",
+  "exports": {
+    ".": "./dist/loco-model.mjs"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "prepare": "husky",
+    "prepare": "husky && npm run build",
     "format": "prettier --write .",
     "lint": "eslint . --ext .js --fix",
     "lint-staged": "lint-staged",
-    "build": "webpack --mode=production --node-env=production -c webpack.config.js --progress",
+    "build": "webpack --mode=production --config-node-env=production -c webpack.config.js --progress",
     "start": "node dev/server.js",
-    "test": "jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --runInBand"
   },
   "repository": {
     "type": "git",
@@ -25,11 +33,7 @@
   "license": "MIT",
   "homepage": "http://locoframework.org",
   "devDependencies": {
-    "@babel/core": "^7.28.3",
-    "@babel/preset-env": "^7.28.3",
     "@eslint/js": "^9.34.0",
-    "babel-jest": "^30.0.5",
-    "babel-loader": "^10.0.0",
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",

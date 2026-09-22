@@ -369,9 +369,9 @@ class Base {
     return this.constructor.find(findParams);
   }
 
-  changes() {
+  changes(currentObj = IdentityMap.find(this.getIdentity(), this.id)) {
     const result = {};
-    const currentObj = IdentityMap.find(this.getIdentity(), this.id);
+    if (currentObj == null || currentObj === this) return result;
     const attrs = this.attributes();
     for (const name in attrs) {
       const val = attrs[name];

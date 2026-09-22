@@ -64,6 +64,23 @@ describe("#changes", () => {
       new Date("2026-03-01T10:00:00Z"),
     );
   });
+
+  it("diffs against an explicit server copy when one is given", async () => {
+    const article = await findTwice(
+      { id: 1, title: "Old" },
+      { id: 1, title: "New" },
+    );
+    const fresher = new Article({ id: 1, title: "Fresher" });
+    expect(article.changes(fresher)).toEqual({
+      title: { is: "Fresher", was: "Old" },
+    });
+  });
+
+  it("is empty when there is no server copy to diff against", async () => {
+    const article = await findTwice({ id: 1 }, { id: 1 });
+    expect(article.changes(null)).toEqual({});
+    expect(article.changes(article)).toEqual({});
+  });
 });
 
 describe("#applyChanges", () => {

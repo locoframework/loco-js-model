@@ -322,7 +322,7 @@ class Base {
       this.constructor.__requestOpts(),
     );
     const data = await res.json();
-    if (!data.success && data.errors != null) {
+    if (!data.ok && data.errors != null) {
       this.#assignRemoteErrorMessages(data.errors);
     }
     return data;
@@ -334,7 +334,7 @@ class Base {
       this.#getResourceUrl(),
       this.serialize(attr),
     );
-    if (!data.success && data.errors != null) {
+    if (!data.ok && data.errors != null) {
       this.#assignRemoteErrorMessages(data.errors);
     }
     return data;

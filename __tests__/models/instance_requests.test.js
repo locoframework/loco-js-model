@@ -40,7 +40,7 @@ describe("instance HTTP methods", () => {
   });
 
   it("omits the action when not given", async () => {
-    const mock = mockFetch({ success: true });
+    const mock = mockFetch({ ok: true });
     await new Article({ id: 7 }).delete();
     expect(requestedURL(mock)).toEqual("/articles/7");
     expect(requestedOpts(mock).method).toEqual("DELETE");
@@ -85,7 +85,7 @@ describe("instance HTTP methods", () => {
 
 describe("#updateAttribute", () => {
   it("sends only the given attribute", async () => {
-    const mock = mockFetch({ success: true });
+    const mock = mockFetch({ ok: true });
     const article = new Article({ id: 7, title: "New" });
     const resp = await article.updateAttribute("title");
     expect(requestedURL(mock)).toEqual("/articles/7");
@@ -93,12 +93,12 @@ describe("#updateAttribute", () => {
     expect(JSON.parse(requestedOpts(mock).body)).toEqual({
       article: { title: "New" },
     });
-    expect(resp).toEqual({ success: true });
+    expect(resp).toEqual({ ok: true });
   });
 
   it("assigns remote errors to their local attribute names", async () => {
     mockFetch({
-      success: false,
+      ok: false,
       errors: { published_at: ["can't be blank"] },
     });
     const article = new Article({ id: 7 });

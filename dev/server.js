@@ -54,23 +54,23 @@ app.get("/articles/:id", (req, res) => {
 app.post("/articles", (req, res) => {
   const { title } = req.body.article ?? {};
   if (!title) {
-    return res.json({ success: false, errors: { title: ["can't be blank"] } });
+    return res.json({ ok: false, errors: { title: ["can't be blank"] } });
   }
   const article = { id: nextId++, title, published_at: new Date() };
   articles.push(article);
-  res.json({ success: true, id: article.id });
+  res.json({ ok: true, id: article.id });
 });
 
 app.put("/articles/:id", (req, res) => {
   const article = articles.find((a) => String(a.id) === req.params.id);
-  if (!article) return res.status(404).json({ success: false });
+  if (!article) return res.status(404).json({ ok: false });
   Object.assign(article, req.body.article ?? {});
-  res.json({ success: true });
+  res.json({ ok: true });
 });
 
 app.delete("/articles/:id", (req, res) => {
   articles = articles.filter((a) => String(a.id) !== req.params.id);
-  res.json({ success: true });
+  res.json({ ok: true });
 });
 
 app.listen(4000, () => {

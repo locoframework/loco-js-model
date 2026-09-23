@@ -357,7 +357,7 @@ coupon.save().then(resp => {
 //                           },
 //               "plan_id" => "19"
 //             }
-  resp; // { success: false,
+  resp; // { ok: false,
         //   status: 400,
         //   errors: {
         //     stripe_id: ["can't be blank", "is invalid"],
